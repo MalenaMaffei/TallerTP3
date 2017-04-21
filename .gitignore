@@ -1,7 +1,8 @@
 CMakeLists.txt
 .idea/
 cmake-build-debug/
-tp
+client
+server
 tp.dSYM
 *.[o]
 .DS_Store
