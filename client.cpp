@@ -1,11 +1,12 @@
 #include "common_Socket.h"
 #include <string>
-
+#include <vector>
 using std::string;
+using std::vector;
 
 #define CLIENT_MODE 1
 
-int client(const char *ip, const char *port, string saludo){
+int client(const char *ip, const char *port, vector<string> params){
     int status;
 
     Socket client_socket;
@@ -29,7 +30,8 @@ int main(int argc, char **argv){
 //        char *server_ip = argv[2];
 //        char *server_port = argv[3];
 //        char *file_name = argv[4];
-        client("127.0.0.1", "8080", argv[1]);
+    
+        client("127.0.0.1", "8080", );
 
     return 0;
 }

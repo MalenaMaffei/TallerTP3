@@ -33,6 +33,11 @@ int server(const char *server_port){
     docente.inscribir("1", "algo");
     docente.desinscribir("1", "algo");
 
+
+
+
+
+
     socket.BindAndListen(BACKLOG);
 
     Socket new_socket;

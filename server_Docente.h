@@ -9,6 +9,8 @@ public:
     void inscribir(string codigo, string curso) const;
     void desinscribir(string codigo, string curso) const;
 
+private:
+    string id;
 };
 
 
