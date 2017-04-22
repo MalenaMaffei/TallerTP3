@@ -6,7 +6,7 @@
 #define OK 0
 #define NOK -1
 #define NO_IP 0
-#define MSG_NOSIGNAL 0
+#define MSG_NO_SIGNAL 0
 
 class Socket {
 private:
@@ -64,12 +64,12 @@ public:
 //Cierra el socket y libera a struct addrinfo res.
 // PRE: self fue inicializado mediante Create
 //TODO que onda aca? herencia?
-    int socket_destroy();
+    int Destroy();
 
 //Destruye un socket accept liberando sus recursos.
 //Cierra el socket.
 // PRE: self fue inicializado mediante Accept
-    int socket_accept_destroy();
+    int accept_destroy();
 };
 
 

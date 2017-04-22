@@ -80,7 +80,7 @@ int Socket::Send(unsigned char *source, size_t length){
     unsigned char *buffer_ptr = source;
     for (bytes_left = length; bytes_left>0; bytes_left-=bytes_sent) {
         if ((bytes_sent=send(
-                fD, buffer_ptr, bytes_left, MSG_NOSIGNAL))<=0) {
+                fD, buffer_ptr, bytes_left, MSG_NO_SIGNAL))<=0) {
             return NOK;
         } else {
             buffer_ptr+=bytes_sent;
@@ -122,11 +122,11 @@ int Socket::Shutdown(int mode){
     return shutdown(fD, mode);
 }
 
-int Socket::socket_destroy(){
+int Socket::Destroy(){
     freeaddrinfo(res);
     return close(fD);
 }
 
-int Socket::socket_accept_destroy(){
+int Socket::accept_destroy(){
     return close(fD);
 }
