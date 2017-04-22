@@ -6,3 +6,19 @@ void User::listarMaterias() const {
     cout << "listando todas las materias" << endl;
 
 }
+
+void User::listarInscripciones() const {
+//    manda al CLIENTE la respuesta del servidor.
+//    cout << "listando todas las materias" << endl;
+
+}
+
+void User::inscribir(string codigo, string curso) const {
+//    manda al CLIENTE la respuesta del servidor.
+//    cout << "listando todas las materias" << endl;
+
+}
+
+void User::desinscribir(string codigo, string curso) const {
+//    nada todavia
+}

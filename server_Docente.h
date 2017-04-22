@@ -4,6 +4,7 @@
 #include "server_User.h"
 
 class Docente : public User  {
+public:
     void listarInscripciones() const;
     void inscribir(string codigo, string curso) const;
     void desinscribir(string codigo, string curso) const;
