@@ -1,0 +1,4 @@
+1001    Algoritmos I    3   20
+1003    Algoritmos III  4   20
+1003    Algotitmos III  5   20
+1009    Algoritmos IV: la batalla final 12  10
