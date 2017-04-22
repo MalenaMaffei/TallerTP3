@@ -6,7 +6,7 @@
 #define OK 0
 #define NOK -1
 #define NO_IP 0
-//#define MSG_NOSIGNAL 0
+#define MSG_NOSIGNAL 0
 
 class Socket {
 private:
