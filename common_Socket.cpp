@@ -97,7 +97,7 @@ int Socket::BindAndListen(int backlog){
 }
 
 //TODO hacer que devuelva otro socket
-int Socket::Accept(Socket &other){
+int Socket::Accept(Socket &other) const{
     struct sockaddr_storage c_addr;
     struct sockaddr *a;
     socklen_t *l;

@@ -41,7 +41,7 @@ public:
 //PRE: self fue inicializado con Create.
 //Se llamo a BindAndListen con self.
 //TODO VER COMO DEVOLVER OTRO SOCKET
-    int Accept(Socket &other);
+    int Accept(Socket &other)const;
 
 //Envia la cantidad length de bytes de source.
 // Devuelve OK o NOK si hay error.

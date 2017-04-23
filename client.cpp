@@ -5,6 +5,8 @@
 #include <iostream>
 using std::string;
 using std::vector;
+using std::cout;
+using std::endl;
 
 #define CLIENT_MODE 1
 #define LENGTH_SIZE 4
@@ -33,7 +35,7 @@ int client(const char *ip, const char *port, vector<string> arguments){
 
     Socket client_socket;
     status = client_socket.CreateAndConnect(ip, port);
-    if (status < 0) { return 0; }
+    if (status < 0) { cout << "hubo un problema conecntando :/" <<endl; }
 
     std::for_each(arguments.begin(), arguments.end(), [](string &a){
             std::cout << "argumento: " << a << std::endl;
@@ -48,46 +50,23 @@ int client(const char *ip, const char *port, vector<string> arguments){
 //    TODO create ints of 4 bytes only
     int normal_length = message.size();
     int net_length = htonl(normal_length);
-    printf("int normal length: %i", normal_length);
-    printf("int net length: %i", net_length);
+//    printf("int normal length: %i", normal_length);
+//    printf("int net length: %i", net_length);
     client_socket.Send((unsigned char*)&net_length, LENGTH_SIZE);
     char *char_message = &message[0];
     client_socket.Send((unsigned char *)char_message, message.size());
 
 
+  client_socket.Shutdown(CLIENT_MODE);
 
-
-
-
-
-
-//
-//    string argumentos = build_message(arguments);
-    std::cout << "msg created: " << message << std::endl;
-
-
-
-//    int my_id = 1233;
-//    int my_net_id = htonl(my_id);
-//    send(sock, (const char*)&my_net_id, 4, 0);
-//    string hola = "Hello world";
-//    char *holaChar = &argumentos[0];
-//    client_socket.Send((unsigned char *)holaChar, hola.length());
-//
-    client_socket.Shutdown(CLIENT_MODE);
-//
-//
-//    Destroy(&client_socket);
+    client_socket.Destroy();
     return 0;
 }
 
 int main(int argc, char **argv){
 
-//        char *server_ip = argv[2];
-//        char *server_port = argv[3];
-//        char *file_name = argv[4];
     std::vector<std::string> arguments(argv + 3, argv + argc);
-        client("127.0.0.1", "8080", arguments);
+        client(argv[1], argv[2], arguments);
 
     return 0;
 }

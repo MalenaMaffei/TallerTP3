@@ -9,16 +9,21 @@ void User::listarMaterias() const {
 
 void User::listarInscripciones() const {
 //    manda al CLIENTE la respuesta del servidor.
-//    cout << "listando todas las materias" << endl;
+    cout << "listando todas las inscripciones desde USER" << endl;
 
 }
 
 void User::inscribir(string codigo, string curso) const {
 //    manda al CLIENTE la respuesta del servidor.
-//    cout << "listando todas las materias" << endl;
+    cout << "inscribir de USER" << endl;
 
 }
 
 void User::desinscribir(string codigo, string curso) const {
 //    nada todavia
+    cout << "desinscribir de USER" << endl;
+}
+
+User::~User() {
+
 }
