@@ -1,5 +1,5 @@
 #include "server_Admin.h"
-
+#include <string>
 void Admin::listarInscripciones() const {
 //    User::listarInscripciones();
     cout << "listando inscripciones de todo el mundo" << endl;

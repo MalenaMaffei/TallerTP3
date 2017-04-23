@@ -1,5 +1,5 @@
 #include "server_Docente.h"
-
+#include <string>
 void Docente::listarInscripciones() const {
 //    User::listarInscripciones();
     cout << "listando inscripciones del docente" << endl;

@@ -6,7 +6,7 @@
 
 class Session {
 public:
-    Session(const Socket &socketServer);
+    explicit Session(const Socket &socketServer);
     void start();
 
     virtual ~Session();
@@ -15,7 +15,6 @@ private:
 //    tambien deberia tener una fabrica que le crea los usuarios
     Socket socket;
     User* user;
-
 };
 
 

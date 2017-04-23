@@ -1,4 +1,6 @@
 #include <cstring>
+#include <string>
+#include <vector>
 #include "server_Session.h"
 #include "server_UserFactory.h"
 //#include "server_Alumno.h"
@@ -58,19 +60,16 @@ void Session::start() {
 // paso un vector y que el se encargue de crear de acuerdo a eso.
     UserFactory factory;
     user = factory.createUser(params);
-
+//
     user->listarMaterias();
     user->desinscribir("1", "holitas");
     user->inscribir("1", "holitas");
     user->listarInscripciones();
-
-
-
 }
 
 Session::~Session() {
 //Destruir usuario tambien
-    delete(user);
+//    delete(user);
     socket.Shutdown(READ_SHTDWN);
 
     socket.accept_destroy();

@@ -2,7 +2,8 @@
 #include "server_Admin.h"
 #include "server_Alumno.h"
 #include "server_Docente.h"
-
+#include <vector>
+#include <string>
 //#define ALUMNO "alumno"
 
 User *UserFactory::createUser(vector<string> & params) const {

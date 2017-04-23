@@ -113,7 +113,7 @@ int Socket::Accept(Socket &other) const{
 }
 
 int Socket::Receive(unsigned char *buffer, size_t length){
-    int bytes_read = recv(fD, buffer, length, MSG_NOSIGNAL);
+    int bytes_read = recv(fD, buffer, length, MSG_NO_SIGNAL);
     return bytes_read;
 }
 

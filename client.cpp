@@ -17,7 +17,6 @@ string build_message(vector<string> arguments){
     });
     message.pop_back();
     return message;
-
 }
 
 void send_message(Socket & socket, vector<string> arguments){
@@ -64,7 +63,6 @@ int client(const char *ip, const char *port, vector<string> arguments){
 }
 
 int main(int argc, char **argv){
-
     std::vector<std::string> arguments(argv + 3, argv + argc);
         client(argv[1], argv[2], arguments);
 

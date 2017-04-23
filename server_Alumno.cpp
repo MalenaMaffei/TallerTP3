@@ -1,5 +1,5 @@
 #include "server_Alumno.h"
-
+#include <string>
 void Alumno::listarInscripciones() const {
 //    User::listarInscripciones();
     cout << "listando inscripciones del alumno" << endl;
