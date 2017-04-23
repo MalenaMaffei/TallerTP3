@@ -69,7 +69,7 @@ void Session::start() {
 
 Session::~Session() {
 //Destruir usuario tambien
-//    delete(user);
+    delete(user);
     socket.Shutdown(READ_SHTDWN);
 
     socket.accept_destroy();
