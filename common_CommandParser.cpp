@@ -17,7 +17,7 @@
 #define COMM_DELIMITER "-"
 #define STR_DELIMITER " "
 
-string delimitCommands(vector<string> arguments){
+string CommandParser::delimitCommands(vector<string> arguments) const{
     string message;
     std::for_each(arguments.begin(), arguments.end(), [&](string a){
         message = message + a + "-";

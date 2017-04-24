@@ -22,68 +22,38 @@ Session::Session(const Socket &socketServer) {
 }
 
 void Session::receiveCommands(){
-    unsigned char buffer_leer[BUFFSIZE] = {0};
-    int read = 0;
+//    unsigned char buffer_leer[BUFFSIZE] = {0};
+//    int read = 0;
     bool shutdown = false;
     while (!shutdown){
+        string recv_command;
         try {
-            read = 0;
-            while (read < LENGTH_SIZE){
-                read = socket.Receive(buffer_leer,LENGTH_SIZE);
-            }
 
-            int net_length;
-            std::memcpy(&net_length, buffer_leer, sizeof net_length);
-
-            int normal_length = ntohl(net_length);
-            int bytes_read = 0;
-
-//    TODO ir moviendo el puntero. podria hacer un receive string de X size...
-            while (bytes_read < normal_length){
-                bytes_read += socket.Receive(buffer_leer,BUFFSIZE);
-            }
-            buffer_leer[bytes_read] = '\0';
+            recv_command = socket.ReceiveStrWLen(LENGTH_SIZE);
         } catch(std::exception& e){
 //            TODO cambiar aca esto por la exc correcta
+//            y volver a mandarla? depende si hay que mostrar esto en otros
+// casos
             cerr << user->print() << " desconectado." << endl;
             shutdown = true;
             continue;
         }
 
 //Aca viene la parte de devolver un vector de comandos.
-        string recv_command((char *)buffer_leer);
+
         vector<string> commands;
         parser.parseCommand(recv_command, commands);
         cerr << user->print() << " ejecuta " << commands[CODE_POS] << "."  <<
                                                                            endl;
-//        aca tengo que pasarle al user el vector de comandos
         string output = user->executeCommand(commands);
         cout << output << endl;
+//        socket.Send((unsigned char *)&output[0], output.size());
     }
 }
 
 void Session::start() {
-//    CommandParser parser;
-    unsigned char buffer_leer[BUFFSIZE] = {0};
-    int read = 0;
-    while (read < LENGTH_SIZE){
-        read = socket.Receive(buffer_leer,LENGTH_SIZE);
-    }
 
-//    casteo los 4 bytes en un int y lo doy vuelta
-    int net_length;
-    std::memcpy(&net_length, buffer_leer, sizeof net_length);
-    int normal_length = ntohl(net_length);
-
-    int bytes_read = 0;
-//    TODO ir moviendo el puntero. podria hacer un receive string de X size...
-    while (bytes_read < normal_length){
-        bytes_read += socket.Receive(buffer_leer,BUFFSIZE);
-    }
-    buffer_leer[bytes_read] = '\0';
-
-
-    string parameters((char *)buffer_leer);
+    string parameters = socket.ReceiveStrWLen(LENGTH_SIZE);
 
     vector<string> params;
     parser.parseUserInfo(parameters, params);
@@ -100,21 +70,13 @@ void Session::start() {
         return;
     }
 
-
     cerr << user->print() << " conectado." << endl;
-    user->listarMaterias();
-    user->desinscribir(vector<string>());
-    user->inscribir(vector<string>());
-    user->listarInscripciones();
 
     receiveCommands();
 }
 
 Session::~Session() {
-//Destruir usuario tambien
     if (user){ delete(user); }
-
 //    socket.Shutdown(READ_SHTDWN);
-
     socket.accept_destroy();
 }

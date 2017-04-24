@@ -2,11 +2,13 @@
 #define PROJECT_SOCKET_H
 
 #include <netdb.h>
-
+#include <string>
 #define OK 0
 #define NOK -1
 #define NO_IP 0
 #define MSG_NO_SIGNAL 0
+
+using std::string;
 
 class Socket {
 private:
@@ -70,6 +72,10 @@ public:
 //Cierra el socket.
 // PRE: self fue inicializado mediante Accept
     int accept_destroy();
+
+    void SendStrWLen(string &str, int lenSize);
+
+    string ReceiveStrWLen(int lenSize);
 };
 
 

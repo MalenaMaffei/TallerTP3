@@ -10,11 +10,12 @@
 #include <stdio.h>
 //#include <exception>
 #include <stdexcept>
+#include <cstring>
 #define SERVER_MODE 0
 #define CLIENT_MODE 0
 
-
-int Socket::filladdrinfo(const char *ip,const char *port, int
+#define BUFFSIZE 300
+int Socket::filladdrinfo(const char *ip, const char *port, int
 mode){
     int status = 0;
 
@@ -134,4 +135,34 @@ int Socket::Destroy(){
 
 int Socket::accept_destroy(){
     return close(fD);
+}
+string Socket::ReceiveStrWLen(int lenSize) {
+    int read = 0;
+    unsigned char buffer_leer[BUFFSIZE] = {0};
+    while (read < lenSize){
+        read = Receive(buffer_leer,lenSize);
+    }
+
+    int net_length;
+    std::memcpy(&net_length, buffer_leer, sizeof net_length);
+
+    int normal_length = ntohl(net_length);
+    int bytes_read = 0;
+
+    while (bytes_read < normal_length){
+//        TODO mover puntero hasta llenar
+        bytes_read += Receive(buffer_leer,BUFFSIZE);
+    }
+    buffer_leer[bytes_read] = '\0';
+    string received((char *)buffer_leer);
+    return received;
+}
+void Socket::SendStrWLen(string &str, int lenSize) {
+    int normal_length = str.size();
+    int net_length = htonl(normal_length);
+    Send((unsigned char*)&net_length, lenSize);
+
+    char *char_message = &str[0];
+    Send((unsigned char *)char_message, str.size());
+
 }
