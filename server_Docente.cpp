@@ -14,3 +14,7 @@ void Docente::desinscribir(string codigo, string curso) const {
 //    User::desinscribir(codigo, curso);
     cout  << "desinscribir a un alumno a los cursos del docente" << endl;
 }
+
+Docente::Docente(const string &userType, const string &id) : User(userType),
+                                                             id(id) {}
+

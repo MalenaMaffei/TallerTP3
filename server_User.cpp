@@ -22,3 +22,9 @@ void User::desinscribir(string codigo, string curso) const {
 }
 
 User::~User() {}
+
+User::User(const string &userType) : userType(userType) {}
+
+string User::print() const {
+    return userType;
+}

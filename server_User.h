@@ -10,6 +10,8 @@ using std::string;
 
 class User {
 public:
+    User(const string &userType);
+
     void listarMaterias() const;
 
     virtual ~User();
@@ -18,6 +20,10 @@ public:
 //    TODO como hago con los que tienen parametro extra?
     virtual void inscribir(string codigo, string curso) const;
     virtual void desinscribir(string codigo, string curso) const;
+    string print() const;
+
+private:
+    string userType;
 };
 
 

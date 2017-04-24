@@ -3,12 +3,14 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include "common_CommandParser.h"
 using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
+using std::cin;
 
-#define CLIENT_MODE 1
+#define SEND_SHTDWN 0
 #define LENGTH_SIZE 4
 string build_message(vector<string> arguments){
     string message;
@@ -31,14 +33,14 @@ void send_message(Socket & socket, vector<string> arguments){
 
 int client(const char *ip, const char *port, vector<string> arguments){
     int status;
-
+    CommandParser parser;
     Socket client_socket;
     status = client_socket.CreateAndConnect(ip, port);
     if (status < 0) { cout << "hubo un problema conecntando :/" <<endl; }
 
-    std::for_each(arguments.begin(), arguments.end(), [](string &a){
-            std::cout << "argumento: " << a << std::endl;
-    });
+//    std::for_each(arguments.begin(), arguments.end(), [](string &a){
+//            std::cout << "argumento: " << a << std::endl;
+//    });
 
 //    send_message(client_socket, arguments);
 
@@ -56,8 +58,23 @@ int client(const char *ip, const char *port, vector<string> arguments){
     client_socket.Send((unsigned char *)char_message, message.size());
 
 
-  client_socket.Shutdown(CLIENT_MODE);
+//    hasta aca se mandaron los argumentos, ahora abro la entrada estandar
+    string command;
+    while (getline (std::cin, command)){
 
+        string built_command = parser.buildCommand(command);
+
+        normal_length = built_command.size();
+        net_length = htonl(normal_length);
+        client_socket.Send((unsigned char*)&net_length, LENGTH_SIZE);
+
+        char_message = &built_command[0];
+        client_socket.Send((unsigned char *)char_message, built_command.size());
+        cout << "lo que pusiste: " << built_command << endl;
+    }
+
+
+    client_socket.Shutdown(SHUT_WR);
     client_socket.Destroy();
     return 0;
 }

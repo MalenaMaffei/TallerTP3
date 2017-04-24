@@ -5,9 +5,12 @@
 
 class Admin : public User {
 public:
+    Admin(const string &userType);
+
     virtual void listarInscripciones() const;
     virtual void inscribir(string codigo, string curso) const;
     virtual void desinscribir(string codigo, string curso) const;
+//    virtual string print() const;
 };
 
 

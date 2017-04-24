@@ -14,3 +14,5 @@ void Admin::desinscribir(string codigo, string curso) const {
 //    User::desinscribir(codigo, curso);
     cout << "desinscribir a cualquiera del curso: " << curso << endl;
 }
+
+Admin::Admin(const string &userType) : User(userType) {}

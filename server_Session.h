@@ -15,6 +15,8 @@ private:
 //    tambien deberia tener una fabrica que le crea los usuarios
     Socket socket;
     User* user;
+
+    void receiveCommands();
 };
 
 

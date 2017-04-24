@@ -8,7 +8,8 @@
 #include <unistd.h>
 #include <memory.h>
 #include <stdio.h>
-
+//#include <exception>
+#include <stdexcept>
 #define SERVER_MODE 0
 #define CLIENT_MODE 0
 
@@ -114,6 +115,10 @@ int Socket::Accept(Socket &other) const{
 
 int Socket::Receive(unsigned char *buffer, size_t length){
     int bytes_read = recv(fD, buffer, length, MSG_NO_SIGNAL);
+    if (bytes_read == MSG_NO_SIGNAL){
+//        TODO CAMBIAR ESE TIPO DE EXCEPCION
+        throw std::invalid_argument("Se cerro el socket");
+    }
     return bytes_read;
 }
 
