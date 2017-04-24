@@ -28,7 +28,6 @@ void Session::receiveCommands(){
     while (!shutdown){
         string recv_command;
         try {
-
             recv_command = socket.ReceiveStrWLen(LENGTH_SIZE);
         } catch(std::exception& e){
 //            TODO cambiar aca esto por la exc correcta
@@ -52,7 +51,6 @@ void Session::receiveCommands(){
 }
 
 void Session::start() {
-
     string parameters = socket.ReceiveStrWLen(LENGTH_SIZE);
 
     vector<string> params;

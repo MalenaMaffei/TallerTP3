@@ -11,6 +11,7 @@
 //#include <exception>
 #include <stdexcept>
 #include <cstring>
+#include <string>
 #define SERVER_MODE 0
 #define CLIENT_MODE 0
 
@@ -164,5 +165,4 @@ void Socket::SendStrWLen(string &str, int lenSize) {
 
     char *char_message = &str[0];
     Send((unsigned char *)char_message, str.size());
-
 }
