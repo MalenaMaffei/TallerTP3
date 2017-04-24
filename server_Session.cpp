@@ -3,7 +3,8 @@
 #include <vector>
 #include "server_Session.h"
 #include "server_UserFactory.h"
-//#include "server_Alumno.h"
+
+
 #include "common_CommandParser.h"
 #define BUFFSIZE 300
 #define READ_SHTDWN 1
@@ -12,9 +13,10 @@
 #define CLIENT_SHTDWN 0
 #define CODE_POS 0
 
-using std::cerr;
 
-Session::Session(const Socket &socketServer) {
+
+Session::Session(const Socket &socketServer, ErrorMonitor errorMonitor) :
+    errorMonitor(errorMonitor) {
     Socket new_socket;
     socketServer.Accept(new_socket);
     socket = new_socket;
@@ -22,8 +24,6 @@ Session::Session(const Socket &socketServer) {
 }
 
 void Session::receiveCommands(){
-//    unsigned char buffer_leer[BUFFSIZE] = {0};
-//    int read = 0;
     bool shutdown = false;
     while (!shutdown){
         string recv_command;
@@ -33,20 +33,18 @@ void Session::receiveCommands(){
 //            TODO cambiar aca esto por la exc correcta
 //            y volver a mandarla? depende si hay que mostrar esto en otros
 // casos
-            cerr << user->print() << " desconectado." << endl;
+            errorMonitor.outputError(user->print() + " desconectado.");
             shutdown = true;
             continue;
         }
 
 //Aca viene la parte de devolver un vector de comandos.
-
         vector<string> commands;
         parser.parseCommand(recv_command, commands);
-        cerr << user->print() << " ejecuta " << commands[CODE_POS] << "."  <<
-                                                                           endl;
+        errorMonitor.outputError(user->print() + " ejecuta " +
+            commands[CODE_POS] + ".");
         string output = user->executeCommand(commands);
-        cout << output << endl;
-//        socket.Send((unsigned char *)&output[0], output.size());
+        socket.SendStrWLen(output, LENGTH_SIZE);
     }
 }
 
@@ -63,12 +61,11 @@ void Session::start() {
     try {
         user = factory.createUser(params);
     } catch(std::invalid_argument& e){
-//        user = nullptr;
-        cerr << e.what() << endl;
+        errorMonitor.outputError(e.what());
+//        cerr << e.what() << endl;
         return;
     }
-
-    cerr << user->print() << " conectado." << endl;
+    errorMonitor.outputError(user->print() + " conectado.");
 
     receiveCommands();
 }

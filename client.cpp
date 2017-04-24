@@ -31,6 +31,10 @@ int client(const char *ip, const char *port, vector<string> arguments){
 
         client_socket.SendStrWLen(built_command, LENGTH_SIZE);
         cout << "lo que pusiste: " << built_command << endl;
+        try {
+            string server_response = client_socket.ReceiveStrWLen(LENGTH_SIZE);
+            cout << server_response << endl;
+        } catch(std::exception& e){ break; }
     }
 
     client_socket.Shutdown(SHUT_WR);

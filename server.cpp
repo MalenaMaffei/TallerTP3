@@ -15,6 +15,7 @@
 
 
 int server(const char *server_port){
+    ErrorMonitor errorMonitor;
     Socket socket;
     socket.Create(0, server_port, SERVER_MODE);
 
@@ -23,10 +24,10 @@ int server(const char *server_port){
 
     socket.BindAndListen(BACKLOG);
 
-    cout << "bind and listen" << endl;
+//    cout << "bind and listen" << endl;
 
 
-    Session session(socket);
+    Session session(socket, errorMonitor);
     session.start();
 
 
