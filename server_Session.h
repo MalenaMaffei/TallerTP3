@@ -3,6 +3,7 @@
 
 #include "common_Socket.h"
 #include "server_User.h"
+#include "common_CommandParser.h"
 
 class Session {
 public:
@@ -15,7 +16,7 @@ private:
 //    tambien deberia tener una fabrica que le crea los usuarios
     Socket socket;
     User* user;
-
+    CommandParser parser;
     void receiveCommands();
 };
 

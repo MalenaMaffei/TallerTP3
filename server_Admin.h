@@ -2,15 +2,14 @@
 #define TP2_SERVER_ADMIN_H
 #include "server_User.h"
 #include <string>
-
+#include <vector>
 class Admin : public User {
 public:
-    Admin(const string &userType);
+    explicit Admin(const string &userType);
 
-    virtual void listarInscripciones() const;
-    virtual void inscribir(string codigo, string curso) const;
-    virtual void desinscribir(string codigo, string curso) const;
-//    virtual string print() const;
+    virtual string listarInscripciones() const;
+    virtual string inscribir(vector<string> args) const;
+    virtual string desinscribir(vector<string> args) const;
 };
 
 

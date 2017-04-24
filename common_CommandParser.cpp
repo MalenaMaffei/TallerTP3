@@ -1,6 +1,7 @@
 #include "common_CommandParser.h"
 #include <algorithm>
-
+#include <vector>
+#include <string>
 #define LISTARMATERIAS "listarMaterias"
 #define LM_CODE "lm"
 
@@ -13,8 +14,8 @@
 #define DESINSCRIBIR "desinscribir"
 #define DES_CODE "de"
 
-#define COMM_DELIMIT "-"
-#define STR_DELIMIT " "
+#define COMM_DELIMITER "-"
+#define STR_DELIMITER " "
 
 string delimitCommands(vector<string> arguments){
     string message;
@@ -25,7 +26,7 @@ string delimitCommands(vector<string> arguments){
     return message;
 }
 
-void splitString(vector<string> &params, string str, string delimiter){
+void splitString(string str, vector<string> &params, string delimiter){
     size_t pos = 0;
     std::string token;
     while ((pos = str.find(delimiter)) != std::string::npos) {
@@ -38,7 +39,7 @@ void splitString(vector<string> &params, string str, string delimiter){
 
 string CommandParser::buildCommand(string str) const {
     vector<string> userInput;
-    splitString(userInput, str, STR_DELIMIT);
+    splitString(str, userInput, STR_DELIMITER);
     string command_code = userInput[0];
     if (command_code == LISTARMATERIAS){
 //      TODO  chequear argumentos correctos
@@ -56,7 +57,12 @@ string CommandParser::buildCommand(string str) const {
     return delimitCommands(userInput);
 }
 
-void CommandParser::parseUserInfo(string userInfo, vector<string> &params) const {
-    splitString(params,userInfo, COMM_DELIMIT);
+void CommandParser::parseUserInfo(string userInfo, vector<string> &params)
+const {
+    splitString(userInfo,params, COMM_DELIMITER);
+}
+void CommandParser::parseCommand(string recv_command,
+                                 vector<string> &commands) const {
+    splitString(recv_command, commands, COMM_DELIMITER);
 }
 

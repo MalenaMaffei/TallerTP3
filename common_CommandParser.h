@@ -10,6 +10,7 @@ class CommandParser {
 public:
     string buildCommand(string userInput) const;
     void parseUserInfo(string userInfo, vector<string> &params) const;
+    void parseCommand(string recv_command, vector<string> &commands) const;
 };
 
 

@@ -1,20 +1,28 @@
 #include "server_Docente.h"
 #include <string>
-void Docente::listarInscripciones() const {
-//    User::listarInscripciones();
-    cout << "listando inscripciones del docente" << endl;
+#include <vector>
+string Docente::listarInscripciones() const {
+    return User::listarInscripciones();
+//    cout << "listando inscripciones del docente" << endl;
 }
 
-void Docente::inscribir(string codigo, string curso) const {
-//    User::inscribir(codigo, curso);
-    cout << "inscribir a un alumno a los cursos del docente" << endl;
+string Docente::inscribir(vector<string> args) const {
+  return User::inscribir(args);
+//  cout << "inscribir a un alumno a los cursos del docente" << endl;
 }
 
-void Docente::desinscribir(string codigo, string curso) const {
-//    User::desinscribir(codigo, curso);
-    cout  << "desinscribir a un alumno a los cursos del docente" << endl;
+string Docente::desinscribir(vector<string> args) const {
+  return User::desinscribir(args);
+  //    cout  << "desinscribir a un alumno a los cursos del docente" << endl;
 }
 
 Docente::Docente(const string &userType, const string &id) : User(userType),
                                                              id(id) {}
+
+string Docente::print() const {
+  return User::print() + " " + id;
+}
+const string &Docente::getId() const {
+  return id;
+}
 

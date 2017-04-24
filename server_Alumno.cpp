@@ -1,21 +1,27 @@
 #include "server_Alumno.h"
 #include <string>
-void Alumno::listarInscripciones() const {
-//    User::listarInscripciones();
-    cout << "listando inscripciones del alumno" << endl;
+#include <vector>
+string Alumno::listarInscripciones() const {
+    return User::listarInscripciones();
+//    cout << "listando inscripciones del alumno" << endl;
 }
 
-void Alumno::inscribir(string codigo, string curso) const {
-//    User::inscribir(codigo, curso);
-    cout << "inscribir a alumno al curso: "<< curso << " codigo: " << codigo
-         << endl;
+string Alumno::inscribir(vector<string> args) const {
+  return User::inscribir(args);
+//  cout << "inscribir a alumno al curso: "<< curso << " codigo: " << codigo
+//         << endl;
 }
 
-void Alumno::desinscribir(string codigo, string curso) const {
-//    User::desinscribir(codigo, curso);
-    cout << "desinscribir a alumno al curso: "<< curso << " codigo: " << codigo
-         << endl;
+string Alumno::desinscribir(vector<string> args) const {
+  return User::inscribir(args);
 }
 
 Alumno::Alumno(const string &userType, const string &id) : User(userType),
                                                            id(id) {}
+string Alumno::print() const {
+  return User::print() + " " + id;
+}
+
+const string &Alumno::getId() const {
+  return id;
+}

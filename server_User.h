@@ -3,24 +3,24 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <vector>
 
 using std::cout;
 using std::endl;
 using std::string;
+using std::vector;
 
 class User {
 public:
-    User(const string &userType);
-
-    void listarMaterias() const;
-
+    explicit User(const string &userType);
     virtual ~User();
-
-    virtual void listarInscripciones() const;
-//    TODO como hago con los que tienen parametro extra?
-    virtual void inscribir(string codigo, string curso) const;
-    virtual void desinscribir(string codigo, string curso) const;
-    string print() const;
+    string listarMaterias() const;
+    virtual string listarInscripciones() const;
+    virtual string inscribir(vector<string> args) const;
+    virtual string desinscribir(vector<string> args) const;
+    virtual string print() const;
+    virtual string executeCommand(vector<string> & commands) const;
 
 private:
     string userType;

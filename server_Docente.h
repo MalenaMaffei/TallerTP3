@@ -3,17 +3,19 @@
 
 #include "server_User.h"
 #include <string>
+#include <vector>
 
 class Docente : public User  {
 public:
     Docente(const string &userType, const string &id);
 
-    virtual void listarInscripciones() const;
-    virtual void inscribir(string codigo, string curso) const;
-    virtual void desinscribir(string codigo, string curso) const;
-//    virtual string print() const;
+    virtual string listarInscripciones() const;
+    virtual string inscribir(vector<string> args) const;
+    virtual string desinscribir(vector<string> args) const;
+    virtual string print() const;
+  const string &getId() const;
 
-private:
+ private:
     string id;
 };
 

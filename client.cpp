@@ -60,8 +60,7 @@ int client(const char *ip, const char *port, vector<string> arguments){
 
 //    hasta aca se mandaron los argumentos, ahora abro la entrada estandar
     string command;
-    while (getline (std::cin, command)){
-
+    while (getline(std::cin, command)){
         string built_command = parser.buildCommand(command);
 
         normal_length = built_command.size();

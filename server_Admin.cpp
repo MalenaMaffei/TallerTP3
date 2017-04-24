@@ -1,18 +1,20 @@
 #include "server_Admin.h"
 #include <string>
-void Admin::listarInscripciones() const {
-//    User::listarInscripciones();
-    cout << "listando inscripciones de todo el mundo" << endl;
+#include <vector>
+string Admin::listarInscripciones() const {
+    return User::listarInscripciones();
+//    cout << "listando inscripciones de todo el mundo" << endl;
 }
 
-void Admin::inscribir(string codigo, string curso) const {
-//    User::inscribir(codigo, curso);
-    cout << "inscribir a cualquiera al curso" << endl;
+string Admin::inscribir(vector<string> args) const {
+    return User::inscribir(args);
+//    cout << "inscribir a cualquiera al curso" << endl;
 }
 
-void Admin::desinscribir(string codigo, string curso) const {
-//    User::desinscribir(codigo, curso);
-    cout << "desinscribir a cualquiera del curso: " << curso << endl;
+string Admin::desinscribir(vector<string> args) const {
+    return User::desinscribir(args);
+//    cout << "desinscribir a cualquiera del curso: " << curso << endl;
 }
 
 Admin::Admin(const string &userType) : User(userType) {}
+

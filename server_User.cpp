@@ -1,24 +1,27 @@
 #include "server_User.h"
 #include <string>
+#include <vector>
+#define LISTARMATERIAS "lm"
+#define LISTARINSC "li"
+#define INS "in"
+#define DESINS "de"
+#define CODE_POS 0
 
-void User::listarMaterias() const {
-//    manda al CLIENTE la respuesta del servidor.
-    cout << "listando todas las materias" << endl;
+string User::listarMaterias() const {
+    return "<codigo> - <descripcion>, Curso <id-curso>, <nombre-docente>, "
+        "<vacantes> vacantes.\n";
 }
 
-void User::listarInscripciones() const {
-//    manda al CLIENTE la respuesta del servidor.
-    cout << "listando todas las inscripciones desde USER" << endl;
+string User::listarInscripciones() const {
+    return "<codigo> - <descripcion>, Curso <id-curso>, <nombre-docente>";
 }
 
-void User::inscribir(string codigo, string curso) const {
-//    manda al CLIENTE la respuesta del servidor.
-    cout << "inscribir de USER" << endl;
+string User::inscribir(vector<string> args) const {
+    return "inscribir de USER";
 }
 
-void User::desinscribir(string codigo, string curso) const {
-//    nada todavia
-    cout << "desinscribir de USER" << endl;
+string User::desinscribir(vector<string> args) const {
+    return "desinscribir de USER";
 }
 
 User::~User() {}
@@ -27,4 +30,20 @@ User::User(const string &userType) : userType(userType) {}
 
 string User::print() const {
     return userType;
+}
+
+string User::executeCommand(vector<string> & commands) const {
+    string command = commands[CODE_POS];
+    string executed_command;
+    if (command == LISTARMATERIAS){
+        executed_command = listarMaterias();
+    } else if (command == LISTARINSC){
+        executed_command = listarInscripciones();
+    } else if (command == INS){
+//        TODO SACAR PARTE DEL CODIGO
+        executed_command = inscribir(commands);
+    } else if (command == DESINS){
+        executed_command = desinscribir(commands);
+    }
+    return executed_command;
 }
