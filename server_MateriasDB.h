@@ -10,7 +10,7 @@ using std::string;
 class MateriasDB : public DB {
 public:
     MateriasDB(string filename);
-
+    string listAll();
 private:
     map<string,map<string, string>> materias;
     void fillMap(string line);

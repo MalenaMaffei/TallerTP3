@@ -25,3 +25,6 @@ MateriasDB::MateriasDB(string filename) : DB(filename) {
         fillMap(line);
     }
 }
+string MateriasDB::listAll() {
+    return "sin implementar";
+}

@@ -11,8 +11,10 @@ void UsuariosDB::fillMap(string line){
     vector<string> words;
     splitStr(line, words);
     string key = words[0] + words[1];
-    string value = words[2];
-    users[key] = value;
+    string info = words[2];
+//    map <string, string> info;
+//    info["nombre"] = words[2];
+    users[key] = info;
 }
 
 UsuariosDB::UsuariosDB(string filename) : DB(filename){
