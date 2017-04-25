@@ -16,8 +16,12 @@ string Docente::desinscribir(vector<string> args) const {
   //    cout  << "desinscribir a un alumno a los cursos del docente" << endl;
 }
 
-Docente::Docente(const string &userType, const string &id) : User(userType),
-                                                             id(id) {}
+Docente::Docente(const string &userType, server_UsuariosDB &usersDB, const string &id)
+        : User(userType,usersDB),id(id) {
+    if (! usersDB.userExists(userType, id)){
+        throw std::invalid_argument(id + " es un " +userType + " inválido.");
+    }
+}
 
 string Docente::print() const {
   return User::print() + " " + id;

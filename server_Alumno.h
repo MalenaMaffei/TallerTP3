@@ -5,7 +5,7 @@
 #include <vector>
 class Alumno : public User {
 public:
-    Alumno(const string &userType, const string &id);
+    Alumno(const string &userType, server_UsuariosDB &usersDB, const string &id);
 
     virtual string listarInscripciones() const;
     virtual string inscribir(vector<string> args) const;

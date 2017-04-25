@@ -10,7 +10,7 @@ class UserFactory {
 public:
 //    va a devolver puntero a usuario para poder usar polimorfismo.
 //MUCHO CUIDADO  voy a tener que liberar esto cuando termine la sesion
-    User* createUser(vector<string> & params) const;
+    User *createUser(vector<string> &params, server_UsuariosDB usersDB) const;
 };
 
 

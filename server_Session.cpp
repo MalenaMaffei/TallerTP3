@@ -15,8 +15,9 @@
 
 
 
-Session::Session(const Socket &socketServer, ErrorMonitor errorMonitor) :
-    errorMonitor(errorMonitor) {
+Session::Session(const Socket &socketServer, ErrorMonitor &errorMonitor,
+                 server_UsuariosDB &usersDB) :
+    errorMonitor(errorMonitor), usersDB(usersDB) {
     Socket new_socket;
     socketServer.Accept(new_socket);
     socket = new_socket;
@@ -59,10 +60,9 @@ void Session::start() {
 // paso un vector y que el se encargue de crear de acuerdo a eso.
     UserFactory factory;
     try {
-        user = factory.createUser(params);
+        user = factory.createUser(params,usersDB);
     } catch(std::invalid_argument& e){
         errorMonitor.outputError(e.what());
-//        cerr << e.what() << endl;
         return;
     }
     errorMonitor.outputError(user->print() + " conectado.");

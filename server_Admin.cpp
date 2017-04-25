@@ -16,5 +16,6 @@ string Admin::desinscribir(vector<string> args) const {
 //    cout << "desinscribir a cualquiera del curso: " << curso << endl;
 }
 
-Admin::Admin(const string &userType) : User(userType) {}
+Admin::Admin(const string &userType, server_UsuariosDB &usersDB) :
+User(userType,usersDB) {}
 

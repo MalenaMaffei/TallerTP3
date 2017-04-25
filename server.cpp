@@ -14,7 +14,7 @@
 #define LENGTH_SIZE 4
 
 
-int server(const char *server_port){
+int server(const char *server_port, string usersFile, string materiasFile){
     ErrorMonitor errorMonitor;
     Socket socket;
     socket.Create(0, server_port, SERVER_MODE);
@@ -24,10 +24,12 @@ int server(const char *server_port){
 
     socket.BindAndListen(BACKLOG);
 
-//    cout << "bind and listen" << endl;
+//    proteger a las DBs
 
+    server_UsuariosDB users(usersFile);
 
-    Session session(socket, errorMonitor);
+    Session session(socket, errorMonitor,
+                    users);
     session.start();
 
 
@@ -37,7 +39,7 @@ int server(const char *server_port){
 }
 
 int main(int argc, char **argv){
-        server("8080");
+        server(argv[1], argv[2], argv[3]);
 
     return 0;
 }

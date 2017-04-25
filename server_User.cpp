@@ -1,4 +1,5 @@
 #include "server_User.h"
+#include "server_UsuariosDB.h"
 #include <string>
 #include <vector>
 #define LISTARMATERIAS "lm"
@@ -26,7 +27,7 @@ string User::desinscribir(vector<string> args) const {
 
 User::~User() {}
 
-User::User(const string &userType) : userType(userType) {}
+User::User(const string &userType, server_UsuariosDB &usersDB) : userType(userType) {}
 
 string User::print() const {
     return userType;

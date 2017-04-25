@@ -3,21 +3,23 @@
 #include <vector>
 string Alumno::listarInscripciones() const {
     return User::listarInscripciones();
-//    cout << "listando inscripciones del alumno" << endl;
 }
 
 string Alumno::inscribir(vector<string> args) const {
   return User::inscribir(args);
-//  cout << "inscribir a alumno al curso: "<< curso << " codigo: " << codigo
-//         << endl;
 }
 
 string Alumno::desinscribir(vector<string> args) const {
   return User::inscribir(args);
 }
 
-Alumno::Alumno(const string &userType, const string &id) : User(userType),
-                                                           id(id) {}
+Alumno::Alumno(const string &userType, server_UsuariosDB &usersDB,const string &id) :
+        User(userType,usersDB),id(id) {
+    if (! usersDB.userExists(userType, id)){
+        throw std::invalid_argument(id + " es un " +userType + " inválido.");
+    }
+}
+
 string Alumno::print() const {
   return User::print() + " " + id;
 }
