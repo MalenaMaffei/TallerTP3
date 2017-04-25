@@ -6,6 +6,7 @@
 #include "server_Docente.h"
 #include "server_Alumno.h"
 #include "server_Session.h"
+#include "server_MateriasDB.h"
 
 #define BACKLOG 10
 #define BUFFSIZE 300
@@ -22,14 +23,14 @@ int server(const char *server_port, string usersFile, string materiasFile){
 //  TODO el server tiene que tener una cola Monitor de errores donde cada
 // thread encola sus errores!
 
+
     socket.BindAndListen(BACKLOG);
 
 //    proteger a las DBs
 
     UsuariosDB users(usersFile);
-
-    Session session(socket, errorMonitor,
-                    users);
+    MateriasDB materias(materiasFile);
+    Session session(socket, errorMonitor, users, materias);
     session.start();
 
 

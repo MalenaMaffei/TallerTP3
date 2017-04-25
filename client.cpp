@@ -23,15 +23,27 @@ int client(const char *ip, const char *port, vector<string> arguments){
     string login = parser.delimitCommands(arguments);
 
 //    TODO create ints of 4 bytes only.. que se yo
-    client_socket.SendStrWLen(login, LENGTH_SIZE);
+    try {
+        client_socket.SendStrWLen(login, LENGTH_SIZE);
+    } catch(std::exception& e) {
+        client_socket.Shutdown(SHUT_WR);
+        client_socket.Destroy();
+        return 0;
+    }
+//    cout << "is connected before input?: " << client_socket.isConnected() <<
+//                                                                          endl;
+
 
     string command;
+//    NOTE esta bien hacer asi con un break? yo supongo que si, si hay tiempo
+//    hacer otro thread que chequee la entrada estandar
     while (getline(std::cin, command)){
+        try {
         string built_command = parser.buildCommand(command);
 
         client_socket.SendStrWLen(built_command, LENGTH_SIZE);
         cout << "lo que pusiste: " << built_command << endl;
-        try {
+
             string server_response = client_socket.ReceiveStrWLen(LENGTH_SIZE);
             cout << server_response << endl;
         } catch(std::exception& e){ break; }

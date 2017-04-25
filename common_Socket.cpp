@@ -9,6 +9,7 @@
 #include <memory.h>
 #include <stdio.h>
 //#include <exception>
+#include "common_SocketException.h"
 #include <stdexcept>
 #include <cstring>
 #include <string>
@@ -82,8 +83,11 @@ int Socket::Send(unsigned char *source, size_t length){
     int bytes_sent = 0;
     unsigned char *buffer_ptr = source;
     for (bytes_left = length; bytes_left>0; bytes_left-=bytes_sent) {
-        if ((bytes_sent=send(
-                fD, buffer_ptr, bytes_left, MSG_NO_SIGNAL))<=0) {
+        if (!isConnected()) {
+            throw SocketException("Se cerro el socket");
+        }
+        bytes_sent=send(fD, buffer_ptr, bytes_left, MSG_NO_SIGNAL);
+        if (bytes_sent<=0) {
             return NOK;
         } else {
             buffer_ptr+=bytes_sent;
@@ -94,8 +98,9 @@ int Socket::Send(unsigned char *source, size_t length){
 
 int Socket::BindAndListen(int backlog){
     int s_bind = bind(fD, res->ai_addr, res->ai_addrlen);
+    if (s_bind < 0){ throw SocketException("error en bind"); }
     int s_lis = listen(fD, backlog);
-    if (s_bind < 0 || s_lis <0){return NOK;}
+    if (s_lis <0){ throw SocketException("error en listen"); }
     return OK;
 }
 
@@ -119,7 +124,7 @@ int Socket::Receive(unsigned char *buffer, size_t length){
     int bytes_read = recv(fD, buffer, length, MSG_NO_SIGNAL);
     if (bytes_read == MSG_NO_SIGNAL){
 //        TODO CAMBIAR ESE TIPO DE EXCEPCION
-        throw std::invalid_argument("Se cerro el socket");
+        throw SocketException("Se cerro el socket");
     }
     return bytes_read;
 }
@@ -162,7 +167,11 @@ void Socket::SendStrWLen(string &str, int lenSize) {
     int normal_length = str.size();
     int net_length = htonl(normal_length);
     Send((unsigned char*)&net_length, lenSize);
-
     char *char_message = &str[0];
     Send((unsigned char *)char_message, str.size());
+}
+
+bool Socket::isConnected() {
+    int read = recv( fD, NULL, 0, MSG_DONTWAIT | MSG_PEEK );
+    return read != 0;
 }

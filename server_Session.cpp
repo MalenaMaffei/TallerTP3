@@ -6,6 +6,7 @@
 
 
 #include "common_CommandParser.h"
+#include "server_MateriasDB.h"
 #define BUFFSIZE 300
 #define READ_SHTDWN 1
 #define SERVER_MODE 0
@@ -15,9 +16,11 @@
 
 
 
-Session::Session(const Socket &socketServer, ErrorMonitor &errorMonitor,
-                 UsuariosDB &usersDB) :
-    errorMonitor(errorMonitor), usersDB(usersDB) {
+Session::Session(const Socket &socketServer,
+                 ErrorMonitor &errorMonitor,
+                 UsuariosDB &usersDB,
+                 MateriasDB &materiasDB) :
+    errorMonitor(errorMonitor), usersDB(usersDB), materiasDB(materiasDB) {
     Socket new_socket;
     socketServer.Accept(new_socket);
     socket = new_socket;
@@ -30,7 +33,7 @@ void Session::receiveCommands(){
         string recv_command;
         try {
             recv_command = socket.ReceiveStrWLen(LENGTH_SIZE);
-        } catch(std::exception& e){
+        } catch(std::runtime_error& e){
 //            TODO cambiar aca esto por la exc correcta
 //            y volver a mandarla? depende si hay que mostrar esto en otros
 // casos
@@ -55,12 +58,9 @@ void Session::start() {
     vector<string> params;
     parser.parseUserInfo(parameters, params);
 
-
-//    Aca llamo a la factory para que me cree el usuario que necesito, le
-// paso un vector y que el se encargue de crear de acuerdo a eso.
     UserFactory factory;
     try {
-        user = factory.createUser(params,usersDB);
+        user = factory.createUser(params, usersDB, materiasDB);
     } catch(std::invalid_argument& e){
         errorMonitor.outputError(e.what());
         return;

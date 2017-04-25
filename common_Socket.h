@@ -75,6 +75,8 @@ public:
 
     void SendStrWLen(string &str, int lenSize);
 
+  bool isConnected();
+
     string ReceiveStrWLen(int lenSize);
 };
 

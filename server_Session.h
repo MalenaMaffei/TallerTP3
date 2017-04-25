@@ -6,11 +6,14 @@
 #include "common_CommandParser.h"
 #include "server_ErrorMonitor.h"
 #include "server_UsuariosDB.h"
+#include "server_MateriasDB.h"
 
 class Session {
 public:
-    explicit Session(const Socket &socketServer, ErrorMonitor &errorMonitor,
-                         UsuariosDB &usersDB);
+    explicit Session(const Socket &socketServer,
+                         ErrorMonitor &errorMonitor,
+                         UsuariosDB &usersDB,
+                         MateriasDB &materiasDB);
     void start();
 
     virtual ~Session();
@@ -21,6 +24,7 @@ private:
     CommandParser parser;
     ErrorMonitor &errorMonitor;
     UsuariosDB &usersDB;
+    MateriasDB &materiasDB;
     void receiveCommands();
 };
 
