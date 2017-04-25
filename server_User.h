@@ -14,7 +14,7 @@ using std::vector;
 
 class User {
 public:
-    explicit User(const string &userType, server_UsuariosDB &usersDB);
+    explicit User(const string &userType, UsuariosDB &usersDB);
     virtual ~User();
     string listarMaterias() const;
     virtual string listarInscripciones() const;

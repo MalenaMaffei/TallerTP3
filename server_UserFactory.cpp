@@ -9,7 +9,7 @@
 #define DOCENTE "docente"
 #define ADMIN "admin"
 
-User *UserFactory::createUser(vector<string> &params, server_UsuariosDB usersDB) const {
+User *UserFactory::createUser(vector<string> &params, UsuariosDB usersDB) const {
     User *ptr;
     string userType = params[0];
 

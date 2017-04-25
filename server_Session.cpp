@@ -16,7 +16,7 @@
 
 
 Session::Session(const Socket &socketServer, ErrorMonitor &errorMonitor,
-                 server_UsuariosDB &usersDB) :
+                 UsuariosDB &usersDB) :
     errorMonitor(errorMonitor), usersDB(usersDB) {
     Socket new_socket;
     socketServer.Accept(new_socket);

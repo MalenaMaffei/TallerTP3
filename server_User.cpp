@@ -27,7 +27,7 @@ string User::desinscribir(vector<string> args) const {
 
 User::~User() {}
 
-User::User(const string &userType, server_UsuariosDB &usersDB) : userType(userType) {}
+User::User(const string &userType, UsuariosDB &usersDB) : userType(userType) {}
 
 string User::print() const {
     return userType;

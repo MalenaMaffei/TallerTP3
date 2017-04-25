@@ -16,21 +16,24 @@ void splitStr(string str, vector<string> &params, string delimiter){
     params.push_back(str);
 }
 
+void UsuariosDB::fillMap(string line){
+    vector<string> words;
+    splitStr(line, words, DELIMITER);
+    string key = words[0] + words[1];
+    string value = words[2];
+    users[key] = value;
+}
 
-server_UsuariosDB::server_UsuariosDB(string filename) {
+UsuariosDB::UsuariosDB(string filename) {
     string line;
     ifstream file;
 
     file.open(filename);
     while (getline(file, line)){
-        vector<string> words;
-        splitStr(line, words, DELIMITER);
-        string key = words[0] + words[1];
-        string value = words[2];
-        users[key] = value;
+        fillMap(line);
     }
 }
 
-bool server_UsuariosDB::userExists(string userType, string id) const {
+bool UsuariosDB::userExists(string userType, string id) const {
     return users.find(userType+id) != users.end();
 }

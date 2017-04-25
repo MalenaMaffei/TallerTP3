@@ -10,20 +10,18 @@
 class Session {
 public:
     explicit Session(const Socket &socketServer, ErrorMonitor &errorMonitor,
-                         server_UsuariosDB &usersDB);
+                         UsuariosDB &usersDB);
     void start();
 
     virtual ~Session();
 
 private:
-//    tambien deberia tener una fabrica que le crea los usuarios
     Socket socket;
     User* user;
     CommandParser parser;
     ErrorMonitor &errorMonitor;
-    server_UsuariosDB &usersDB;
+    UsuariosDB &usersDB;
     void receiveCommands();
-
 };
 
 

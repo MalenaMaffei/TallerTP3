@@ -11,13 +11,14 @@
 using std::map;
 using std::string;
 
-class server_UsuariosDB {
+class UsuariosDB {
 public:
-    server_UsuariosDB(string filename);
+    UsuariosDB(string filename);
     bool userExists(string userType, string id) const;
 
 private:
     std::map<string,string> users;
+    void fillMap(string line);
 };
 
 

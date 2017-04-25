@@ -26,7 +26,7 @@ int server(const char *server_port, string usersFile, string materiasFile){
 
 //    proteger a las DBs
 
-    server_UsuariosDB users(usersFile);
+    UsuariosDB users(usersFile);
 
     Session session(socket, errorMonitor,
                     users);
