@@ -45,7 +45,7 @@ int client(const char *ip, const char *port, vector<string> arguments){
         cout << "lo que pusiste: " << built_command << endl;
 
             string server_response = client_socket.ReceiveStrWLen(LENGTH_SIZE);
-            cout << server_response << endl;
+            cout << server_response;
         } catch(std::exception& e){ break; }
     }
 

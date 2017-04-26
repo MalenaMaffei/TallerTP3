@@ -10,9 +10,14 @@
 #define CODE_POS 0
 
 string User::listarMaterias() const {
-    string format = "<cod> - <desc>, Curso <id>, "
-        "<doc>, <vac> vacantes.\n";
-    return materiasDB.listAll(format);
+//    string format = "$codigo - $descripcion, Curso $curso, "
+//        "$docente$iddocente, $vacantes vacantes.\n";
+    string format = "$codigo - $descripcion, Curso $curso, "
+        "#docente$iddocente, $vacantes vacantes.\n";
+    format = materiasDB.listAll(format);
+    format = usersDB.fillNameById(format);
+    return format;
+
 }
 
 string User::listarInscripciones() const {

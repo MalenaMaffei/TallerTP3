@@ -20,10 +20,21 @@ int server(const char *server_port, string usersFile, string materiasFile){
     ErrorMonitor errorMonitor;
     Socket socket;
 
-    std::string str("hello $name");
-    str = std::regex_replace(str, std::regex("\\$name"), "Somename");
-    cout << "intento regex debed decir hello somename" << str << endl;
+//    std::string str("hello $name");
+//    str = std::regex_replace(str, std::regex("\\$name"), "Somename");
+//    cout << "intento regex debed decir hello somename" << str << endl;
+    string line = "blah blah $vacante balh $docente$iddocente, sdasd ";
+//    string line = "blah blah $vacante balh, sdasd ";
 
+    std::regex rgx(".*\\$(\\w+).*");
+    std::smatch match;
+    while (std::regex_search(line, match, rgx)) {
+        cout << match[0] << endl;
+        line = match.suffix();
+    }
+//    std::regex_search(line, match, rgx);
+//    std::cout << "match: " << match[1] << std::endl;
+//    std::cout << "match: " << match[2] << std::endl;
 
 
 

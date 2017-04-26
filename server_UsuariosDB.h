@@ -12,6 +12,7 @@ public:
     UsuariosDB(string filename);
     bool userExists(string userType, string id) const;
     void fillMap(string line);
+    string fillNameById(string format);
 
 protected:
 
