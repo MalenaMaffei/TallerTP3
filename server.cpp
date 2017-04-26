@@ -1,6 +1,7 @@
 #include "common_Socket.h"
 #include <string>
 #include <cstring>
+#include <regex>
 #include "server_User.h"
 #include "server_Admin.h"
 #include "server_Docente.h"
@@ -18,6 +19,14 @@
 int server(const char *server_port, string usersFile, string materiasFile){
     ErrorMonitor errorMonitor;
     Socket socket;
+
+    std::string str("hello $name");
+    str = std::regex_replace(str, std::regex("\\$name"), "Somename");
+    cout << "intento regex debed decir hello somename" << str << endl;
+
+
+
+
     socket.Create(0, server_port, SERVER_MODE);
 
 //  TODO el server tiene que tener una cola Monitor de errores donde cada

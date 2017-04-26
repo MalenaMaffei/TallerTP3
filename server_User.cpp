@@ -10,8 +10,9 @@
 #define CODE_POS 0
 
 string User::listarMaterias() const {
-    return "<codigo> - <descripcion>, Curso <id-curso>, <nombre-docente>, "
-        "<vacantes> vacantes.\n";
+    string format = "<cod> - <desc>, Curso <id>, "
+        "<doc>, <vac> vacantes.\n";
+    return materiasDB.listAll(format);
 }
 
 string User::listarInscripciones() const {
@@ -28,9 +29,9 @@ string User::desinscribir(vector<string> args) const {
 
 User::~User() {}
 
-User::User(const string &userType,
-           UsuariosDB &usersDB,
-           MateriasDB &materiasDB) : userType(userType) {}
+User::User(const string &userType, UsuariosDB &usersDB,MateriasDB &materiasDB) :
+            userType(userType), usersDB(usersDB), materiasDB(materiasDB) {}
+
 
 string User::print() const {
     return userType;

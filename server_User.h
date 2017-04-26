@@ -28,8 +28,9 @@ public:
 
 private:
     string userType;
+    UsuariosDB &usersDB;
+    MateriasDB &materiasDB;
 };
-
 
 #endif //TP2_USER_H
 

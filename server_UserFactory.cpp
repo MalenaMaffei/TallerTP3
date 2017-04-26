@@ -16,7 +16,7 @@ User *UserFactory::createUser(vector<string> &params,
     User *ptr;
     string userType = params[0];
 
-
+//    cout << "de materiasDB" << materiasDB.listAll() << endl;
     if (userType == ALUMNO){
         string id = params[1];
         ptr = new Alumno(ALUMNO, usersDB, materiasDB, id);

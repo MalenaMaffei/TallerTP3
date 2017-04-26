@@ -13,10 +13,8 @@ string Alumno::desinscribir(vector<string> args) const {
   return User::inscribir(args);
 }
 
-Alumno::Alumno(const string &userType,
-               UsuariosDB &usersDB,
-               MateriasDB &materiasDB,
-               const string &id) :
+Alumno::Alumno(const string &userType, UsuariosDB &usersDB,
+               MateriasDB &materiasDB, const string &id) :
     User(userType, usersDB, materiasDB), id(id) {
     if (! usersDB.userExists(userType, id)){
         throw std::invalid_argument(id + " es un " +userType + " inválido.");
