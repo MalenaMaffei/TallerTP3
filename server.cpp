@@ -7,8 +7,7 @@
 #include "server_Docente.h"
 #include "server_Alumno.h"
 #include "server_Session.h"
-#include "server_MateriasDB.h"
-
+#include "server_DB.h"
 #define BACKLOG 10
 #define BUFFSIZE 300
 #define READ_SHTDWN 1
@@ -23,15 +22,15 @@ int server(const char *server_port, string usersFile, string materiasFile){
 //    std::string str("hello $name");
 //    str = std::regex_replace(str, std::regex("\\$name"), "Somename");
 //    cout << "intento regex debed decir hello somename" << str << endl;
-    string line = "blah blah $vacante balh $docente$iddocente, sdasd ";
+//    string line = "blah blah $vacante balh $docente$iddocente, sdasd ";
 //    string line = "blah blah $vacante balh, sdasd ";
 
-    std::regex rgx(".*\\$(\\w+).*");
-    std::smatch match;
-    while (std::regex_search(line, match, rgx)) {
-        cout << match[0] << endl;
-        line = match.suffix();
-    }
+//    std::regex rgx(".*\\$(\\w+).*");
+//    std::smatch match;
+//    while (std::regex_search(line, match, rgx)) {
+//        cout << match[0] << endl;
+//        line = match.suffix();
+//    }
 //    std::regex_search(line, match, rgx);
 //    std::cout << "match: " << match[1] << std::endl;
 //    std::cout << "match: " << match[2] << std::endl;
@@ -48,9 +47,10 @@ int server(const char *server_port, string usersFile, string materiasFile){
 
 //    proteger a las DBs
 
-    UsuariosDB users(usersFile);
-    MateriasDB materias(materiasFile);
-    Session session(socket, errorMonitor, users, materias);
+//    UsuariosDB users(usersFile);
+//    MateriasDB materias(materiasFile);
+    DB database(usersFile, materiasFile);
+    Session session(socket, errorMonitor, database);
     session.start();
 
 

@@ -5,9 +5,7 @@
 #include <vector>
 class Admin : public User {
 public:
-    explicit Admin(const string &userType,
-                       UsuariosDB &usersDB,
-                       MateriasDB &materiasDB);
+    explicit Admin(const string &userType, DB &database);
 
     virtual string listarInscripciones() const;
     virtual string inscribir(vector<string> args) const;

@@ -9,13 +9,16 @@ using std::vector;
 
 class DB {
  public:
-  DB(string filename);
-  virtual void fillMap(string line);
+  DB(string usuariosFile, string materiasFile);
+  string fillAllMaterias(string format);
+  string fillNameById(string format);
+  bool userExists(string userType, string id) const;
 
- protected:
-
-  void splitStr(string str, vector<string> &params);
-
+ private:
+  void fillMaterias(string materiasFile);
+  void fillUsuarios(string line);
+  std::map<string,string> users;
+  map<string,map<string, string>> materias;
 };
 
 

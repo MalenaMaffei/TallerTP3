@@ -1,6 +1,4 @@
 #include "server_User.h"
-#include "server_UsuariosDB.h"
-#include "server_MateriasDB.h"
 #include <string>
 #include <vector>
 #define LISTARMATERIAS "lm"
@@ -14,8 +12,10 @@ string User::listarMaterias() const {
 //        "$docente$iddocente, $vacantes vacantes.\n";
     string format = "$codigo - $descripcion, Curso $curso, "
         "#docente$iddocente, $vacantes vacantes.\n";
-    format = materiasDB.listAll(format);
-    format = usersDB.fillNameById(format);
+    format = database.fillAllMaterias(format);
+    format = database.fillNameById(format);
+//    format = materiasDB.listAll(format);
+//    format = usersDB.fillNameById(format);
     return format;
 
 }
@@ -25,6 +25,7 @@ string User::listarInscripciones() const {
 }
 
 string User::inscribir(vector<string> args) const {
+//
     return "inscribir de USER";
 }
 
@@ -34,8 +35,8 @@ string User::desinscribir(vector<string> args) const {
 
 User::~User() {}
 
-User::User(const string &userType, UsuariosDB &usersDB,MateriasDB &materiasDB) :
-            userType(userType), usersDB(usersDB), materiasDB(materiasDB) {}
+User::User(const string &userType, DB &database) :
+            userType(userType), database(database) {}
 
 
 string User::print() const {

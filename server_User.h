@@ -5,8 +5,7 @@
 #include <string>
 #include <vector>
 #include <vector>
-#include "server_UsuariosDB.h"
-#include "server_MateriasDB.h"
+#include "server_DB.h"
 
 using std::cout;
 using std::endl;
@@ -15,9 +14,7 @@ using std::vector;
 
 class User {
 public:
-    explicit User(const string &userType,
-                      UsuariosDB &usersDB,
-                      MateriasDB &materiasDB);
+    explicit User(const string &userType, DB &database);
     virtual ~User();
     string listarMaterias() const;
     virtual string listarInscripciones() const;
@@ -28,8 +25,9 @@ public:
 
 private:
     string userType;
-    UsuariosDB &usersDB;
-    MateriasDB &materiasDB;
+    DB &database;
+//    UsuariosDB &usersDB;
+//    MateriasDB &materiasDB;
 };
 
 #endif //TP2_USER_H

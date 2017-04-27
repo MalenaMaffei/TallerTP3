@@ -1,5 +1,5 @@
 #include <fstream>
-#include "server_UsuariosDB.h"
+#include "UsuariosDB.h"
 #include <vector>
 #include <regex>
 #include <iostream>
@@ -19,7 +19,7 @@ void UsuariosDB::fillMap(string line){
     users[key] = info;
 }
 
-UsuariosDB::UsuariosDB(string filename) : DB(filename){
+UsuariosDB::UsuariosDB(string filename) : DB(filename, std::__cxx11::string()) {
     string line;
     ifstream file;
     file.open(filename);

@@ -1,4 +1,4 @@
-#include "server_MateriasDB.h"
+#include "MateriasDB.h"
 #include <fstream>
 #include <vector>
 #include <iostream>
@@ -23,7 +23,7 @@ void MateriasDB::fillMap(string line) {
     materias[key] = info;
 }
 
-MateriasDB::MateriasDB(string filename) : DB(filename) {
+MateriasDB::MateriasDB(string filename) : DB(filename, std::__cxx11::string()) {
     string line;
     ifstream file;
     file.open(filename);

@@ -37,12 +37,17 @@ int client(const char *ip, const char *port, vector<string> arguments){
     string command;
 //    NOTE esta bien hacer asi con un break? yo supongo que si, si hay tiempo
 //    hacer otro thread que chequee la entrada estandar
+//    Me fijo todo el tiempo si estoy conectado en este loop, si encuentro
+// algo en la cola de comandos, lo envio, sino sigo chequeando la conextion,
+// en la cola de comandos tengo que poder senialar que ya se llego al fin de
+// los comandos o ver como darme cuenta si el thread termino de correr. El
+// thread de comandos lee stdin todo el dia y va  encolando los comandos.
     while (getline(std::cin, command)){
         try {
         string built_command = parser.buildCommand(command);
 
         client_socket.SendStrWLen(built_command, LENGTH_SIZE);
-        cout << "lo que pusiste: " << built_command << endl;
+//        cout << "lo que pusiste: " << built_command << endl;
 
             string server_response = client_socket.ReceiveStrWLen(LENGTH_SIZE);
             cout << server_response;
