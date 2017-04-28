@@ -42,8 +42,14 @@ int server(const char *server_port, string usersFile, string materiasFile){
 //  TODO el server tiene que tener una cola Monitor de errores donde cada
 // thread encola sus errores!
 
-
+try{
     socket.BindAndListen(BACKLOG);
+} catch (std::runtime_error& e){
+    cout << e.what() << endl;
+    socket.Destroy();
+    return 0;
+}
+
 
 //    proteger a las DBs
 

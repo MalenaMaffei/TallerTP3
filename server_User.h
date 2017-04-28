@@ -18,14 +18,21 @@ public:
     virtual ~User();
     string listarMaterias() const;
     virtual string listarInscripciones() const;
-    virtual string inscribir(vector<string> args) const;
-    virtual string desinscribir(vector<string> args) const;
+    virtual string inscribir(vector<string> &args) const = 0;
+    virtual string desinscribir(vector<string> &args) const;
     virtual string print() const;
     virtual string executeCommand(vector<string> & commands) const;
 
+protected:
+  string validateMateria(string materia, string curso) const;
+  virtual string generateInscription(string materia, string curso, string
+  alumnoId) const;
+  string userType;
+  DB &database;
+
 private:
-    string userType;
-    DB &database;
+
+
 //    UsuariosDB &usersDB;
 //    MateriasDB &materiasDB;
 };
