@@ -1,6 +1,7 @@
 #include "server_User.h"
 #include <string>
 #include <vector>
+#include "server_DBException.h"
 #define LISTARMATERIAS "lm"
 #define LISTARINSC "li"
 #define INS "in"
@@ -33,7 +34,7 @@ string User::listarInscripciones() const {
 //}
 
 string User::desinscribir(vector<string> &args) const {
-    return "desinscribir de USER";
+    return "hola";
 }
 
 User::~User() {}
@@ -65,23 +66,35 @@ string User::executeCommand(vector<string> & commands) const {
 }
 
 string User::validateMateria(string materia, string curso) const {
-    if (!database.materiaExists(materia)){
-        return "La materia "+materia+" no es válida.\n";
-    } else if (!database.cursoExists(materia, curso)){
-        return "El curso "+curso+" en la materia "+materia+" no es válido.\n";
-    } else if (!database.vacantesExist(materia, curso)){
-        return "El curso"+curso+" de la materia "+materia+" no posee más "
-            "vacantes.\n";
-    }
+//    if (!database.materiaExists(materia)){
+//        return "La materia "+materia+" no es válida.\n";
+//    }
     return "";
 }
 
 string User::generateInscription(string materia, string curso,
                                  string alumnoId) const {
-    bool success = database.newInscription(materia, curso, alumnoId);
-    if (success){
-        return "Inscripción exitosa.\n";
+    try {
+        bool success = database.newInscription(materia, curso, alumnoId);
+        if (success){
+            return "Inscripción exitosa.\n";
+        }
+        return "Inscripción ya realizada.\n";
+    } catch (DBException& e){
+        return e.what();
     }
-    return "Inscripción ya realizada.\n";
 }
+
+string User::removeInscription(string materia, string curso,
+                               string alumnoId) const {
+    if (!database.materiaExists(materia)) {
+        return "Desinscripción inválida.\n";
+    }
+//    else if (!database.cursoExists(materia, curso)) {
+//        return "Desinscripción inválida.\n";
+//    }
+    return "hola";
+//    bool success = database.removeInscription;
+}
+
 

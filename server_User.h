@@ -27,6 +27,8 @@ protected:
   string validateMateria(string materia, string curso) const;
   virtual string generateInscription(string materia, string curso, string
   alumnoId) const;
+  virtual string removeInscription(string materia, string curso,
+                                   string alumnoId) const;
   string userType;
   DB &database;
 

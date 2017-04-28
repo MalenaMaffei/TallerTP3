@@ -14,14 +14,17 @@ class DB {
   string fillNameById(string format);
   bool userExists(string userType, string id) const;
   bool materiaExists(string materia) const;
-  bool cursoExists(string materia, string curso) const;
-  bool vacantesExist(string materia, string curso);
+  bool cursoExists(string materiaId) const;
+//  bool vacantesExist(string materia, string curso);
   bool newInscription(string materia, string curso, string alumnoId);
+  bool removeInscription(string materia, string curso, string alumnoId);
   bool docenteTeachesMateria(string materia, string curso, string docenteId);
 
  private:
   void fillMaterias(string materiasFile);
   void fillUsuarios(string line);
+  void validateMateria(string materia, string curso);
+  void modifyVacante(string materia, string curso, int cantidad);
   std::map<string,map<string, string>> users;
   map<string,map<string, string>> materias;
 };

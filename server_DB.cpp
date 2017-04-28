@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <regex>
+#include "server_DBException.h"
 #define DELIMITER "\t"
 using std::ifstream;
 using std::vector;
@@ -68,18 +69,6 @@ bool DB::userExists(string userType, string id) const {
     return users.find(userType+id) != users.end();
 }
 
-bool DB::materiaExists(string materia) const {
-    for (const auto& kv : materias) {
-        if(kv.first.find(materia) != string::npos){
-            return true;
-        }
-    }
-    return false;
-}
-
-bool DB::cursoExists(string materia, string curso) const{
-    return materias.find(materia+"-"+curso) != materias.end();
-}
 
 string DB::fillNameById(string format) {
     string filled;
@@ -119,24 +108,73 @@ string DB::fillAllMaterias(string format){
     return all;
 }
 
-bool DB::vacantesExist(string materia, string curso) {
-    return stoi(materias[materia+"-"+curso]["vacantes"]) > 0;
-}
-
-
 bool DB::newInscription(string materia, string curso, string alumnoId) {
+    validateMateria(materia, curso);
     string materiaId = materia+"-"+curso;
     string inscripciones = users["alumno"+alumnoId]["inscripciones"];
     if (inscripciones.find(materia) != string::npos){ return false; }
+
     materias[materiaId]["inscriptos"] += " "+alumnoId;
     users["alumno"+alumnoId]["inscripciones"] += " "+materiaId;
-    string vacantes = materias[materiaId]["vacantes"];
-    int new_vacantes = stoi(vacantes) - 1;
-    materias[materiaId]["vacantes"] = std::to_string(new_vacantes);
+
+    modifyVacante(materia, curso, -1);
     return true;
 }
 
 bool DB::docenteTeachesMateria(string materia, string curso,string docenteId) {
     return docenteId == materias[materia+"-"+curso]["iddocente"];
 }
+
+bool DB::removeInscription(string materia, string curso, string alumnoId) {
+    string materiaId = materia+"-"+curso;
+    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
+    if (inscripciones.find(materia) == string::npos){ return false; }
+
+    inscripciones = std::regex_replace(inscripciones,std::regex(" "+materiaId),
+                                       "");
+    users["alumno"+alumnoId]["inscripciones"] = inscripciones;
+
+    string inscriptos = materias[materiaId]["inscriptos"];
+    inscriptos = std::regex_replace(inscriptos,std::regex(alumnoId), "");
+    materias[materiaId]["inscriptos"] = inscriptos;
+
+    modifyVacante(materia, curso, +1);
+    return true;
+}
+
+bool DB::materiaExists(string materia) const {
+    for (const auto& kv : materias) {
+        if(kv.first.find(materia) != string::npos){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool keyExists(map<string,map<string, string>> & mapa, string key){
+    return mapa.find(key) != mapa.end();
+}
+
+void DB::validateMateria(string materia, string curso) {
+    if (!materiaExists(materia)){
+        throw DBException("La materia "+materia+" no es válida.\n");
+    }
+    string materiaId = materia+"-"+curso;
+    if(! keyExists(materias, materiaId)){
+        throw DBException("El curso "+curso+" en la materia "+materia+ " no es "
+            "válido.\n");
+    }
+}
+
+void DB::modifyVacante(string materia, string curso, int cantidad) {
+    string materiaId = materia+"-"+curso;
+    string vacantes = materias[materiaId]["vacantes"];
+    int new_vacante = stoi(vacantes) + cantidad;
+    if (new_vacante < 0) {
+        throw DBException("El curso "+curso+" de la materia "+materia+ " no "
+            "posee más vacantes.\n");
+    }
+    materias[materiaId]["vacantes"] = std::to_string(new_vacante);
+}
+
 
