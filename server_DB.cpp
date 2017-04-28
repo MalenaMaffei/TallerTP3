@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <regex>
+#include <sstream>
 #include "server_DBException.h"
 #define DELIMITER "\t"
 using std::ifstream;
@@ -65,9 +66,7 @@ void DB::fillUsuarios(string usuariosFile){
     }
 }
 
-bool DB::userExists(string userType, string id) const {
-    return users.find(userType+id) != users.end();
-}
+
 
 
 string DB::fillNameById(string format) {
@@ -108,17 +107,32 @@ string DB::fillAllMaterias(string format){
     return all;
 }
 
-bool DB::newInscription(string materia, string curso, string alumnoId) {
+bool keyExists(map<string,map<string, string>> & mapa, string key) {
+    return mapa.find(key) != mapa.end();
+}
+
+void DB::validateUser(string userType, string id) {
+    if (!keyExists(users, userType+id)){
+        throw DBException("El"+userType+" "+id+" es inválido.\n");
+    }
+}
+
+void DB::newInscription(string materia, string curso, string alumnoId) {
     validateMateria(materia, curso);
+    validateUser("alumno", alumnoId);
+
+
     string materiaId = materia+"-"+curso;
     string inscripciones = users["alumno"+alumnoId]["inscripciones"];
-    if (inscripciones.find(materia) != string::npos){ return false; }
+    if (inscripciones.find(materia) != string::npos){
+        throw DBException("Inscripción ya realizada.\n");
+    }
+
 
     materias[materiaId]["inscriptos"] += " "+alumnoId;
     users["alumno"+alumnoId]["inscripciones"] += " "+materiaId;
 
     modifyVacante(materia, curso, -1);
-    return true;
 }
 
 bool DB::docenteTeachesMateria(string materia, string curso,string docenteId) {
@@ -151,9 +165,7 @@ bool DB::materiaExists(string materia) const {
     return false;
 }
 
-bool keyExists(map<string,map<string, string>> & mapa, string key){
-    return mapa.find(key) != mapa.end();
-}
+
 
 void DB::validateMateria(string materia, string curso) {
     if (!materiaExists(materia)){

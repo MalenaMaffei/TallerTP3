@@ -65,21 +65,17 @@ string User::executeCommand(vector<string> & commands) const {
     return executed_command;
 }
 
-string User::validateMateria(string materia, string curso) const {
-//    if (!database.materiaExists(materia)){
-//        return "La materia "+materia+" no es válida.\n";
-//    }
-    return "";
-}
+//string User::validateMateria(string materia, string curso) const {
+//
+//    return "";
+//}
 
 string User::generateInscription(string materia, string curso,
                                  string alumnoId) const {
     try {
-        bool success = database.newInscription(materia, curso, alumnoId);
-        if (success){
-            return "Inscripción exitosa.\n";
-        }
-        return "Inscripción ya realizada.\n";
+        database.newInscription(materia, curso, alumnoId);
+        return "Inscripción exitosa.\n";
+
     } catch (DBException& e){
         return e.what();
     }

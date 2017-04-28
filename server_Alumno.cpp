@@ -1,23 +1,20 @@
 #include "server_Alumno.h"
 #include <string>
 #include <vector>
+#include "server_DBException.h"
+
 string Alumno::listarInscripciones() const {
     return User::listarInscripciones();
 }
 
 string Alumno::inscribir(vector<string> &args) const {
-//    1ro una vacante y agrgo un codigo al alummno y un alumno a la materia
-//    2ro ins ya realizada: el codigo existia en la lista de alumnos
     if (args.size() < 2){
-        throw std::invalid_argument("Comando inscripcion no recibió argumentos "
+        throw std::invalid_argument("Comando inscripción no recibió argumentos "
                                         "suficientes");
     }
     string materia = args[1];
     string curso = args[2];
-    string response = validateMateria(materia, curso);
-    if (!response.empty()){ return response; }
-    response = generateInscription(materia, curso, id);
-    return response;
+    return generateInscription(materia, curso, id);
 }
 
 string Alumno::desinscribir(vector<string> &args) const {
@@ -26,8 +23,11 @@ string Alumno::desinscribir(vector<string> &args) const {
 
 Alumno::Alumno(const string &userType, DB &database, const string &id) :
     User(userType, database), id(id) {
-    if (! database.userExists(userType, id)){
-        throw std::invalid_argument(id + " es un " +userType + " inválido.");
+    try {
+        this->database.validateUser(userType, id);
+    } catch (DBException& e) {
+//        por que no podian tener el mismo mensaje de error?!
+        throw DBException(id + " es un " +userType + " inválido.");
     }
 }
 

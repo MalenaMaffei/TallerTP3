@@ -12,11 +12,10 @@ class DB {
   DB(string usuariosFile, string materiasFile);
   string fillAllMaterias(string format);
   string fillNameById(string format);
-  bool userExists(string userType, string id) const;
+  void validateUser(string userType, string id);
   bool materiaExists(string materia) const;
-  bool cursoExists(string materiaId) const;
-//  bool vacantesExist(string materia, string curso);
-  bool newInscription(string materia, string curso, string alumnoId);
+
+  void newInscription(string materia, string curso, string alumnoId);
   bool removeInscription(string materia, string curso, string alumnoId);
   bool docenteTeachesMateria(string materia, string curso, string docenteId);
 

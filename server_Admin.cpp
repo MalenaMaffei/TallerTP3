@@ -14,13 +14,7 @@ string Admin::inscribir(vector<string> &args) const {
     string alumnoId = args[1];
     string materia = args[2];
     string curso = args[3];
-    string response = validateMateria(materia, curso);
-    if (!response.empty()){ return response; }
-    if (!database.userExists("alumno", alumnoId)){
-        return "El alumno "+alumnoId+" es inválido.\n";
-    }
-    response = generateInscription(materia, curso, alumnoId);
-    return response;
+    return generateInscription(materia, curso, alumnoId);
 }
 
 string Admin::desinscribir(vector<string> &args) const {
