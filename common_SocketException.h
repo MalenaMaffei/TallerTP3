@@ -3,10 +3,12 @@
 
 #include <exception>
 #include <stdexcept>
+#include <string>
 
+using std::string;
 class SocketException : public std::runtime_error {
 public:
-  SocketException(const char* what_arg);
+  SocketException(string what_arg);
 };
 
 #endif //TP2_SOCKETEXCEPTION_H

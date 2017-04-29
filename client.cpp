@@ -26,6 +26,7 @@ int client(const char *ip, const char *port, vector<string> arguments){
     try {
         client_socket.SendStrWLen(login, LENGTH_SIZE);
     } catch(std::exception& e) {
+        cout << e.what() << endl;
         client_socket.Shutdown(SHUT_WR);
         client_socket.Destroy();
         return 0;

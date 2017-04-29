@@ -22,6 +22,7 @@ Session::Session(const Socket &socketServer, ErrorMonitor &errorMonitor,
     Socket new_socket;
     socketServer.Accept(new_socket);
     socket = new_socket;
+    cout << "en el init socket conectado: " << socket.isConnected() <<endl;
     user = nullptr;
 }
 
@@ -51,6 +52,9 @@ void Session::receiveCommands(){
 }
 
 void Session::start() {
+    cout << "dentro de start" << endl;
+
+    cout << "socket is connected: " << socket.isConnected() << endl;
     string parameters = socket.ReceiveStrWLen(LENGTH_SIZE);
 
     vector<string> params;

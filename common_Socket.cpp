@@ -13,6 +13,8 @@
 #include <stdexcept>
 #include <cstring>
 #include <string>
+#include <errno.h>
+
 #define SERVER_MODE 0
 #define CLIENT_MODE 0
 
@@ -84,7 +86,7 @@ int Socket::Send(unsigned char *source, size_t length){
     unsigned char *buffer_ptr = source;
     for (bytes_left = length; bytes_left>0; bytes_left-=bytes_sent) {
         if (!isConnected()) {
-            throw SocketException("Se cerro el socket");
+            throw SocketException("Intentaba mandar pero se cerro el socket");
         }
         bytes_sent=send(fD, buffer_ptr, bytes_left, MSG_NO_SIGNAL);
         if (bytes_sent<=0) {
@@ -116,7 +118,9 @@ int Socket::Accept(Socket &other) const{
 
     int new_fd = accept(fD, a, l);
     other.fD = new_fd;
-    if (new_fd < 0){ return NOK; }
+    if (new_fd < 0){
+        throw SocketException("Error en Accept nro: " + std::to_string(errno));
+    }
     return OK;
 }
 
@@ -124,7 +128,7 @@ int Socket::Receive(unsigned char *buffer, size_t length){
     int bytes_read = recv(fD, buffer, length, MSG_NO_SIGNAL);
     if (bytes_read == MSG_NO_SIGNAL){
 //        TODO CAMBIAR ESE TIPO DE EXCEPCION
-        throw SocketException("Se cerro el socket");
+        throw SocketException("Intentaba recibir pero se cerro el socket");
     }
     return bytes_read;
 }
