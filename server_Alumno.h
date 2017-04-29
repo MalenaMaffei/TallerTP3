@@ -5,11 +5,11 @@
 #include <vector>
 class Alumno : public User {
 public:
-    Alumno(const string &userType, DB &database, const string &id);
+    Alumno(DB &database, const string &id);
 
     virtual string listarInscripciones() const;
     virtual string inscribir(vector<string> &args) ;
-    virtual string desinscribir(vector<string> &args) const;
+    virtual string desinscribir(vector<string> &args);
     virtual string print() const;
   const string &getId() const;
 

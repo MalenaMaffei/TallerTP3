@@ -1,5 +1,6 @@
 alumno	1	alice
 alumno	2	bob
+alumno	6	boby
 docente	3	craig
 docente	4	mallory
 docente	5	eve

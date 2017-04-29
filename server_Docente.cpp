@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "server_DB.h"
+#define MY_TYPE "docente"
 string Docente::listarInscripciones() const {
     return User::listarInscripciones();
 //    cout << "listando inscripciones del docente" << endl;
@@ -17,9 +18,9 @@ string Docente::inscribir(vector<string> &args)  {
     string alumnoId = args[1];
     string materia = args[2];
     string curso = args[3];
-
+    Inscripcion insc(materia, curso, alumnoId);
     try {
-        database.newInscription(materia, curso, alumnoId, *this);
+        database.processTransaction(insc, *this);
         return "Inscripción exitosa.\n";
 
     } catch (DBException& e){
@@ -27,23 +28,37 @@ string Docente::inscribir(vector<string> &args)  {
     }
 }
 
-string Docente::desinscribir(vector<string> &args) const {
-  return User::desinscribir(args);
-  //    cout  << "desinscribir a un alumno a los cursos del docente" << endl;
+string Docente::desinscribir(vector<string> &args) {
+    if (args.size() < 3){
+        throw std::invalid_argument("Comando inscripcion no recibió argumentos "
+                                        "suficientes");
+    }
+
+    string alumnoId = args[1];
+    string materia = args[2];
+    string curso = args[3];
+    Desinscripcion des(materia, curso, alumnoId);
+    try {
+        database.processTransaction(des, *this);
+        return "Desinscripción exitosa.\n";
+
+    } catch (DBException& e){
+        return "Desinscripción inválida.\n";
+    }
 }
 
-Docente::Docente(const string &userType,DB &database, const string &id)
-        : User(userType, database), id(id) {
+Docente::Docente(DB &database, const string &id)
+        : User(database), id(id) {
     try {
-        database.validateUser(userType, id);
+        database.validateUser(MY_TYPE, id);
     } catch (DBException& e) {
 //        por que no podian tener el mismo mensaje de error?!
-        throw DBException(id + " es un " +userType + " inválido.");
+        throw DBException(id + " es un "+MY_TYPE+" inválido.");
     }
 }
 
 string Docente::print() const {
-  return User::print() + " " + id;
+  return "docente " + id;
 }
 const string &Docente::getId() const {
   return id;

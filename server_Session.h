@@ -5,8 +5,6 @@
 #include "server_User.h"
 #include "common_CommandParser.h"
 #include "server_ErrorMonitor.h"
-#include "UsuariosDB.h"
-#include "MateriasDB.h"
 
 class Session {
 public:
@@ -22,8 +20,6 @@ private:
     CommandParser parser;
     ErrorMonitor &errorMonitor;
     DB &database;
-//    UsuariosDB &usersDB;
-//    MateriasDB &materiasDB;
     void receiveCommands();
 };
 

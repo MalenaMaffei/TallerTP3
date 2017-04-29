@@ -114,52 +114,110 @@ void DB::validateUser(string userType, string id) {
     }
 }
 
-void DB::newInscription(string materia, string curso, string alumnoId, Docente
-&docente) {
-    validateMateria(materia, curso);
-    validateUser("alumno", alumnoId);
-    validateDocente(materia, curso, docente.getId());
-    validateInscription(materia, alumnoId);
-    addMateria(materia, curso, alumnoId);
+void DB::validateTransaction(Transaction transaction){
+    validateMateria(transaction.getMateria(), transaction.getCurso());
+    validateUser("alumno", transaction.getAlumnoId());
 }
 
-void DB::newInscription(string materia, string curso, string alumnoId, User &user) {
-    validateMateria(materia, curso);
-    validateUser("alumno", alumnoId);
-    validateInscription(materia, alumnoId);
-    addMateria(materia, curso, alumnoId);
+void DB::validateInscription(string materia, string alumnoId) {
+//    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
+//    if (inscripciones.find(materia) != string::npos){
+//        throw DBException("Inscripción ya realizada.\n");
+//    }
 }
 
-void DB::addMateria(string materia, string curso, string alumnoId){
-    string materiaId = materia+"-"+curso;
-    materias[materiaId]["inscriptos"] += " "+alumnoId;
-    users["alumno"+alumnoId]["inscripciones"] += " "+materiaId;
-    modifyVacante(materia, curso, -1);
-}
-
-void DB::validateDocente(string materia, string curso, string docenteId) {
-    if (! (docenteId == materias[materia+"-"+curso]["iddocente"])) {
-        throw DBException("No tiene permisos para operar sobre "+materia+", "
-            "curso "+curso+".\n");
+void DB::validateDocente(Transaction &transaction, string docenteId) {
+    if (! (docenteId == materias[transaction.getId()]["iddocente"])) {
+        throw DBException("No tiene permisos para operar sobre "+
+            transaction.getMateria()+", curso "+transaction.getCurso()+".\n");
     }
 }
 
-bool DB::removeInscription(string materia, string curso, string alumnoId) {
-    string materiaId = materia+"-"+curso;
+void DB::processTransaction(Transaction &transaction, Docente &docente) {
+    validateTransaction(transaction);
+    validateDocente(transaction, docente.getId());
+    string alumnoId = transaction.getAlumnoId();
+
     string inscripciones = users["alumno"+alumnoId]["inscripciones"];
-    if (inscripciones.find(materia) == string::npos){ return false; }
+    string inscriptos = materias[transaction.getId()]["inscriptos"];
 
-    inscripciones = std::regex_replace(inscripciones,std::regex(" "+materiaId),
-                                       "");
+    std::cout << "---------ANTES--------"<<std::endl;
+    std::cout << "alumno: " << alumnoId<<std::endl;
+    std::cout << "inscriptos: " << inscriptos<<std::endl;
+    std::cout << "inscripciones: " << inscripciones<<std::endl;
+
+    transaction.updateInscriptions(inscriptos, inscripciones);
     users["alumno"+alumnoId]["inscripciones"] = inscripciones;
+    materias[transaction.getId()]["inscriptos"] = inscriptos;
 
-    string inscriptos = materias[materiaId]["inscriptos"];
-    inscriptos = std::regex_replace(inscriptos,std::regex(alumnoId), "");
-    materias[materiaId]["inscriptos"] = inscriptos;
 
-    modifyVacante(materia, curso, +1);
-    return true;
+    std::cout << "---------DESPUES--------"<<std::endl;
+    std::cout << "alumno: " << alumnoId<<std::endl;
+    std::cout << "inscriptos: " << inscriptos<<std::endl;
+    std::cout << "inscripciones: " << inscripciones<<std::endl;
+
+
+    std::cout << "---------ACCEDIENDO--------"<<std::endl;
+    std::cout << "alumno: " << alumnoId<<std::endl;
+    std::cout << "inscriptos: " << materias[transaction.getId()]["inscriptos"]<<std::endl;
+    std::cout << "inscripciones: " << users["alumno"+alumnoId]["inscripciones"]<<std::endl;
+
+    string vacantes = materias[transaction.getId()]["vacantes"];
+    transaction.updateVacancies(vacantes);
+    materias[transaction.getId()]["vacantes"] = vacantes;
+
+//    validateMateria(materia, curso);
+//    validateUser("alumno", alumnoId);
+
+//    validateInscription(materia, alumnoId);
+//    addMateria(materia, curso, alumnoId);
 }
+
+void DB::processTransaction(Transaction &transaction, User &user) {
+    validateTransaction(transaction);
+    string alumnoId = transaction.getAlumnoId();
+    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
+    string inscriptos = materias[transaction.getId()]["inscriptos"];
+
+    transaction.updateInscriptions(inscripciones, inscriptos);
+    users["alumno"+alumnoId]["inscripciones"] = inscripciones;
+    materias[transaction.getId()]["inscriptos"] = inscriptos;
+
+    string vacantes = materias[transaction.getId()]["vacantes"];
+    transaction.updateVacancies(vacantes);
+    materias[transaction.getId()]["vacantes"] = vacantes;
+
+//    validateMateria(materia, curso);
+//    validateUser("alumno", alumnoId);
+//    validateInscription(materia, alumnoId);
+//    addMateria(materia, curso, alumnoId);
+}
+
+void DB::addMateria(string materia, string curso, string alumnoId){
+//    string materiaId = materia+"-"+curso;
+//    materias[materiaId]["inscriptos"] += " "+alumnoId;
+//    users["alumno"+alumnoId]["inscripciones"] += " "+materiaId;
+//    modifyVacante(materia, curso, -1);
+}
+
+
+
+//bool DB::removeInscription(string materia, string curso, string alumnoId) {
+//    string materiaId = materia+"-"+curso;
+//    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
+//    if (inscripciones.find(materia) == string::npos){ return false; }
+//
+//    inscripciones = std::regex_replace(inscripciones,std::regex(" "+materiaId),
+//                                       "");
+//    users["alumno"+alumnoId]["inscripciones"] = inscripciones;
+//
+//    string inscriptos = materias[materiaId]["inscriptos"];
+//    inscriptos = std::regex_replace(inscriptos,std::regex(alumnoId), "");
+//    materias[materiaId]["inscriptos"] = inscriptos;
+//
+//    modifyVacante(materia, curso, +1);
+//    return true;
+//}
 
 bool DB::materiaExists(string materia) const {
     for (const auto& kv : materias) {
@@ -182,22 +240,16 @@ void DB::validateMateria(string materia, string curso) {
 }
 
 void DB::modifyVacante(string materia, string curso, int cantidad) {
-    string materiaId = materia+"-"+curso;
-    string vacantes = materias[materiaId]["vacantes"];
-    int new_vacante = stoi(vacantes) + cantidad;
-    if (new_vacante < 0) {
-        throw DBException("El curso "+curso+" de la materia "+materia+ " no "
-            "posee más vacantes.\n");
-    }
-    materias[materiaId]["vacantes"] = std::to_string(new_vacante);
+//    string materiaId = materia+"-"+curso;
+//    string vacantes = materias[materiaId]["vacantes"];
+//    int new_vacante = stoi(vacantes) + cantidad;
+//    if (new_vacante < 0) {
+//        throw DBException("El curso "+curso+" de la materia "+materia+ " no "
+//            "posee más vacantes.\n");
+//    }
+//    materias[materiaId]["vacantes"] = std::to_string(new_vacante);
 }
 
-void DB::validateInscription(string materia, string alumnoId) {
 
-    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
-    if (inscripciones.find(materia) != string::npos){
-        throw DBException("Inscripción ya realizada.\n");
-    }
-}
 
 

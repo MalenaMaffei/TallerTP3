@@ -7,11 +7,11 @@
 
 class Docente : public User  {
 public:
-    Docente(const string &userType, DB &database, const string &id);
+    Docente(DB &database, const string &id);
 
     virtual string listarInscripciones() const;
     string inscribir(vector<string> &args) ;
-    virtual string desinscribir(vector<string> &args) const;
+    virtual string desinscribir(vector<string> &args);
     virtual string print() const;
   const string &getId() const;
 

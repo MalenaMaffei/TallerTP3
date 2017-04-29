@@ -25,29 +25,25 @@ string User::listarInscripciones() const {
 
 
 string User::inscribir(vector<string> &args) {
-   // if (args.size() < 2){
-   //     throw std::invalid_argument("Comando inscripcion no recibió argumentos "
-   //                                     "suficientes");
-   // }
-   // string materia = args[1];
-   // string curso = args[2];
-   // return validateMateria(materia, curso);
-   return "hola";
+    if (args.size() < 2){
+        throw std::invalid_argument("Comando inscripcion no recibió argumentos "
+                                        "suficientes");
+    }
+    return "hola de user base";
 }
 
-string User::desinscribir(vector<string> &args) const {
+string User::desinscribir(vector<string> &args) {
     return "hola";
 }
 
 User::~User() {}
 
-User::User(const string &userType, DB &database) :
-            userType(userType), database(database) {}
+User::User(DB &database) : database(database) {}
 
 
-string User::print() const {
-    return userType;
-}
+//string User::print() const {
+//    return userType;
+//}
 
 string User::executeCommand(vector<string> & commands)  {
 //    TODO lanzar error con comando invalido
@@ -75,7 +71,7 @@ string User::executeCommand(vector<string> & commands)  {
 // string User::generateInscription(string materia, string curso,
 //                                  string alumnoId) {
 //     try {
-//         database.newInscription(materia, curso, alumnoId, *this);
+//         database.processTransaction(materia, curso, alumnoId, *this);
 //         return "Inscripción exitosa.\n";
 //
 //     } catch (DBException& e){
@@ -83,14 +79,14 @@ string User::executeCommand(vector<string> & commands)  {
 //     }
 // }
 
-string User::removeInscription(string materia, string curso,
-                               string alumnoId) const {
-    if (!database.materiaExists(materia)) {
-        return "Desinscripción inválida.\n";
-    }
-//    else if (!database.cursoExists(materia, curso)) {
+//string User::removeInscription(string materia, string curso,
+//                               string alumnoId) const {
+//    if (!database.materiaExists(materia)) {
 //        return "Desinscripción inválida.\n";
 //    }
-    return "hola";
-//    bool success = database.removeInscription;
-}
+////    else if (!database.cursoExists(materia, curso)) {
+////        return "Desinscripción inválida.\n";
+////    }
+//    return "hola";
+////    bool success = database.removeInscription;
+//}
