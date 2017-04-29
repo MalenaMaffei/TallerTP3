@@ -1,12 +1,13 @@
 #include "server_User.h"
 #include <string>
 #include <vector>
-#include "server_DBException.h"
+// #include "server_DBException.h"
 #define LISTARMATERIAS "lm"
 #define LISTARINSC "li"
 #define INS "in"
 #define DESINS "de"
 #define CODE_POS 0
+#include "server_DB.h"
 
 string User::listarMaterias() const {
     string format = "$codigo - $descripcion, Curso $curso, "
@@ -23,15 +24,16 @@ string User::listarInscripciones() const {
 
 
 
-//string User::inscribir(vector<string> &args) const {
-////    if (args.size() < 2){
-////        throw std::invalid_argument("Comando inscripcion no recibió argumentos "
-////                                        "suficientes");
-////    }
-////    string materia = args[1];
-////    string curso = args[2];
-////    return validateMateria(materia, curso);
-//}
+string User::inscribir(vector<string> &args) {
+   // if (args.size() < 2){
+   //     throw std::invalid_argument("Comando inscripcion no recibió argumentos "
+   //                                     "suficientes");
+   // }
+   // string materia = args[1];
+   // string curso = args[2];
+   // return validateMateria(materia, curso);
+   return "hola";
+}
 
 string User::desinscribir(vector<string> &args) const {
     return "hola";
@@ -47,7 +49,7 @@ string User::print() const {
     return userType;
 }
 
-string User::executeCommand(vector<string> & commands) const {
+string User::executeCommand(vector<string> & commands)  {
 //    TODO lanzar error con comando invalido
     string command = commands[CODE_POS];
     string executed_command;
@@ -70,16 +72,16 @@ string User::executeCommand(vector<string> & commands) const {
 //    return "";
 //}
 
-string User::generateInscription(string materia, string curso,
-                                 string alumnoId) const {
-    try {
-        database.newInscription(materia, curso, alumnoId);
-        return "Inscripción exitosa.\n";
-
-    } catch (DBException& e){
-        return e.what();
-    }
-}
+// string User::generateInscription(string materia, string curso,
+//                                  string alumnoId) {
+//     try {
+//         database.newInscription(materia, curso, alumnoId, *this);
+//         return "Inscripción exitosa.\n";
+//
+//     } catch (DBException& e){
+//         return e.what();
+//     }
+// }
 
 string User::removeInscription(string materia, string curso,
                                string alumnoId) const {
@@ -92,5 +94,3 @@ string User::removeInscription(string materia, string curso,
     return "hola";
 //    bool success = database.removeInscription;
 }
-
-

@@ -8,7 +8,7 @@ public:
     explicit Admin(const string &userType, DB &database);
 
     virtual string listarInscripciones() const;
-    virtual string inscribir(vector<string> &args) const;
+    virtual string inscribir(vector<string> &args) ;
     virtual string desinscribir(vector<string> &args) const;
 };
 

@@ -5,11 +5,11 @@
 #include <regex>
 #include <sstream>
 #include "server_DBException.h"
+#include "server_User.h"
 #define DELIMITER "\t"
 using std::ifstream;
 using std::vector;
 using std::string;
-
 
 void splitStr(string str, vector<string> &params){
     size_t pos = 0;
@@ -66,9 +66,6 @@ void DB::fillUsuarios(string usuariosFile){
     }
 }
 
-
-
-
 string DB::fillNameById(string format) {
     string filled;
     std::istringstream iss(format);
@@ -117,26 +114,34 @@ void DB::validateUser(string userType, string id) {
     }
 }
 
-void DB::newInscription(string materia, string curso, string alumnoId) {
+void DB::newInscription(string materia, string curso, string alumnoId, Docente
+&docente) {
     validateMateria(materia, curso);
     validateUser("alumno", alumnoId);
+    validateDocente(materia, curso, docente.getId());
+    validateInscription(materia, alumnoId);
+    addMateria(materia, curso, alumnoId);
+}
 
+void DB::newInscription(string materia, string curso, string alumnoId, User &user) {
+    validateMateria(materia, curso);
+    validateUser("alumno", alumnoId);
+    validateInscription(materia, alumnoId);
+    addMateria(materia, curso, alumnoId);
+}
 
+void DB::addMateria(string materia, string curso, string alumnoId){
     string materiaId = materia+"-"+curso;
-    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
-    if (inscripciones.find(materia) != string::npos){
-        throw DBException("Inscripción ya realizada.\n");
-    }
-
-
     materias[materiaId]["inscriptos"] += " "+alumnoId;
     users["alumno"+alumnoId]["inscripciones"] += " "+materiaId;
-
     modifyVacante(materia, curso, -1);
 }
 
-bool DB::docenteTeachesMateria(string materia, string curso,string docenteId) {
-    return docenteId == materias[materia+"-"+curso]["iddocente"];
+void DB::validateDocente(string materia, string curso, string docenteId) {
+    if (! (docenteId == materias[materia+"-"+curso]["iddocente"])) {
+        throw DBException("No tiene permisos para operar sobre "+materia+", "
+            "curso "+curso+".\n");
+    }
 }
 
 bool DB::removeInscription(string materia, string curso, string alumnoId) {
@@ -165,8 +170,6 @@ bool DB::materiaExists(string materia) const {
     return false;
 }
 
-
-
 void DB::validateMateria(string materia, string curso) {
     if (!materiaExists(materia)){
         throw DBException("La materia "+materia+" no es válida.\n");
@@ -187,6 +190,14 @@ void DB::modifyVacante(string materia, string curso, int cantidad) {
             "posee más vacantes.\n");
     }
     materias[materiaId]["vacantes"] = std::to_string(new_vacante);
+}
+
+void DB::validateInscription(string materia, string alumnoId) {
+
+    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
+    if (inscripciones.find(materia) != string::npos){
+        throw DBException("Inscripción ya realizada.\n");
+    }
 }
 
 

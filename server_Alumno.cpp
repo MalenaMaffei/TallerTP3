@@ -2,19 +2,26 @@
 #include <string>
 #include <vector>
 #include "server_DBException.h"
+#include "server_DB.h"
 
 string Alumno::listarInscripciones() const {
     return User::listarInscripciones();
 }
 
-string Alumno::inscribir(vector<string> &args) const {
+string Alumno::inscribir(vector<string> &args)  {
     if (args.size() < 2){
         throw std::invalid_argument("Comando inscripción no recibió argumentos "
                                         "suficientes");
     }
     string materia = args[1];
     string curso = args[2];
-    return generateInscription(materia, curso, id);
+        try {
+            database.newInscription(materia, curso, id, *this);
+            return "Inscripción exitosa.\n";
+
+        } catch (DBException& e){
+            return e.what();
+        }
 }
 
 string Alumno::desinscribir(vector<string> &args) const {

@@ -5,7 +5,9 @@
 #include <string>
 #include <vector>
 #include <vector>
-#include "server_DB.h"
+// #include "server_DB.h"
+#include "server_DBException.h"
+class DB;
 
 using std::cout;
 using std::endl;
@@ -18,15 +20,15 @@ public:
     virtual ~User();
     string listarMaterias() const;
     virtual string listarInscripciones() const;
-    virtual string inscribir(vector<string> &args) const = 0;
+    virtual string inscribir(vector<string> &args);
     virtual string desinscribir(vector<string> &args) const;
     virtual string print() const;
-    virtual string executeCommand(vector<string> & commands) const;
+    virtual string executeCommand(vector<string> & commands);
 
 protected:
 //  string validateMateria(string materia, string curso) const;
-  virtual string generateInscription(string materia, string curso, string
-  alumnoId) const;
+  // virtual string generateInscription(string materia, string curso, string
+  // alumnoId);
   virtual string removeInscription(string materia, string curso,
                                    string alumnoId) const;
   string userType;
@@ -40,5 +42,3 @@ private:
 };
 
 #endif //TP2_USER_H
-
-

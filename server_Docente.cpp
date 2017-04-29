@@ -2,12 +2,13 @@
 #include "server_DBException.h"
 #include <string>
 #include <vector>
+#include "server_DB.h"
 string Docente::listarInscripciones() const {
     return User::listarInscripciones();
 //    cout << "listando inscripciones del docente" << endl;
 }
 
-string Docente::inscribir(vector<string> &args) const {
+string Docente::inscribir(vector<string> &args)  {
     if (args.size() < 3){
         throw std::invalid_argument("Comando inscripcion no recibió argumentos "
                                         "suficientes");
@@ -17,12 +18,13 @@ string Docente::inscribir(vector<string> &args) const {
     string materia = args[2];
     string curso = args[3];
 
-    if (!database.docenteTeachesMateria(materia, curso, id)){
-        return "No tiene permisos para operar sobre "+materia+", curso "
-            ""+curso+".\n";
+    try {
+        database.newInscription(materia, curso, alumnoId, *this);
+        return "Inscripción exitosa.\n";
+
+    } catch (DBException& e){
+        return e.what();
     }
-    string response = generateInscription(materia, curso, alumnoId);
-    return response;
 }
 
 string Docente::desinscribir(vector<string> &args) const {
@@ -46,4 +48,3 @@ string Docente::print() const {
 const string &Docente::getId() const {
   return id;
 }
-
