@@ -141,12 +141,7 @@ void DB::processTransaction(Transaction &transaction, Docente &docente) {
 //    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
 //    string inscriptos = materias[transaction.getId()]["inscriptos"];
 //    string vacantes = materias[transaction.getId()]["vacantes"];
-//
-////    std::cout << "---------ANTES--------"<<std::endl;
-////    std::cout << "alumno: " << alumnoId<<std::endl;
-////    std::cout << "inscriptos: " << inscriptos<<std::endl;
-////    std::cout << "inscripciones: " << inscripciones<<std::endl;
-//
+
 //    transaction.updateInscriptions(inscriptos, inscripciones, vacantes);
 //    users["alumno"+alumnoId]["inscripciones"] = inscripciones;
 //    materias[transaction.getId()]["inscriptos"] = inscriptos;
@@ -163,7 +158,12 @@ void DB::processTransaction(Transaction &transaction, Docente &docente) {
     string inscriptos = materias[transaction.getId()]["inscriptos"];
     string vacantes = materias[transaction.getId()]["vacantes"];
 
-    transaction.updateInscriptions(inscripciones, inscriptos, vacantes);
+//    std::cout << "\n\n---------ANTES--------"<<std::endl;
+//    std::cout << "alumno: " << alumnoId<<std::endl;
+//    std::cout << "inscriptos: " << inscriptos<<std::endl;
+//    std::cout << "inscripciones: " << inscripciones<<std::endl;
+//
+    transaction.updateInscriptions(inscriptos,inscripciones,  vacantes);
 
     users["alumno"+alumnoId]["inscripciones"] = inscripciones;
     materias[transaction.getId()]["inscriptos"] = inscriptos;

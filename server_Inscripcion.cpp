@@ -6,8 +6,7 @@ Inscripcion::Inscripcion(const string &materia, const string &curso,
     : Transaction(materia,curso,alumnoId) {}
 
 void Inscripcion::updateInscriptions(string &inscriptos, string &inscripciones,
-                                     string &vacancies)
-const {
+                                     string &vacancies) const {
 
 
     if (inscripciones.find(materia) != string::npos){
