@@ -10,7 +10,7 @@ public:
     Docente(DB &database, const string &id);
 
     virtual string listarInscripciones() const;
-    string inscribir(vector<string> &args) ;
+    string inscribir(vector<string> &args);
     virtual string desinscribir(vector<string> &args);
     virtual string print() const;
   const string &getId() const;

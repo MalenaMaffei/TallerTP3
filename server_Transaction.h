@@ -5,19 +5,14 @@
 using std::string;
 class Transaction {
  public:
-  Transaction(const string &materia,
-              const string &curso,
-              const string &alumnoId);
+  Transaction(const string &materia,const string &curso,const string &alumnoId);
   const string &getMateria() const;
   const string &getCurso() const;
   const string &getId() const;
   const string &getAlumnoId() const;
-//
 
   virtual void updateInscriptions(string &inscriptos, string &inscripciones,
-                                    string &vacancies)
-  const {};
-  virtual void updateVacancies(string &vacancy) const {};
+                                    string &vacancies)const {}
 
  protected:
   string materia;

@@ -19,8 +19,7 @@ string Alumno::inscribir(vector<string> &args)  {
         try {
             database.processTransaction(insc, *this);
             return "Inscripción exitosa.\n";
-
-        } catch (DBException& e){
+        } catch(DBException& e){
             return e.what();
         }
 }
@@ -37,8 +36,7 @@ string Alumno::desinscribir(vector<string> &args) {
     try {
         database.processTransaction(des, *this);
         return "Desinscripción exitosa.\n";
-
-    } catch (DBException& e){
+    } catch(DBException& e){
         return "Desinscripción inválida.\n";
     }
 }
@@ -47,7 +45,7 @@ Alumno::Alumno(DB &database, const string &id) :
     User(database), id(id) {
     try {
         this->database.validateUser(MY_TYPE, id);
-    } catch (DBException& e) {
+    } catch(DBException& e) {
 //        por que no podian tener el mismo mensaje de error?!
         throw DBException(id + " es un " +MY_TYPE + " inválido.");
     }

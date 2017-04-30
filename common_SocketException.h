@@ -8,7 +8,7 @@
 using std::string;
 class SocketException : public std::runtime_error {
 public:
-  SocketException(string what_arg);
+  explicit SocketException(string what_arg);
 };
 
 #endif //TP2_SOCKETEXCEPTION_H

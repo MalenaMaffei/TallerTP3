@@ -31,8 +31,7 @@ int client(const char *ip, const char *port, vector<string> arguments){
         client_socket.Destroy();
         return 0;
     }
-//    cout << "is connected before input?: " << client_socket.isConnected() <<
-//                                                                          endl;
+                                                              endl;
 
 
     string command;

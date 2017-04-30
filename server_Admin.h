@@ -6,9 +6,8 @@
 class Admin : public User {
 public:
     explicit Admin(DB &database);
-
     virtual string listarInscripciones() const;
-    virtual string inscribir(vector<string> &args) ;
+    virtual string inscribir(vector<string> &args);
     virtual string desinscribir(vector<string> &args);
     virtual string print() const;
 };

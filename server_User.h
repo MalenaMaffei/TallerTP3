@@ -35,12 +35,6 @@ protected:
 //  virtual string removeInscription(string materia, string curso,
 //                                   string alumnoId) const;
   DB &database;
-
-private:
-
-
-//    UsuariosDB &usersDB;
-//    MateriasDB &materiasDB;
 };
 
 #endif //TP2_USER_H

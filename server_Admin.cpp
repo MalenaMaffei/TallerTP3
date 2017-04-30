@@ -20,8 +20,7 @@ string Admin::inscribir(vector<string> &args) {
         try {
             database.processTransaction(insc, *this);
             return "Inscripción exitosa.\n";
-
-        } catch (DBException& e){
+        } catch(DBException& e){
             return e.what();
         }
 }
@@ -39,8 +38,7 @@ string Admin::desinscribir(vector<string> &args) {
     try {
         database.processTransaction(des, *this);
         return "Desinscripción exitosa.\n";
-
-    } catch (DBException& e){
+    } catch(DBException& e){
         return "Desinscripción inválida.\n";
     }
 }

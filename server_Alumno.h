@@ -8,7 +8,7 @@ public:
     Alumno(DB &database, const string &id);
 
     virtual string listarInscripciones() const;
-    virtual string inscribir(vector<string> &args) ;
+    virtual string inscribir(vector<string> &args);
     virtual string desinscribir(vector<string> &args);
     virtual string print() const;
   const string &getId() const;

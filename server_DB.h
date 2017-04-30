@@ -20,16 +20,12 @@ class DB {
   bool materiaExists(string materia) const;
   void processTransaction(Transaction &transaction, Docente &user);
   void processTransaction(Transaction &transaction, User &user);
-//  bool removeInscription(string materia, string curso, string alumnoId);
   void validateDocente(Transaction &transaction, string docenteId);
 
  private:
   void fillMaterias(string materiasFile);
   void fillUsuarios(string line);
   void validateMateria(string materia, string curso);
-  void modifyVacante(string materia, string curso, int cantidad);
-  void validateInscription(string materia, string alumnoId);
-  void addMateria(string materia, string curso, string alumnoId);
   void validateTransaction(Transaction transaction);
 
   std::map<string,map<string, string>> users;

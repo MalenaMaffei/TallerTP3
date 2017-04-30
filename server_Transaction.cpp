@@ -1,4 +1,5 @@
 #include "server_Transaction.h"
+#include <string>
 Transaction::Transaction(const string &materia,const string &curso,
                          const string &alumnoId)
     : materia(materia), curso(curso), alumnoId(alumnoId) {

@@ -15,7 +15,6 @@ string User::listarMaterias() const {
     format = database.fillAllMaterias(format);
     format = database.fillNameById(format);
     return format;
-
 }
 
 string User::listarInscripciones() const {

@@ -176,6 +176,6 @@ void Socket::SendStrWLen(string &str, int lenSize) {
 }
 
 bool Socket::isConnected() {
-    int read = recv( fD, NULL, 0, MSG_DONTWAIT | MSG_PEEK );
+    int read = recv(fD, NULL, 0, MSG_DONTWAIT | MSG_PEEK);
     return read != 0;
 }
