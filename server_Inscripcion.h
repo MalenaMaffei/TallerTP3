@@ -10,7 +10,8 @@ class Inscripcion : public Transaction{
   Inscripcion(const string &materia,const string &curso,
               const string &alumnoId);
 
-  void updateInscriptions(string &inscriptos, string &inscripciones)const;
+  void updateInscriptions(string &inscriptos, string &inscripciones,
+                            string &vacancies) const;
   void updateVacancies(string &vacancy) const;
 };
 

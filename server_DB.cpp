@@ -134,37 +134,58 @@ void DB::validateDocente(Transaction &transaction, string docenteId) {
 }
 
 void DB::processTransaction(Transaction &transaction, Docente &docente) {
+//    validateTransaction(transaction);
+//    validateDocente(transaction, docente.getId());
+//    string alumnoId = transaction.getAlumnoId();
+
+//    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
+//    string inscriptos = materias[transaction.getId()]["inscriptos"];
+//    string vacantes = materias[transaction.getId()]["vacantes"];
+//
+////    std::cout << "---------ANTES--------"<<std::endl;
+////    std::cout << "alumno: " << alumnoId<<std::endl;
+////    std::cout << "inscriptos: " << inscriptos<<std::endl;
+////    std::cout << "inscripciones: " << inscripciones<<std::endl;
+//
+//    transaction.updateInscriptions(inscriptos, inscripciones, vacantes);
+//    users["alumno"+alumnoId]["inscripciones"] = inscripciones;
+//    materias[transaction.getId()]["inscriptos"] = inscriptos;
+//    materias[transaction.getId()]["vacantes"] = vacantes;
+
+
+
+
+
     validateTransaction(transaction);
     validateDocente(transaction, docente.getId());
     string alumnoId = transaction.getAlumnoId();
-
     string inscripciones = users["alumno"+alumnoId]["inscripciones"];
     string inscriptos = materias[transaction.getId()]["inscriptos"];
+    string vacantes = materias[transaction.getId()]["vacantes"];
 
-    std::cout << "---------ANTES--------"<<std::endl;
-    std::cout << "alumno: " << alumnoId<<std::endl;
-    std::cout << "inscriptos: " << inscriptos<<std::endl;
-    std::cout << "inscripciones: " << inscripciones<<std::endl;
+    transaction.updateInscriptions(inscripciones, inscriptos, vacantes);
 
-    transaction.updateInscriptions(inscriptos, inscripciones);
     users["alumno"+alumnoId]["inscripciones"] = inscripciones;
     materias[transaction.getId()]["inscriptos"] = inscriptos;
-
-
-    std::cout << "---------DESPUES--------"<<std::endl;
-    std::cout << "alumno: " << alumnoId<<std::endl;
-    std::cout << "inscriptos: " << inscriptos<<std::endl;
-    std::cout << "inscripciones: " << inscripciones<<std::endl;
-
-
-    std::cout << "---------ACCEDIENDO--------"<<std::endl;
-    std::cout << "alumno: " << alumnoId<<std::endl;
-    std::cout << "inscriptos: " << materias[transaction.getId()]["inscriptos"]<<std::endl;
-    std::cout << "inscripciones: " << users["alumno"+alumnoId]["inscripciones"]<<std::endl;
-
-    string vacantes = materias[transaction.getId()]["vacantes"];
-    transaction.updateVacancies(vacantes);
     materias[transaction.getId()]["vacantes"] = vacantes;
+
+//    transaction.updateVacancies(vacantes);
+
+
+//    std::cout << "---------DESPUES--------"<<std::endl;
+//    std::cout << "alumno: " << alumnoId<<std::endl;
+//    std::cout << "inscriptos: " << inscriptos<<std::endl;
+//    std::cout << "inscripciones: " << inscripciones<<std::endl;
+//
+//
+//    std::cout << "---------ACCEDIENDO--------"<<std::endl;
+//    std::cout << "alumno: " << alumnoId<<std::endl;
+//    std::cout << "inscriptos: " << materias[transaction.getId()]["inscriptos"]<<std::endl;
+//    std::cout << "inscripciones: " << users["alumno"+alumnoId]["inscripciones"]<<std::endl;
+
+//    string vacantes = materias[transaction.getId()]["vacantes"];
+//    transaction.updateVacancies(vacantes);
+//    materias[transaction.getId()]["vacantes"] = vacantes;
 
 //    validateMateria(materia, curso);
 //    validateUser("alumno", alumnoId);
@@ -178,14 +199,17 @@ void DB::processTransaction(Transaction &transaction, User &user) {
     string alumnoId = transaction.getAlumnoId();
     string inscripciones = users["alumno"+alumnoId]["inscripciones"];
     string inscriptos = materias[transaction.getId()]["inscriptos"];
+    string vacantes = materias[transaction.getId()]["vacantes"];
 
-    transaction.updateInscriptions(inscripciones, inscriptos);
+    transaction.updateInscriptions(inscripciones, inscriptos, vacantes);
+
     users["alumno"+alumnoId]["inscripciones"] = inscripciones;
     materias[transaction.getId()]["inscriptos"] = inscriptos;
-
-    string vacantes = materias[transaction.getId()]["vacantes"];
-    transaction.updateVacancies(vacantes);
     materias[transaction.getId()]["vacantes"] = vacantes;
+
+//    string vacantes = materias[transaction.getId()]["vacantes"];
+//    transaction.updateVacancies(vacantes);
+//    materias[transaction.getId()]["vacantes"] = vacantes;
 
 //    validateMateria(materia, curso);
 //    validateUser("alumno", alumnoId);

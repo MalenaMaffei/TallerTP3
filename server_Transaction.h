@@ -13,7 +13,9 @@ class Transaction {
   const string &getId() const;
   const string &getAlumnoId() const;
 //
-  virtual void updateInscriptions(string &inscriptos, string &inscripciones)
+
+  virtual void updateInscriptions(string &inscriptos, string &inscripciones,
+                                    string &vacancies)
   const {};
   virtual void updateVacancies(string &vacancy) const {};
 
