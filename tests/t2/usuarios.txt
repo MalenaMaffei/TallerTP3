@@ -1,4 +1,4 @@
-alumno\t1\talice
-docente\t57\tbob
-docente\t22\tmarge
-docente\t1\tHuergo
+alumno	1	alice
+docente	57	bob
+docente	22	marge
+docente	2	Huergo

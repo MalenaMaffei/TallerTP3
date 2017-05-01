@@ -1,17 +1,19 @@
 #ifndef TP2_SESSION_H
 #define TP2_SESSION_H
-
+#include "common_Thread.h"
 #include "common_Socket.h"
 #include "server_User.h"
 #include "common_CommandParser.h"
 #include "server_ErrorMonitor.h"
+#include "common_InputQueueMonitor.h"
 
-class Session {
+class Session : public Thread  {
 public:
-    explicit Session(const Socket &socketServer,ErrorMonitor &errorMonitor,
-                         DB &database);
-    void start();
-
+    explicit Session(Socket newSocket,
+                         ErrorMonitor &errorMonitor,
+                         DB &database,
+                         InputQueueMonitor &input);
+    void run();
     virtual ~Session();
 
 private:
@@ -20,6 +22,7 @@ private:
     CommandParser parser;
     ErrorMonitor &errorMonitor;
     DB &database;
+    InputQueueMonitor &input;
     void receiveCommands();
 };
 

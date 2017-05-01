@@ -4,6 +4,9 @@
 #include <algorithm>
 #include <iostream>
 #include "common_CommandParser.h"
+#include "common_SocketException.h"
+#include "common_InputQueueMonitor.h"
+#include "common_InputGetter.h"
 using std::string;
 using std::vector;
 using std::cout;
@@ -25,13 +28,12 @@ int client(const char *ip, const char *port, vector<string> arguments){
 //    TODO create ints of 4 bytes only.. que se yo
     try {
         client_socket.SendStrWLen(login, LENGTH_SIZE);
-    } catch(std::exception& e) {
+    } catch(SocketException& e) {
         cout << e.what() << endl;
         client_socket.Shutdown(SHUT_WR);
         client_socket.Destroy();
         return 0;
     }
-                                                              endl;
 
 
     string command;
@@ -42,17 +44,28 @@ int client(const char *ip, const char *port, vector<string> arguments){
 // en la cola de comandos tengo que poder senialar que ya se llego al fin de
 // los comandos o ver como darme cuenta si el thread termino de correr. El
 // thread de comandos lee stdin todo el dia y va  encolando los comandos.
-    while (getline(std::cin, command)){
+
+
+    InputQueueMonitor queueMonitor;
+    Thread *getter = new InputGetter(queueMonitor);
+    getter->start();
+
+    cout << client_socket.isConnected() << endl;
+    while (! queueMonitor.isQuittingTime() && client_socket.isConnected()){
+        if (queueMonitor.isEmpty()){
+//            cout << "no hay nada" << endl;
+            continue; }
+        string built_command = parser.buildCommand(queueMonitor.pop());
         try {
-        string built_command = parser.buildCommand(command);
-
-        client_socket.SendStrWLen(built_command, LENGTH_SIZE);
-//        cout << "lo que pusiste: " << built_command << endl;
-
+            client_socket.SendStrWLen(built_command, LENGTH_SIZE);
             string server_response = client_socket.ReceiveStrWLen(LENGTH_SIZE);
             cout << server_response;
-        } catch(std::exception& e){ break; }
+        } catch(SocketException& e){ break; }
     }
+
+    getter->join();
+    delete getter;
+
 
     client_socket.Shutdown(SHUT_WR);
     client_socket.Destroy();

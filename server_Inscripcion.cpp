@@ -13,7 +13,7 @@ void Inscripcion::updateInscriptions(string &inscriptos, string &inscripciones,
     int new_vacante = stoi(vacancies) - 1;
     if (new_vacante < 0) {
         throw DBException("El curso "+curso+" de la materia "+materia+ " no "
-                "posee más vacantes.\n");
+                "posee mas vacantes.\n");
     }
     inscriptos += " "+alumnoId;
     inscripciones += " "+id;

@@ -4,8 +4,9 @@
 #include "server_DBException.h"
 #include "server_DB.h"
 #define MY_TYPE "alumno"
-string Alumno::listarInscripciones() const {
-    return User::listarInscripciones();
+string Alumno::listarInscripciones() {
+    string format = User::listarInscripciones();
+    return database.listarMateriasCabecera(format, *this);
 }
 
 string Alumno::inscribir(vector<string> &args)  {

@@ -4,9 +4,10 @@
 #include <vector>
 #include "server_DB.h"
 #define MY_TYPE "docente"
-string Docente::listarInscripciones() const {
-    return User::listarInscripciones();
-//    cout << "listando inscripciones del docente" << endl;
+string Docente::listarInscripciones()  {
+    string format = User::listarInscripciones();
+    return database.listarMateriasCabecera(format, *this);
+    //    cout << "listando inscripciones del docente" << endl;
 }
 
 string Docente::inscribir(vector<string> &args)  {

@@ -1,2 +1,2 @@
-7540\t1\tAlgoritmos I\t57\t20
-6301\t7\Física I\t22\t20
+7540	1	Algoritmos I	57	20
+6301	7	Física I	22	20

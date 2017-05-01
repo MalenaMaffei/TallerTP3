@@ -3,8 +3,9 @@
 #include <vector>
 #include "server_DB.h"
 #define MY_TYPE "admin"
-string Admin::listarInscripciones() const {
-    return User::listarInscripciones();
+string Admin::listarInscripciones() {
+    string format = User::listarInscripciones();
+    return database.listarMateriasCabecera(format, *this);
 //    cout << "listando inscripciones de todo el mundo" << endl;
 }
 

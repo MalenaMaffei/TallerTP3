@@ -17,8 +17,8 @@ string User::listarMaterias() const {
     return format;
 }
 
-string User::listarInscripciones() const {
-    return "<codigo> - <descripcion>, Curso <id-curso>, <nombre-docente>";
+string User::listarInscripciones() {
+    return "$codigo - $descripcion, Curso $curso, #docente$iddocente.\n";
 }
 
 
@@ -39,11 +39,6 @@ User::~User() {}
 
 User::User(DB &database) : database(database) {}
 
-
-//string User::print() const {
-//    return userType;
-//}
-
 string User::executeCommand(vector<string> & commands)  {
 //    TODO lanzar error con comando invalido
     string command = commands[CODE_POS];
@@ -58,34 +53,8 @@ string User::executeCommand(vector<string> & commands)  {
             inscribir(commands);
     } else if (command == DESINS){
         executed_command = desinscribir(commands);
+    } else {
+        executed_command = command + " es un comando inválido.\n";
     }
     return executed_command;
 }
-
-//string User::validateMateria(string materia, string curso) const {
-//
-//    return "";
-//}
-
-// string User::generateInscription(string materia, string curso,
-//                                  string alumnoId) {
-//     try {
-//         database.processTransaction(materia, curso, alumnoId, *this);
-//         return "Inscripción exitosa.\n";
-//
-//     } catch (DBException& e){
-//         return e.what();
-//     }
-// }
-
-//string User::removeInscription(string materia, string curso,
-//                               string alumnoId) const {
-//    if (!database.materiaExists(materia)) {
-//        return "Desinscripción inválida.\n";
-//    }
-////    else if (!database.cursoExists(materia, curso)) {
-////        return "Desinscripción inválida.\n";
-////    }
-//    return "hola";
-////    bool success = database.removeInscription;
-//}

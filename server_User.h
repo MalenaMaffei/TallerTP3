@@ -22,7 +22,7 @@ public:
     explicit User(DB &database);
     virtual ~User();
     string listarMaterias() const;
-    virtual string listarInscripciones() const;
+    virtual string listarInscripciones();
     virtual string inscribir(vector<string> &args);
     virtual string desinscribir(vector<string> &args);
     virtual string print() const = 0;

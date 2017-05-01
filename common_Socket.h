@@ -43,7 +43,7 @@ public:
 //PRE: self fue inicializado con Create.
 //Se llamo a BindAndListen con self.
 //TODO VER COMO DEVOLVER OTRO SOCKET
-    int Accept(Socket &other)const;
+  Socket Accept() const;
 
 //Envia la cantidad length de bytes de source.
 // Devuelve OK o NOK si hay error.
@@ -78,6 +78,9 @@ public:
   bool isConnected();
 
     string ReceiveStrWLen(int lenSize);
+  int getFD() const;
+
+  void setToNonBlocking();
 };
 
 

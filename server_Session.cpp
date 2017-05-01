@@ -14,26 +14,26 @@
 
 
 
-Session::Session(const Socket &socketServer, ErrorMonitor &errorMonitor,
-                 DB &database) :
-    errorMonitor(errorMonitor), database(database) {
-    Socket new_socket;
-    socketServer.Accept(new_socket);
-    socket = new_socket;
-    cout << "en el init socket conectado: " << socket.isConnected() <<endl;
+Session::Session(Socket newSocket,
+                 ErrorMonitor &errorMonitor,
+                 DB &database,
+                 InputQueueMonitor &input) :
+    socket(newSocket), errorMonitor(errorMonitor), database(database), input
+    (input) {
+//    Socket new_socket;
+//    newSocket.Accept(new_socket);
+//    socket = new_socket;
     user = nullptr;
 }
 
 void Session::receiveCommands(){
     bool shutdown = false;
-    while (!shutdown){
+    while (!shutdown && !input.isQuittingTime()){
         string recv_command;
         try {
             recv_command = socket.ReceiveStrWLen(LENGTH_SIZE);
         } catch(std::runtime_error& e){
 //            TODO cambiar aca esto por la exc correcta
-//            y volver a mandarla? depende si hay que mostrar esto en otros
-// casos
             errorMonitor.outputError(user->print() + " desconectado.");
             shutdown = true;
             continue;
@@ -42,17 +42,13 @@ void Session::receiveCommands(){
 //Aca viene la parte de devolver un vector de comandos.
         vector<string> commands;
         parser.parseCommand(recv_command, commands);
-        errorMonitor.outputError(user->print() + " ejecuta " +
-            commands[CODE_POS] + ".");
+        errorMonitor.outputCommand(user->print(), commands[CODE_POS]);
         string output = user->executeCommand(commands);
         socket.SendStrWLen(output, LENGTH_SIZE);
     }
 }
 
-void Session::start() {
-    cout << "dentro de start" << endl;
-
-    cout << "socket is connected: " << socket.isConnected() << endl;
+void Session::run() {
     string parameters = socket.ReceiveStrWLen(LENGTH_SIZE);
 
     vector<string> params;
@@ -61,11 +57,15 @@ void Session::start() {
     UserFactory factory;
     try {
         user = factory.createUser(params, database);
+    } catch(std::runtime_error& e) {
+        errorMonitor.outputError(e.what());
+        return;
     } catch(std::invalid_argument& e){
         errorMonitor.outputError(e.what());
         return;
     }
     errorMonitor.outputError(user->print() + " conectado.");
+
 
     receiveCommands();
 }
@@ -75,3 +75,4 @@ Session::~Session() {
 //    socket.Shutdown(READ_SHTDWN);
     socket.accept_destroy();
 }
+

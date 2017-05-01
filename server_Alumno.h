@@ -7,7 +7,7 @@ class Alumno : public User {
 public:
     Alumno(DB &database, const string &id);
 
-    virtual string listarInscripciones() const;
+    virtual string listarInscripciones();
     virtual string inscribir(vector<string> &args);
     virtual string desinscribir(vector<string> &args);
     virtual string print() const;

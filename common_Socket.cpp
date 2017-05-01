@@ -14,7 +14,7 @@
 #include <cstring>
 #include <string>
 #include <errno.h>
-
+#include <fcntl.h>
 #define SERVER_MODE 0
 #define CLIENT_MODE 0
 
@@ -106,8 +106,8 @@ int Socket::BindAndListen(int backlog){
     return OK;
 }
 
-//TODO hacer que devuelva otro socket
-int Socket::Accept(Socket &other) const{
+Socket Socket::Accept() const{
+    Socket other;
     struct sockaddr_storage c_addr;
     struct sockaddr *a;
     socklen_t *l;
@@ -121,13 +121,12 @@ int Socket::Accept(Socket &other) const{
     if (new_fd < 0){
         throw SocketException("Error en Accept nro: " + std::to_string(errno));
     }
-    return OK;
+    return other;
 }
 
 int Socket::Receive(unsigned char *buffer, size_t length){
     int bytes_read = recv(fD, buffer, length, MSG_NO_SIGNAL);
     if (bytes_read == MSG_NO_SIGNAL){
-//        TODO CAMBIAR ESE TIPO DE EXCEPCION
         throw SocketException("Intentaba recibir pero se cerro el socket");
     }
     return bytes_read;
@@ -167,6 +166,7 @@ string Socket::ReceiveStrWLen(int lenSize) {
     string received((char *)buffer_leer);
     return received;
 }
+
 void Socket::SendStrWLen(string &str, int lenSize) {
     int normal_length = str.size();
     int net_length = htonl(normal_length);
@@ -178,4 +178,13 @@ void Socket::SendStrWLen(string &str, int lenSize) {
 bool Socket::isConnected() {
     int read = recv(fD, NULL, 0, MSG_DONTWAIT | MSG_PEEK);
     return read != 0;
+}
+
+int Socket::getFD() const {
+    return fD;
+}
+void Socket::setToNonBlocking() {
+    if (fcntl(fD, F_SETFL, fcntl(fD, F_GETFL, 0) | O_NONBLOCK) == -1){
+        throw SocketException("error en setear nonblock");
+    }
 }
