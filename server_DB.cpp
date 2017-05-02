@@ -1,14 +1,14 @@
 #include "server_DB.h"
 #include <fstream>
 #include <vector>
-#include <iostream>
+//#include <iostream>
 #include <regex>
-#include <sstream>
-#include <vector>
+//#include <sstream>
+//#include <vector>
 #include <map>
 #include <string>
-#include "server_DBException.h"
-#include "server_User.h"
+//#include "server_DBException.h"
+//#include "server_User.h"
 #define DELIMITER "\t"
 using std::ifstream;
 using std::vector;
@@ -203,7 +203,7 @@ string DB::listarMateriasCabecera(string format, Admin &user) {
 
         vector<string> alumnos;
         splitStr(materias[kv.first]["inscriptos"], alumnos, " ");
-        cout << "tamanio vector spliteado: " << alumnos.size()<<endl;
+        // cout << "tamanio vector spliteado: " << alumnos.size()<<endl;
         for (size_t i = 0; i <alumnos.size(); ++i) {
             line = alumno;
             while (std::regex_search(line, match, rgx)) {
@@ -264,7 +264,7 @@ string DB::listarMateriasCabecera(string format, Docente &user) {
         all += line;
         vector<string> alumnos;
         splitStr(materias[kv.first]["inscriptos"], alumnos, " ");
-        cout << "tamanio vector spliteado: " << alumnos.size()<<endl;
+        // cout << "tamanio vector spliteado: " << alumnos.size()<<endl;
         for (size_t i = 0; i <alumnos.size(); ++i) {
             line = alumno;
             while (std::regex_search(line, match, rgx)) {
@@ -281,6 +281,3 @@ string DB::listarMateriasCabecera(string format, Docente &user) {
     all = fillNameById(all);
     return all;
 }
-
-
-

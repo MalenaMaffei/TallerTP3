@@ -1,19 +1,18 @@
 #ifndef TP2_USER_H
 #define TP2_USER_H
 
-#include <iostream>
+//#include <iostream>
 #include <string>
 #include <vector>
-#include <vector>
-// #include "server_DB.h"
-#include "server_DBException.h"
+// //#include "server_DB.h"
+//#include "server_DBException.h"
 #include "server_Inscripcion.h"
 #include "server_Desinscripcion.h"
 //
 class DB;
 
-using std::cout;
-using std::endl;
+// using std::cout;
+// using std::endl;
 using std::string;
 using std::vector;
 

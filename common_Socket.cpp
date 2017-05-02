@@ -1,19 +1,16 @@
 #include "common_Socket.h"
-//#define _POSIX_C_SOURCE 200112L
-
-#include <stdbool.h>
-
-#include <sys/types.h>
+// #define _POSIX_C_SOURCE 200112L
+#include "common_SocketException.h"
+// #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <memory.h>
-#include <stdio.h>
-//#include <exception>
+// #include <stdio.h>
 #include "common_SocketException.h"
-#include <stdexcept>
+// #include <stdexcept>
 #include <cstring>
 #include <string>
-#include <errno.h>
+// #include <errno.h>
 #include <fcntl.h>
 #define SERVER_MODE 0
 #define CLIENT_MODE 0

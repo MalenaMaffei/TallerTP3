@@ -1,4 +1,4 @@
-#include <iostream>
+//#include <iostream>
 #include "server_Inscripcion.h"
 #include <string>
 Inscripcion::Inscripcion(const string &materia, const string &curso,
@@ -19,4 +19,3 @@ void Inscripcion::updateInscriptions(string &inscriptos, string &inscripciones,
     inscripciones += " "+id;
     vacancies = std::to_string(new_vacante);
 }
-

@@ -1,7 +1,7 @@
 #include "common_Socket.h"
 #include <string>
 #include <vector>
-#include <algorithm>
+// #include <algorithm>
 #include <iostream>
 #include "common_CommandParser.h"
 #include "common_SocketException.h"
@@ -11,7 +11,6 @@ using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
-using std::cin;
 
 #define LENGTH_SIZE 4
 
@@ -50,7 +49,7 @@ int client(const char *ip, const char *port, vector<string> arguments){
     Thread *getter = new InputGetter(queueMonitor);
     getter->start();
 
-    cout << client_socket.isConnected() << endl;
+//    cout << client_socket.isConnected() << endl;
     while (! queueMonitor.isQuittingTime() && client_socket.isConnected()){
         if (queueMonitor.isEmpty()){
 //            cout << "no hay nada" << endl;

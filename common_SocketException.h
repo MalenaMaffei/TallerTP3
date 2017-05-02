@@ -1,7 +1,7 @@
 #ifndef TP2_SOCKETEXCEPTION_H
 #define TP2_SOCKETEXCEPTION_H
 
-#include <exception>
+//#include <exception>
 #include <stdexcept>
 #include <string>
 

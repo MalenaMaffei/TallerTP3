@@ -1,6 +1,7 @@
+#include "common_InputGetter.h"
 #include <iostream>
 #include <string>
-#include "common_InputGetter.h"
+
 InputGetter::InputGetter(InputQueueMonitor &queue) : queue(queue) {}
 void InputGetter::run() {
     string input;

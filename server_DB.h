@@ -2,8 +2,8 @@
 #define INC_3TP_DB_H
 #include <string>
 #include <map>
-#include <vector>
-#include "server_User.h"
+//#include <vector>
+//#include "server_User.h"
 #include "server_Docente.h"
 #include "server_Transaction.h"
 #include "server_Alumno.h"

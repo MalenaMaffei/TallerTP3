@@ -65,4 +65,3 @@ void CommandParser::parseCommand(string recv_command,
                                  vector<string> &commands) const {
     splitString(recv_command, commands, COMM_DELIMITER);
 }
-

@@ -5,6 +5,7 @@
 #include "server_User.h"
 #include "common_CommandParser.h"
 #include "server_ErrorMonitor.h"
+// TODO ver si al final esto vale la pena 
 #include "common_InputQueueMonitor.h"
 
 class Session : public Thread  {

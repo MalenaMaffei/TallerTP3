@@ -1,6 +1,6 @@
 #ifndef TP2_DB_EXCEPTION_H
 #define TP2_DB_EXCEPTION_H
-#include <exception>
+//#include <exception>
 #include <stdexcept>
 #include <string>
 using std::string;

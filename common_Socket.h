@@ -1,6 +1,6 @@
 #ifndef PROJECT_SOCKET_H
 #define PROJECT_SOCKET_H
-
+//
 #include <netdb.h>
 #include <string>
 #define OK 0

@@ -1,12 +1,13 @@
 #include "common_Socket.h"
 #include <string>
-#include <cstring>
-#include <regex>
+//#include <cstring>
+//#include <regex>
 #include <vector>
-#include "server_User.h"
-#include "server_Admin.h"
-#include "server_Docente.h"
-#include "server_Alumno.h"
+//#include "server_User.h"
+//#include "server_Admin.h"
+//#include "server_Docente.h"
+//#include "server_Alumno.h"
+#include <iostream>
 #include "server_Session.h"
 #include "server_DB.h"
 #include "common_InputGetter.h"
@@ -18,6 +19,8 @@
 #define SERVER_MODE 0
 #define LENGTH_SIZE 4
 
+using std::cout;
+using std::endl;
 
 int server(const char *server_port, string usersFile, string materiasFile){
     ErrorMonitor errorMonitor;

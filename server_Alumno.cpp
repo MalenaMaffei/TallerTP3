@@ -1,7 +1,7 @@
 #include "server_Alumno.h"
 #include <string>
 #include <vector>
-#include "server_DBException.h"
+//#include "server_DBException.h"
 #include "server_DB.h"
 #define MY_TYPE "alumno"
 string Alumno::listarInscripciones() {
