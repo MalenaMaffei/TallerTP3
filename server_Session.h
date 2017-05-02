@@ -10,10 +10,10 @@
 
 class Session : public Thread  {
 public:
-    explicit Session(Socket newSocket,
-                         ErrorMonitor &errorMonitor,
-                         DB &database,
-                         InputQueueMonitor &input);
+    explicit Session(int newFD,
+                     ErrorMonitor &errorMonitor,
+                     DB &database,
+                     InputQueueMonitor &input);
     void run();
     virtual ~Session();
 

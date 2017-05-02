@@ -1,5 +1,4 @@
 #include "server_Desinscripcion.h"
-#include <regex>
 #include <string>
 Desinscripcion::Desinscripcion(const string &materia,const string &curso,
                                const string &alumnoId) :
@@ -13,6 +12,10 @@ void Desinscripcion::updateInscriptions(string &inscriptos,
     }
     int new_vacante = stoi(vacancies) + 1;
     vacancies = std::to_string(new_vacante);
-    inscripciones = std::regex_replace(inscripciones,std::regex(" "+id),"");
-    inscriptos = std::regex_replace(inscriptos,std::regex(alumnoId), "");
+
+    int erase_from = inscripciones.find(" "+id);
+    inscripciones.erase(erase_from, id.size()+1);
+
+    erase_from = inscriptos.find(alumnoId);
+    inscriptos.erase(erase_from, alumnoId.size());
 }

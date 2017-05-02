@@ -47,27 +47,27 @@ int server(const char *server_port, string usersFile, string materiasFile){
     getter->start();
 
     while (! queueMonitor.isQuittingTime()){
-        Socket new_socket;
+//        Socket new_socket;
         try {
-            new_socket = socketServer.Accept();
+            int new_fd = socketServer.Accept();
+            Session *session =
+                new Session(new_fd, errorMonitor, database, queueMonitor);
+            sessions.push_back(session);
+            session->start();
         } catch(SocketException& e){ continue; }
-
-        Session *session =
-            new Session(new_socket, errorMonitor, database, queueMonitor);
-        sessions.push_back(session);
-        session->start();
     }
 
 //    TODO avisar a los threads que se va a desconectar
     getter->join();
     delete getter;
 
+
 //    TODO cabiar por un foreach
     for (size_t i = 0; i < sessions.size(); ++i) {
         sessions[i]->join();
         delete sessions[i];
     }
-
+    std::cout << "ya hasta borre la sesion" << std::endl;
     socketServer.Destroy();
 
     return 0;

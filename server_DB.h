@@ -2,7 +2,7 @@
 #define INC_3TP_DB_H
 #include <string>
 #include <map>
-//#include <vector>
+#include <vector>
 //#include "server_User.h"
 #include "server_Docente.h"
 #include "server_Transaction.h"
@@ -26,8 +26,14 @@ class DB {
   void processTransaction(Transaction &transaction, Docente &user);
   void processTransaction(Transaction &transaction, User &user);
   void validateUser(string userType, string id);
+//  string stringFiller(string format,
+//                      vector<map<string, string>> &materiasVector);
+//  string stringFiller(string header,
+//                      vector<map<string, string>> &materiasVector, string
+//                      line, vector<string> lineContent);
 
  private:
+  bool docenteTeachesMateria(string materiaid, string iddocente);
   bool materiaExists(string materia) const;
   void validateDocente(Transaction &transaction, string docenteId);
   void acceptTransaction(Transaction &transaction);

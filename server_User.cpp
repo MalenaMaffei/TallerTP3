@@ -13,7 +13,7 @@ string User::listarMaterias() const {
     string format = "$codigo - $descripcion, Curso $curso, "
         "#docente$iddocente, $vacantes vacantes.\n";
     format = database.fillAllMaterias(format);
-    format = database.fillNameById(format);
+//    format = database.fillNameById(format);
     return format;
 }
 

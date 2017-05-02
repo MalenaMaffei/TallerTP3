@@ -2,8 +2,10 @@
 //#include <cstring>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "server_UserFactory.h"
+#include "common_SocketException.h"
 
 //#include "common_CommandParser.h"
 #define BUFFSIZE 300
@@ -15,12 +17,11 @@
 
 
 
-Session::Session(Socket newSocket,
-                 ErrorMonitor &errorMonitor,
-                 DB &database,
+Session::Session(int newFD, ErrorMonitor &errorMonitor, DB &database,
                  InputQueueMonitor &input) :
-    socket(newSocket), errorMonitor(errorMonitor), database(database), input
+     errorMonitor(errorMonitor), database(database), input
     (input) {
+    socket.addFD(newFD);
 //    Socket new_socket;
 //    newSocket.Accept(new_socket);
 //    socket = new_socket;
@@ -33,8 +34,7 @@ void Session::receiveCommands(){
         string recv_command;
         try {
             recv_command = socket.ReceiveStrWLen(LENGTH_SIZE);
-        } catch(std::runtime_error& e){
-//            TODO cambiar aca esto por la exc correcta
+        } catch(SocketException& e){
             errorMonitor.outputError(user->print() + " desconectado.");
             shutdown = true;
             continue;
@@ -50,7 +50,14 @@ void Session::receiveCommands(){
 }
 
 void Session::run() {
-    string parameters = socket.ReceiveStrWLen(LENGTH_SIZE);
+    string parameters;
+    try {
+        parameters = socket.ReceiveStrWLen(LENGTH_SIZE);
+        socket.accept_destroy();
+    } catch(SocketException& e) {
+        return;
+    }
+
 
     vector<string> params;
     parser.parseUserInfo(parameters, params);
@@ -66,7 +73,6 @@ void Session::run() {
         return;
     }
     errorMonitor.outputError(user->print() + " conectado.");
-
 
     receiveCommands();
 }
