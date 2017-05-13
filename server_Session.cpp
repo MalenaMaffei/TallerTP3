@@ -2,7 +2,6 @@
 //#include <cstring>
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include "server_UserFactory.h"
 #include "common_SocketException.h"
@@ -17,26 +16,25 @@
 
 
 
-Session::Session(int newFD, ErrorMonitor &errorMonitor, DB &database,
-                 InputQueueMonitor &input) :
-     errorMonitor(errorMonitor), database(database), input
-    (input) {
+Session::Session(int newFD, ErrorMonitor &errorMonitor, DB &database) :
+    errorMonitor(errorMonitor), database(database){
     socket.addFD(newFD);
 //    Socket new_socket;
 //    newSocket.Accept(new_socket);
 //    socket = new_socket;
     user = nullptr;
+    exit = false;
 }
 
 void Session::receiveCommands(){
-    bool shutdown = false;
-    while (!shutdown && !input.isQuittingTime()){
+//    bool shutdown = false;
+    while (!exit){
         string recv_command;
         try {
             recv_command = socket.ReceiveStrWLen(LENGTH_SIZE);
         } catch(SocketException& e){
             errorMonitor.outputError(user->print() + " desconectado.");
-            shutdown = true;
+            exit = true;
             continue;
         }
 
@@ -53,7 +51,7 @@ void Session::run() {
     string parameters;
     try {
         parameters = socket.ReceiveStrWLen(LENGTH_SIZE);
-        socket.accept_destroy();
+//        socket.accept_destroy();
     } catch(SocketException& e) {
         return;
     }
@@ -81,4 +79,9 @@ Session::~Session() {
     if (user){ delete(user); }
 //    socket.Shutdown(READ_SHTDWN);
     socket.accept_destroy();
+}
+
+void Session::shutdown() {
+    exit = true;
+    socket.Shutdown(SHUT_RDWR);
 }

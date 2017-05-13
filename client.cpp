@@ -25,10 +25,7 @@ int client(const char *ip, const char *port, vector<string> arguments){
         return 0;
     }
 
-    client_socket.CreateAndConnect(ip, port);
-
     string login = parser.delimitCommands(arguments);
-
 //    TODO create ints of 4 bytes only.. que se yo
     try {
         client_socket.SendStrWLen(login, LENGTH_SIZE);
@@ -41,44 +38,24 @@ int client(const char *ip, const char *port, vector<string> arguments){
 
     string command;
 
-//    while (getline(std::cin, command)){
-//        try {
-//            string built_command = parser.buildCommand(command);
-////            cout << built_command << endl;
-//            client_socket.SendStrWLen(built_command, LENGTH_SIZE);
-//            string server_response = client_socket.ReceiveStrWLen(LENGTH_SIZE);
-//            cout << server_response;
-//        } catch(SocketException& e){ break; }
-//    }
-
-    InputQueueMonitor queueMonitor;
-    Thread *getter = new InputGetter(queueMonitor);
-    getter->start();
-
-//    cout << client_socket.isConnected() << endl;
-//    while (! queueMonitor.isQuittingTime() && client_socket.isConnected()){
-    while (!queueMonitor.isQuittingTime() || !queueMonitor.isEmpty()){
-        if (queueMonitor.isEmpty()){
-//            cout << "estaba vacio y segui" << endl;
-            continue; }
-
-        string built_command = parser.buildCommand(queueMonitor.pop());
-//        cout << built_command << endl;
-//        cout << "is empty now?: " << queueMonitor.isEmpty() << endl;
+    while (getline(std::cin, command)){
+        string built_command = parser.buildCommand(command);
         try {
             client_socket.SendStrWLen(built_command, LENGTH_SIZE);
-           string server_response = client_socket.ReceiveStrWLen(LENGTH_SIZE);
+        } catch(SocketException& e){
+            break;
+        }
+        try {
+            string server_response = client_socket.ReceiveStrWLen(LENGTH_SIZE);
             cout << server_response;
-        } catch(SocketException& e){ break; }
+        } catch(SocketException& e){
+            break;
+        }
     }
 
-    getter->join();
-    delete getter;
 
-cout << "no lo estoy cerrando?" << endl;
-//    client_socket.Shutdown(SHUT_WR);
+    client_socket.Shutdown(SHUT_RDWR);
     client_socket.Destroy();
-    cout << "en teoria ya esta" << endl;
     return 0;
 }
 

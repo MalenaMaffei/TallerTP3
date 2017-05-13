@@ -12,10 +12,10 @@ class Session : public Thread  {
 public:
     explicit Session(int newFD,
                      ErrorMonitor &errorMonitor,
-                     DB &database,
-                     InputQueueMonitor &input);
+                     DB &database);
     void run();
     virtual ~Session();
+    void shutdown();
 
 private:
     Socket socket;
@@ -23,7 +23,7 @@ private:
     CommandParser parser;
     ErrorMonitor &errorMonitor;
     DB &database;
-    InputQueueMonitor &input;
+    bool exit;
     void receiveCommands();
 };
 
