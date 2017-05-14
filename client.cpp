@@ -7,7 +7,6 @@
 #include "common_SocketException.h"
 #include "common_InputQueueMonitor.h"
 #include "common_InputGetter.h"
-#include <unistd.h>
 using std::string;
 using std::vector;
 using std::cout;
@@ -43,7 +42,6 @@ void client(const char *ip, const char *port, vector<string> arguments){
 
     string command;
     while (getline(std::cin, command)){
-//        sleep(1);
         string built_command = parser.buildCommand(command);
         try {
             client_socket.SendStrWLen(built_command, LENGTH_SIZE);
