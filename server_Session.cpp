@@ -2,6 +2,7 @@
 //#include <cstring>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "server_UserFactory.h"
 #include "common_SocketException.h"
@@ -31,6 +32,7 @@ void Session::receiveCommands(){
     while (!exit){
         string recv_command;
         try {
+//            TODO sacar iostream
             recv_command = socket.ReceiveStrWLen(LENGTH_SIZE);
         } catch(SocketException& e){
             errorMonitor.outputError(user->print() + " desconectado.");

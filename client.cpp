@@ -7,23 +7,29 @@
 #include "common_SocketException.h"
 #include "common_InputQueueMonitor.h"
 #include "common_InputGetter.h"
+#include <unistd.h>
 using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
-
+using std::cin;
 #define LENGTH_SIZE 4
 
 
-int client(const char *ip, const char *port, vector<string> arguments){
+void client(const char *ip, const char *port, vector<string> arguments){
     CommandParser parser;
     Socket client_socket;
     try {
         client_socket.CreateAndConnect(ip, port);
     } catch(SocketException& e){
         cout << e.what() << endl;
-        return 0;
+        return;
     }
+
+//    string command;
+//    while (getline(cin,command)){
+//        cout << command << endl;
+//    }
 
     string login = parser.delimitCommands(arguments);
 //    TODO create ints of 4 bytes only.. que se yo
@@ -32,13 +38,12 @@ int client(const char *ip, const char *port, vector<string> arguments){
     } catch(SocketException& e) {
         cout << e.what() << endl;
         client_socket.Destroy();
-        return 0;
+        return;
     }
 
-
     string command;
-
     while (getline(std::cin, command)){
+//        sleep(1);
         string built_command = parser.buildCommand(command);
         try {
             client_socket.SendStrWLen(built_command, LENGTH_SIZE);
@@ -56,7 +61,7 @@ int client(const char *ip, const char *port, vector<string> arguments){
 
     client_socket.Shutdown(SHUT_RDWR);
     client_socket.Destroy();
-    return 0;
+    return;
 }
 
 int main(int argc, char **argv){

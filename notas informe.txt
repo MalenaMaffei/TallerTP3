@@ -1,0 +1,1 @@
+getline con redirected stdin en valgrind funciona pero sin valgrind se cuelgan los sockets!!

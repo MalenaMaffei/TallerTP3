@@ -88,7 +88,7 @@ void Socket::Send(unsigned char *source, size_t length){
         }
         bytes_sent=send(fD, buffer_ptr, bytes_left, MSG_NO_SIGNAL);
         if (bytes_sent<=0) {
-            throw SocketException("Error mandando", fD);
+            throw SocketException("Tried sending", fD);
         } else {
             buffer_ptr+=bytes_sent;
         }
@@ -163,15 +163,18 @@ string Socket::ReceiveStrWLen(int lenSize) {
 
     int net_length;
     std::memcpy(&net_length, buffer_leer, sizeof net_length);
-
+//TODO estuve tocando por aca
     int normal_length = ntohl(net_length);
     int bytes_read = 0;
-
-    while (bytes_read < normal_length){
+    int left_to_read = normal_length;
+    unsigned char *buffer_ptr = buffer_leer;
+    while (left_to_read != 0){
 //        TODO mover puntero hasta llenar
-        bytes_read += Receive(buffer_leer,BUFFSIZE);
+        bytes_read = Receive(buffer_ptr,left_to_read);
+        left_to_read -= bytes_read;
+        buffer_ptr += bytes_read;
     }
-    buffer_leer[bytes_read] = '\0';
+    buffer_leer[normal_length] = '\0';
     string received((char *)buffer_leer);
     return received;
 }
