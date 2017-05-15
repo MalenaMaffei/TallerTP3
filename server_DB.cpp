@@ -107,29 +107,26 @@ void DB::acceptTransaction(Transaction &transaction) {
     transaction.updateInscriptions(materias[transaction.getId()]);
 }
 
-string DB::listarMateriasCabecera(string format, Admin &user) {
-    string alumnoFormat = "%idalumno #alumno%idalumno\n";
-    StringFiller filler;
-    string filled;
-    for (const auto& kv : materias) {
-        filled += filler.fillLine(format, materias[kv.first], "%");
-        vector<string> alumnos;
-        filler.splitStr(materias[kv.first]["inscriptos"], alumnos, " ");
-        for (size_t i = 0; i <alumnos.size(); ++i) {
-            map<string, string> ids;
-            ids["idalumno"] = alumnos[i];
-            filled += filler.fillLine(alumnoFormat, ids, "%");
-        }
-    }
-    return filler.fillNameById(filled, users);
+bool DB::validatePermissions(string materia, Docente &user){
+    return docenteTeachesMateria(materia, user.getId());
 }
 
-string DB::listarMateriasCabecera(string format, Docente &user) {
+bool DB::validatePermissions(string materia, Admin &user){
+    return true;
+}
+bool DB::validatePermissions(string materia, Alumno &user) {
+    return false;
+}
+bool DB::validatePermissions(string & materia) {
+    return false;
+}
+
+string DB::listarMateriasCabecera(string format, User &user) {
     StringFiller filler;
     string alumnoFormat = "%idalumno #alumno%idalumno\n";
     string filled;
     for (const auto& kv : materias) {
-        if (docenteTeachesMateria(kv.first, user.getId())){
+        if (user.hasPermissions(kv.first)){
             filled += filler.fillLine(format, materias[kv.first], "%");
             vector<string> alumnos;
             filler.splitStr(materias[kv.first]["inscriptos"], alumnos, " ");

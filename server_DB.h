@@ -20,12 +20,15 @@ class DB {
   string fillAllMaterias(string format);
 //  string fillNameById(string format);
 
-  string listarMateriasCabecera(string format, Docente &user);
   string listarMateriasCabecera(string format, Alumno &user);
-  string listarMateriasCabecera(string format, Admin &user);
+  string listarMateriasCabecera(string format, User &user);
   void processTransaction(Transaction &transaction, Docente &user);
   void processTransaction(Transaction &transaction, User &user);
   void validateUser(string userType, string id);
+  bool validatePermissions(string materia, Admin &user);
+  bool validatePermissions(string materia, Docente &user);
+  bool validatePermissions(string materia, Alumno &user);
+  bool validatePermissions(string & materia);
 
  private:
   bool docenteTeachesMateria(string materiaid, string iddocente);

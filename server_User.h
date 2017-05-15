@@ -21,6 +21,7 @@ public:
     virtual string inscribir(std::deque<string> &args);
     virtual string desinscribir(std::deque<string> &args);
     virtual string print() const = 0;
+    virtual bool hasPermissions(std::string materia) = 0;
     virtual string executeCommand(std::deque<string> & commands);
 
 protected:

@@ -57,15 +57,3 @@ std::string StringFiller::fillLine(std::string format,
     }
     return line;
 }
-
-//string StringFiller::fillAllMaterias(string format,
-//                  map<string, map<string, string>> &materias)
-//{
-//    string all;
-//
-//    for (const auto& kv : materias) {
-//        map<string, string> info = materias[kv.first];
-//        all += fillLine(format, info, "%");
-//    }
-//    return all;
-//}

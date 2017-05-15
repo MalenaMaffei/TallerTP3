@@ -10,7 +10,8 @@ public:
 
     virtual string listarInscripciones();
     virtual string print() const;
-  const string &getId() const;
+    const string &getId() const;
+    bool hasPermissions(std::string materia);
  protected:
   void createInscripcion(std::deque<string> &args);
   void createDesinscripcion(std::deque<string> &args);

@@ -55,3 +55,8 @@ void Docente::createDesinscripcion(std::deque<string> &args) {
     database.processTransaction(des, *this);
 }
 
+bool Docente::hasPermissions(std::string materia) {
+//    return database.validatePermissions(materia, *this);
+    return database.validatePermissions(materia, *this);
+}
+
