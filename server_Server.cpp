@@ -1,18 +1,10 @@
 #include "server_Server.h"
 //#include "common_Socket.h"
 #include <string>
-//#include <cstring>
-//#include <regex>
 #include <vector>
-//#include "server_User.h"
-//#include "server_Admin.h"
-//#include "server_Docente.h"
-//#include "server_Alumno.h"
 #include <iostream>
 #include "server_Session.h"
 #include "server_DB.h"
-#include "common_InputGetter.h"
-//#include "common_InputQueueMonitor.h"
 #include "common_SocketException.h"
 #define BACKLOG 10
 #define BUFFSIZE 300

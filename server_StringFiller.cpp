@@ -1,12 +1,13 @@
 #include "server_StringFiller.h"
 #include <vector>
-//#include <sstream>
 #include <regex>
 #include <map>
 #include <string>
-//#include <iostream>
-//using std::ifstream;
+
 using std::vector;
+using std::regex;
+using std::string;
+using std::map;
 
 void StringFiller::splitStr(string str, vector<string> &params,
                             string delimiter){
@@ -24,40 +25,42 @@ void StringFiller::splitStr(string str, vector<string> &params,
     }
 }
 
-string StringFiller::fillNameById(string format,
-                                  map<string, map<string,string>> & users) {
+string StringFiller::fillNameById(string format, map<string, string> &users) {
     string filled;
     std::istringstream iss(format);
 
     string line;
     while (getline(iss, line)){
-        std::regex rgx(".*#(\\w+).*");
-        std::smatch match;
-        std::regex_search(line, match, rgx);
-        string id = match[1];
-        line = std::regex_replace(line, std::regex("#"+id),
-                                  users[id]["nombre"]);
+//        regex rgx(".*#(\\w+).*");
+//        string id = getMatch(rgx, line);
+//        line = std::regex_replace(line, regex("#"+id),users[id]);
+//                                  users[id]["nombre"]);
+        line = fillLine(line, users, "#");
         line += "\n";
         filled += line;
     }
     return filled;
 }
 
+string StringFiller::getMatch(regex pattern, string str){
+    std::smatch match;
+    std::regex_search(str, match, pattern);
+    string token = match[1];
+    return token;
+}
 
-string StringFiller::fillLine(string format, map<string, string> info){
+std::string StringFiller::fillLine(std::string format,
+                                   std::map<std::string, std::string> info,
+                                   string tokenId) {
     string line = format;
-    std::regex rgx(".*\\$(\\w+).*");
+    regex rgx(".*"+tokenId+"(\\w+).*");
     std::smatch match;
     while (std::regex_search(line, match, rgx)) {
-        std::smatch match;
-        std::regex_search(line, match, rgx);
         string token = match[1];
-
-        line=std::regex_replace(line,std::regex("\\$"+token), info[token]);
+        line=std::regex_replace(line,regex(tokenId+token), info[token]);
     }
     return line;
 }
-
 
 string StringFiller::fillAllMaterias(string format,
                                      map<string, map<string, string>> &materias)
@@ -66,23 +69,23 @@ string StringFiller::fillAllMaterias(string format,
 
     for (const auto& kv : materias) {
         map<string, string> info = materias[kv.first];
-        all += fillLine(format, info);
+        all += fillLine(format, info, "%");
     }
     return all;
 }
 
 string StringFiller::fillString(string format,
                     vector<map<string, string>> &materiasVector) {
-    string alumno = "$idalumno #alumno$idalumno\n";
+    string alumno = "%idalumno #alumno%idalumno\n";
 
     string all;
 
     for (size_t j = 0; j < materiasVector.size(); ++j)  {
         string line = format;
         map<string, string> info = materiasVector[j];
-        all += fillLine(format, info);
+        all += fillLine(format, info, "%");
 
-        std::regex rgx(".*\\$(\\w+).*");
+        regex rgx(".*%(\\w+).*");
         std::smatch match;
 
         vector<string> alumnos;
@@ -90,11 +93,8 @@ string StringFiller::fillString(string format,
         for (size_t i = 0; i <alumnos.size(); ++i) {
             line = alumno;
             while (std::regex_search(line, match, rgx)) {
-                std::smatch match;
-                std::regex_search(line, match, rgx);
-                string token = match[1];
-
-                line=std::regex_replace(line,std::regex("\\$"+token),
+                string token = getMatch(rgx, line);
+                line=std::regex_replace(line,regex("%"+token),
                                         alumnos[i]);
             }
             all += line;

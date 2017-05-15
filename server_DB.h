@@ -18,7 +18,7 @@ class DB {
  public:
   DB(string usuariosFile, string materiasFile);
   string fillAllMaterias(string format);
-  string fillNameById(string format);
+//  string fillNameById(string format);
 
   string listarMateriasCabecera(string format, Docente &user);
   string listarMateriasCabecera(string format, Alumno &user);
@@ -26,16 +26,10 @@ class DB {
   void processTransaction(Transaction &transaction, Docente &user);
   void processTransaction(Transaction &transaction, User &user);
   void validateUser(string userType, string id);
-//  string stringFiller(string format,
-//                      vector<map<string, string>> &materiasVector);
-//  string stringFiller(string header,
-//                      vector<map<string, string>> &materiasVector, string
-//                      line, vector<string> lineContent);
 
  private:
   bool docenteTeachesMateria(string materiaid, string iddocente);
   bool alumnoAttendsMateria(string materiaid, string idalumno);
-  bool materiaExists(string materia) const;
   void validateDocente(Transaction &transaction, string docenteId);
   void acceptTransaction(Transaction &transaction);
   void fillMaterias(string materiasFile);
@@ -43,8 +37,8 @@ class DB {
   void validateMateria(string materia, string curso);
   void validateTransaction(Transaction transaction);
 
-  std::map<string,map<string, string>> users;
-//  std::map<string,string> users;
+//  std::map<string,map<string, string>> users;
+  std::map<string,string> users;
 
   map<string,map<string, string>> materias;
   std::mutex m;

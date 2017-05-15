@@ -2,14 +2,8 @@
 #include "server_StringFiller.h"
 #include <fstream>
 #include <vector>
-//#include <iostream>
-//#include <regex>
-//#include <sstream>
-//#include <vector>
 #include <map>
 #include <string>
-//#include "server_DBException.h"
-//#include "server_User.h"
 #define DELIMITER "\t"
 using std::ifstream;
 using std::vector;
@@ -49,14 +43,13 @@ void DB::fillUsuarios(string usuariosFile){
     ifstream file;
     file.open(usuariosFile);
     while (getline(file, line)){
-        map<string ,string> info;
+//        map<string ,string> info;
         vector<string> words;
         filler.splitStr(line, words, DELIMITER);
         string key = words[0] + words[1];
-//        string info = words[2];
-//        info["inscripciones"] = "";
-        info["nombre"] = words[2];
-        users[key] = info;
+//        info["nombre"] = words[2];
+//        users[key] = info;
+        users[key] = words[2];
     }
 }
 
@@ -65,7 +58,9 @@ bool keyExists(map<string,map<string, string>> & mapa, string key) {
 }
 
 void DB::validateUser(string userType, string id) {
-    if (!keyExists(users, userType+id)){
+//    TODO aca cambie x count
+//    if (!keyExists(users, userType+id)){
+    if (!users.count(userType+id)){
         throw DBException("El"+userType+" "+id+" es inválido.\n");
     }
 }
@@ -76,7 +71,7 @@ void DB::validateTransaction(Transaction transaction){
 }
 
 void DB::validateDocente(Transaction &transaction, string docenteId) {
-    if (! (docenteId == materias[transaction.getId()]["iddocente"])) {
+    if (! docenteTeachesMateria(transaction.getId(), docenteId)) {
         throw DBPermissionException("No tiene permisos para operar sobre "
                                         ""+transaction.getMateria()+", curso "
             ""+transaction.getCurso()+".\n");
@@ -94,19 +89,17 @@ void DB::processTransaction(Transaction &transaction, User &user) {
     acceptTransaction(transaction);
 }
 
-bool DB::materiaExists(string materia) const {
+void DB::validateMateria(string materia, string curso) {
+    bool found = false;
     for (const auto& kv : materias) {
         if (kv.first.find(materia) != string::npos){
-            return true;
+            found = true;
         }
     }
-    return false;
-}
-
-void DB::validateMateria(string materia, string curso) {
-    if (!materiaExists(materia)){
+    if (!found){
         throw DBException("La materia "+materia+" no es válida.\n");
     }
+
     string materiaId = materia+"-"+curso;
     if (! keyExists(materias, materiaId)){
         throw DBException("El curso "+curso+" en la materia "+materia+ " no es "
@@ -120,7 +113,6 @@ void DB::acceptTransaction(Transaction &transaction) {
 }
 
 string DB::listarMateriasCabecera(string format, Admin &user) {
-//    format = fillNameById(format);
     StringFiller filler;
     std::vector<map<string, string>> materiasVector;
     for (const auto& kv : materias) {
@@ -137,7 +129,7 @@ string DB::listarMateriasCabecera(string format, Alumno &user) {
     for (const auto& kv : materias) {
         map<string, string> info = materias[kv.first];
         if (alumnoAttendsMateria(kv.first, alumnoId)){
-            all += filler.fillLine(format, info);
+            all += filler.fillLine(format, info, "%");
         }
     }
     all = filler.fillNameById(all, users);
@@ -162,7 +154,7 @@ string DB::fillAllMaterias(string format){
     StringFiller filler;
     for (const auto& kv : materias) {
         map<string, string> info = materias[kv.first];
-        all += filler.fillLine(format, info);
+        all += filler.fillLine(format, info,"%");
     }
     all = filler.fillNameById(all, users);
     return all;

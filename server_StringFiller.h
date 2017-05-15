@@ -3,22 +3,24 @@
 #include <string>
 #include <map>
 #include <vector>
-using std::string;
-using std::map;
-using std::vector;
+#include <regex>
 
 class StringFiller {
  public:
-  string fillNameById(string format, map<string, map<string,
-                                                                   string>> &
-  users);
-  void splitStr(string str, vector<string> &params, string
+  std::string fillNameById(std::string format,
+                           std::map<std::string,std::string> &users);
+  void splitStr(std::string str, std::vector<std::string> &params, std::string
   delimiter);
-  string fillLine(string format, map<string, string> info);
-  string fillAllMaterias(string format,
-                           map<string, map<string, string>> &materias);
-  string fillString(string format,
-                                  vector<map<string, string>> &materiasVector);
+  std::string fillLine(std::string format,
+                       std::map<std::string, std::string> info,
+                       std::string tokenId);
+  std::string fillAllMaterias(std::string format,
+          std::map<std::string, std::map<std::string, std::string>> &materias);
+  std::string fillString(std::string format,
+          std::vector<std::map<std::string, std::string>> &materiasVector);
+
+ private:
+  std::string getMatch(std::regex pattern, std::string str);
 };
 
 #endif //TP2_STRINGFILLER_H

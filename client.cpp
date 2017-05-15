@@ -1,12 +1,8 @@
 #include "common_Socket.h"
 #include <string>
-//#include <queue>
-// #include <algorithm>
 #include <iostream>
 #include "common_CommandParser.h"
 #include "common_SocketException.h"
-//#include "common_InputQueueMonitor.h"
-//#include "common_InputGetter.h"
 #include <deque>
 using std::string;
 using std::deque;

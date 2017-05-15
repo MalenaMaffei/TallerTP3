@@ -14,25 +14,22 @@
 using std::deque;
 
 string User::listarMaterias() const {
-    string format = "$codigo - $descripcion, Curso $curso, "
-        "#docente$iddocente, $vacantes vacantes.\n";
+    string format = "%codigo - %descripcion, Curso %curso, "
+        "#docente%iddocente, %vacantes vacantes.\n";
+//    string format = "$codigo - $descripcion, Curso $curso, "
+//        "$docentenombre, $vacantes vacantes.\n";
     format = database.fillAllMaterias(format);
 //    format = database.fillNameById(format);
     return format;
 }
 
 string User::listarInscripciones() {
-    return "$codigo - $descripcion, Curso $curso, #docente$iddocente.\n";
+    return "%codigo - %descripcion, Curso %curso, #docente%iddocente.\n";
 }
 
-
-
 string User::inscribir(deque<string> &args) {
-//    Inscripcion insc = createInscripcion(args);
     try {
         createInscripcion(args);
-//        sendTransaction(insc);
-//        database.processTransaction(insc, *this);
         return "Inscripción exitosa.\n";
     } catch(DBException& e){
         return e.what();
@@ -40,11 +37,8 @@ string User::inscribir(deque<string> &args) {
 }
 
 string User::desinscribir(deque<string> &args) {
-//    Desinscripcion des = createDesinscripcion(args);
     try {
         createDesinscripcion(args);
-//        sendTransaction(des);
-//        database.processTransaction(des, *this);
         return "Desinscripción exitosa.\n";
     }catch(DBPermissionException& e){
         return e.what();
@@ -68,8 +62,7 @@ string User::executeCommand(deque<string> & commands)  {
         executed_command = listarInscripciones();
     } else if (command == INS){
 //        TODO SACAR PARTE DEL CODIGO
-        executed_command =
-            inscribir(commands);
+        executed_command = inscribir(commands);
     } else if (command == DESINS){
         executed_command = desinscribir(commands);
     } else {

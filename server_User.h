@@ -12,11 +12,6 @@
 //
 class DB;
 
-// using std::cout;
-// using std::endl;
-//using std::string;
-//using std::vector;
-
 class User {
 public:
     explicit User(DB &database);
@@ -30,15 +25,8 @@ public:
 
 protected:
 //  TODO lo que depende de c/uno es crear inscripcion/desins
-    virtual Inscripcion createInscripcion(std::deque<string> &args) = 0;
-    virtual Desinscripcion createDesinscripcion(std::deque<string> &args) = 0;
-    virtual void sendTransaction(Transaction & transaction) = 0;
-
-//  string validateMateria(string materia, string curso) const;
-  // virtual string generateInscription(string materia, string curso, string
-  // alumnoId);
-//  virtual string removeInscription(string materia, string curso,
-//                                   string alumnoId) const;
+    virtual void createInscripcion(std::deque<string> &args) = 0;
+    virtual void createDesinscripcion(std::deque<string> &args) = 0;
   DB &database;
 };
 

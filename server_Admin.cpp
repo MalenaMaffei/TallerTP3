@@ -10,47 +10,6 @@ string Admin::listarInscripciones() {
 //    cout << "listando inscripciones de todo el mundo" << endl;
 }
 
-//string Admin::inscribir(std::deque<string> &args) {
-//    if (args.size() < 3){
-//      throw std::invalid_argument("Comando inscripcion no recibió argumentos "
-//                                        "suficientes");
-//    }
-//    string alumnoId = args.front();
-//    args.pop_front();
-//    string materia = args.front();
-//    args.pop_front();
-//    string curso = args.front();
-//    args.pop_front();
-//    Inscripcion insc(materia, curso, alumnoId);
-//        try {
-//            database.processTransaction(insc, *this);
-//            return "Inscripción exitosa.\n";
-//        } catch(DBException& e){
-//            return e.what();
-//        }
-//}
-
-//string Admin::desinscribir(std::deque<string> &args) {
-//    if (args.size() < 3){
-//     throw std::invalid_argument("Comando inscripcion no recibió argumentos "
-//                                        "suficientes");
-//    }
-//
-//    string alumnoId = args.front();
-//    args.pop_front();
-//    string materia = args.front();
-//    args.pop_front();
-//    string curso = args.front();
-//    args.pop_front();
-//    Desinscripcion des(materia, curso, alumnoId);
-//    try {
-//        database.processTransaction(des, *this);
-//        return "Desinscripción exitosa.\n";
-//    } catch(DBException& e){
-//        return "Desinscripción inválida.\n";
-//    }
-//}
-
 Admin::Admin(DB &database) :
     User(database) {}
 
@@ -58,7 +17,7 @@ string Admin::print() const {
     return MY_TYPE;
 }
 
-Inscripcion Admin::createInscripcion(std::deque<string> &args) {
+void Admin::createInscripcion(std::deque<string> &args) {
     if (args.size() < 3){
         throw std::invalid_argument("Comando inscripcion no recibió argumentos "
                                         "suficientes");
@@ -71,10 +30,9 @@ Inscripcion Admin::createInscripcion(std::deque<string> &args) {
     args.pop_front();
     Inscripcion insc(materia, curso, alumnoId);
     database.processTransaction(insc, *this);
-    return insc;
 }
 
-Desinscripcion Admin::createDesinscripcion(std::deque<string> &args) {
+void Admin::createDesinscripcion(std::deque<string> &args) {
     if (args.size() < 3){
         throw std::invalid_argument("Comando inscripcion no recibió argumentos "
                                         "suficientes");
@@ -87,9 +45,5 @@ Desinscripcion Admin::createDesinscripcion(std::deque<string> &args) {
     args.pop_front();
     Desinscripcion des(materia, curso, alumnoId);
     database.processTransaction(des, *this);
-    return des;
 }
 
-void Admin::sendTransaction(Transaction & transaction) {
-    database.processTransaction(transaction, *this);
-}
