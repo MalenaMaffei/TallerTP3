@@ -43,12 +43,9 @@ void DB::fillUsuarios(string usuariosFile){
     ifstream file;
     file.open(usuariosFile);
     while (getline(file, line)){
-//        map<string ,string> info;
         vector<string> words;
         filler.splitStr(line, words, DELIMITER);
         string key = words[0] + words[1];
-//        info["nombre"] = words[2];
-//        users[key] = info;
         users[key] = words[2];
     }
 }
@@ -58,8 +55,6 @@ bool keyExists(map<string,map<string, string>> & mapa, string key) {
 }
 
 void DB::validateUser(string userType, string id) {
-//    TODO aca cambie x count
-//    if (!keyExists(users, userType+id)){
     if (!users.count(userType+id)){
         throw DBException("El"+userType+" "+id+" es inválido.\n");
     }
@@ -113,12 +108,38 @@ void DB::acceptTransaction(Transaction &transaction) {
 }
 
 string DB::listarMateriasCabecera(string format, Admin &user) {
+    string alumnoFormat = "%idalumno #alumno%idalumno\n";
     StringFiller filler;
-    std::vector<map<string, string>> materiasVector;
+    string filled;
     for (const auto& kv : materias) {
-        materiasVector.push_back(materias[kv.first]);
+        filled += filler.fillLine(format, materias[kv.first], "%");
+        vector<string> alumnos;
+        filler.splitStr(materias[kv.first]["inscriptos"], alumnos, " ");
+        for (size_t i = 0; i <alumnos.size(); ++i) {
+            map<string, string> ids;
+            ids["idalumno"] = alumnos[i];
+            filled += filler.fillLine(alumnoFormat, ids, "%");
+        }
     }
-    string filled = filler.fillString(format, materiasVector);
+    return filler.fillNameById(filled, users);
+}
+
+string DB::listarMateriasCabecera(string format, Docente &user) {
+    StringFiller filler;
+    string alumnoFormat = "%idalumno #alumno%idalumno\n";
+    string filled;
+    for (const auto& kv : materias) {
+        if (docenteTeachesMateria(kv.first, user.getId())){
+            filled += filler.fillLine(format, materias[kv.first], "%");
+            vector<string> alumnos;
+            filler.splitStr(materias[kv.first]["inscriptos"], alumnos, " ");
+            for (size_t i = 0; i <alumnos.size(); ++i) {
+                map<string, string> ids;
+                ids["idalumno"] = alumnos[i];
+                filled += filler.fillLine(alumnoFormat, ids, "%");
+            }
+        }
+    }
     return filler.fillNameById(filled, users);
 }
 
@@ -134,19 +155,6 @@ string DB::listarMateriasCabecera(string format, Alumno &user) {
     }
     all = filler.fillNameById(all, users);
     return all;
-}
-
-string DB::listarMateriasCabecera(string format, Docente &user) {
-    StringFiller filler;
-    std::vector<map<string, string>> materiasVector;
-    for (const auto& kv : materias) {
-        if (docenteTeachesMateria(kv.first, user.getId())){
-            materiasVector.push_back(materias[kv.first]);
-        }
-    }
-
-    string filled = filler.fillString(format, materiasVector);
-    return filler.fillNameById(filled, users);
 }
 
 string DB::fillAllMaterias(string format){
