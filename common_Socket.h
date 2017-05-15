@@ -75,7 +75,7 @@ public:
 //Destruye un socket accept liberando sus recursos.
 //Cierra el socket.
 // PRE: self fue inicializado mediante Accept
-  void accept_destroy();
+//  void accept_destroy();
 
     void SendStrWLen(string &str, int lenSize);
 
@@ -85,6 +85,7 @@ public:
   int getFD() const;
 
   void setToNonBlocking();
+  virtual ~Socket();
 };
 
 

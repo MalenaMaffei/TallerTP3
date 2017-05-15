@@ -2,6 +2,7 @@
 #define TP2_TRANSACTION_H
 #include "server_DBException.h"
 #include <string>
+#include <map>
 using std::string;
 class Transaction {
  public:
@@ -11,8 +12,8 @@ class Transaction {
   const string &getId() const;
   const string &getAlumnoId() const;
 
-  virtual void updateInscriptions(string &inscriptos, string &inscripciones,
-                                    string &vacancies)const {}
+  virtual void updateInscriptions(std::map<string, string> &materiaInfo) const
+  {}
 
  protected:
   string materia;

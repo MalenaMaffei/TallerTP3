@@ -86,11 +86,15 @@ void DB::validateDocente(Transaction &transaction, string docenteId) {
 void DB::processTransaction(Transaction &transaction, Docente &docente) {
     validateTransaction(transaction);
     validateDocente(transaction, docente.getId());
+//    std::lock_guard<std::mutex> lock(m);
+//    transaction.updateInscriptions(materias[transaction.getId()]);
     acceptTransaction(transaction);
 }
 
 void DB::processTransaction(Transaction &transaction, User &user) {
     validateTransaction(transaction);
+//    std::lock_guard<std::mutex> lock(m);
+//    transaction.updateInscriptions(materias[transaction.getId()]);
     acceptTransaction(transaction);
 }
 
@@ -116,16 +120,17 @@ void DB::validateMateria(string materia, string curso) {
 
 void DB::acceptTransaction(Transaction &transaction) {
     std::lock_guard<std::mutex> lock(m);
-    string alumnoId = transaction.getAlumnoId();
-    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
-    string inscriptos = materias[transaction.getId()]["inscriptos"];
-    string vacantes = materias[transaction.getId()]["vacantes"];
-
-    transaction.updateInscriptions(inscriptos,inscripciones,  vacantes);
-
-    users["alumno"+alumnoId]["inscripciones"] = inscripciones;
-    materias[transaction.getId()]["inscriptos"] = inscriptos;
-    materias[transaction.getId()]["vacantes"] = vacantes;
+//
+////    string alumnoId = transaction.getAlumnoId();
+////    string inscripciones = users["alumno"+alumnoId]["inscripciones"];
+////    string inscriptos = materias[transaction.getId()]["inscriptos"];
+////    string vacantes = materias[transaction.getId()]["vacantes"];
+////    string inscripciones = "";
+    transaction.updateInscriptions(materias[transaction.getId()]);
+//
+////    users["alumno"+alumnoId]["inscripciones"] = inscripciones;
+////    materias[transaction.getId()]["inscriptos"] = inscriptos;
+////    materias[transaction.getId()]["vacantes"] = vacantes;
 }
 
 string DB::listarMateriasCabecera(string format, Admin &user) {
@@ -145,8 +150,10 @@ string DB::listarMateriasCabecera(string format, Alumno &user) {
     string alumnoId = user.getId();
     for (const auto& kv : materias) {
         map<string, string> info = materias[kv.first];
-        if (info["inscriptos"].find(alumnoId) == string::npos){ continue; }
-        all += filler.fillLine(format, info);
+//        if (info["inscriptos"].find(alumnoId) == string::npos){ continue; }
+        if (alumnoAttendsMateria(kv.first, alumnoId)){
+            all += filler.fillLine(format, info);
+        }
     }
     all = filler.fillNameById(all, users);
     return all;
@@ -180,3 +187,7 @@ bool DB::docenteTeachesMateria(string materiaid, string iddocente) {
     return (iddocente == materias[materiaid]["iddocente"]);
 }
 
+bool DB::alumnoAttendsMateria(string materiaid, string alumnoId) {
+    return (materias[materiaid]["inscriptos"].find(alumnoId) != string::npos);
+//    return (idalumno == materias[materiaid]["inscriptos"]);
+}

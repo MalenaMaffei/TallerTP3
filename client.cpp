@@ -32,7 +32,7 @@ void client(const char *ip, const char *port, deque<string> arguments){
         client_socket.SendStrWLen(login, LENGTH_SIZE);
     } catch(SocketException& e) {
         cout << e.what() << endl;
-        client_socket.Destroy();
+//        client_socket.Destroy();
         return;
     }
 
@@ -50,24 +50,9 @@ void client(const char *ip, const char *port, deque<string> arguments){
             cout << e.what() << endl;
             continue;
         }
-
-
-//        string built_command = parser.buildCommand(command);
-//        try {
-//            client_socket.SendStrWLen(built_command, LENGTH_SIZE);
-//        } catch(SocketException& e){
-//            break;
-//        }
-//        try {
-//            string server_response =client_socket.ReceiveStrWLen(LENGTH_SIZE);
-//            cout << server_response;
-//        } catch(SocketException& e){
-//            break;
-//        }
     }
 
-
-    client_socket.Shutdown(SHUT_RDWR);
+//    client_socket.Shutdown(SHUT_RDWR);
     client_socket.Destroy();
     return;
 }

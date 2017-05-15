@@ -119,6 +119,7 @@ Socket Socket::Accept() {
     }
     Socket newSocket;
     newSocket.fD = new_fd;
+    newSocket.res = nullptr;
     return newSocket;
 //    return new_fd;
 }
@@ -140,17 +141,11 @@ void Socket::Shutdown(int mode){
         throw SocketException("Error en shutdown", fD);
     }
 }
-//TODO hacer destructor de esto!!!!!!!!!!!!!!!
+////TODO hacer destructor de esto!!!!!!!!!!!!!!!
 void Socket::Destroy(){
-    freeaddrinfo(res);
-    int status = close(fD);
-//    TODO SACAR IOSTREAM
-    if (status<0){
-        throw SocketException("Error en close", fD);
+    if (res){
+        freeaddrinfo(res);
     }
-}
-
-void Socket::accept_destroy(){
     int status = close(fD);
     if (status<0){
         throw SocketException("Error en close", fD);
@@ -200,3 +195,17 @@ int Socket::getFD() const {
 void Socket::addFD(int fd) {
     fD = fd;
 }
+
+
+
+Socket::~Socket() {
+//    if (res){
+//        freeaddrinfo(res);
+//    }
+//    close(fD);
+//    int status = close(fD);
+//    if (status<0){
+//        throw SocketException("Error en close", fD);
+//    }
+}
+

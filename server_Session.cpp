@@ -2,8 +2,6 @@
 //#include <cstring>
 #include <string>
 //#include <vector>
-#include <iostream>
-
 #include "server_UserFactory.h"
 #include "common_SocketException.h"
 #include <deque>
@@ -19,20 +17,14 @@ using std::deque;
 
 Session::Session(Socket newSocket, ErrorMonitor &errorMonitor, DB &database) :
     socket(newSocket), errorMonitor(errorMonitor), database(database){
-//    socket.addFD(newFD);
-//    Socket new_socket;
-//    newSocket.Accept(new_socket);
-//    socket = new_socket;
     user = nullptr;
     exit = false;
 }
 
 void Session::receiveCommands(){
-//    bool shutdown = false;
     while (!exit){
         string recv_command;
         try {
-//            TODO sacar iostream
             recv_command = socket.ReceiveStrWLen(LENGTH_SIZE);
         } catch(SocketException& e){
             errorMonitor.outputError(user->print() + " desconectado.");
@@ -53,11 +45,9 @@ void Session::run() {
     string parameters;
     try {
         parameters = socket.ReceiveStrWLen(LENGTH_SIZE);
-//        socket.accept_destroy();
     } catch(SocketException& e) {
         return;
     }
-
 
     deque<string> params;
     parser.parseUserInfo(parameters, params);
@@ -65,14 +55,9 @@ void Session::run() {
     UserFactory factory;
     try {
         user = factory.createUser(params, database);
-//    } catch(std::runtime_error& e) {
-//        errorMonitor.outputError(e.what());
-//        socket.Shutdown(SHUT_RDWR);
-//        return;
     } catch(std::invalid_argument& e){
         errorMonitor.outputError(e.what());
         shutdown();
-//        socket.Shutdown(SHUT_RDWR);
         return;
     }
     errorMonitor.outputError(user->print() + " conectado.");
@@ -81,9 +66,12 @@ void Session::run() {
 }
 
 Session::~Session() {
-    if (user){ delete(user); }
+    if (user){
+        delete(user);
+    }
+    socket.Destroy();
 //    socket.Shutdown(READ_SHTDWN);
-    socket.accept_destroy();
+//    socket.accept_destroy();
 }
 
 void Session::shutdown() {

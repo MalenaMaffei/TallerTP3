@@ -29,6 +29,9 @@ public:
     virtual string executeCommand(std::deque<string> & commands);
 
 protected:
+//  TODO lo que depende de c/uno es crear inscripcion/desins
+//    virtual Transaction createInscripcion() = 0;
+
 //  string validateMateria(string materia, string curso) const;
   // virtual string generateInscription(string materia, string curso, string
   // alumnoId);

@@ -34,6 +34,7 @@ class DB {
 
  private:
   bool docenteTeachesMateria(string materiaid, string iddocente);
+  bool alumnoAttendsMateria(string materiaid, string idalumno);
   bool materiaExists(string materia) const;
   void validateDocente(Transaction &transaction, string docenteId);
   void acceptTransaction(Transaction &transaction);
