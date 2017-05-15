@@ -8,8 +8,6 @@ class Desinscripcion : public Transaction {
   Desinscripcion(const string &materia,const string &curso,
                  const string &alumnoId);
 
-//  void updateInscriptions(string &inscriptos, string &inscripciones,
-//                            string &vacancies) const;
   void updateInscriptions(std::map<string, string> &materiaInfo) const;
 };
 

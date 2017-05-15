@@ -9,8 +9,6 @@ class Inscripcion : public Transaction{
               const string &alumnoId);
 
   void updateInscriptions(std::map<string, string> &materiaInfo) const;
-//  void updateInscriptions(string &inscriptos, string &inscripciones,
-//                          string &vacancies) const;
 };
 
 #endif //TP2_INSCRIPCION_H

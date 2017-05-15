@@ -30,7 +30,9 @@ public:
 
 protected:
 //  TODO lo que depende de c/uno es crear inscripcion/desins
-//    virtual Transaction createInscripcion() = 0;
+    virtual Inscripcion createInscripcion(std::deque<string> &args) = 0;
+    virtual Desinscripcion createDesinscripcion(std::deque<string> &args) = 0;
+    virtual void sendTransaction(Transaction & transaction) = 0;
 
 //  string validateMateria(string materia, string curso) const;
   // virtual string generateInscription(string materia, string curso, string

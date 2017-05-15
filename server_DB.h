@@ -44,6 +44,8 @@ class DB {
   void validateTransaction(Transaction transaction);
 
   std::map<string,map<string, string>> users;
+//  std::map<string,string> users;
+
   map<string,map<string, string>> materias;
   std::mutex m;
 };

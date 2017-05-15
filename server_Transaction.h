@@ -12,8 +12,7 @@ class Transaction {
   const string &getId() const;
   const string &getAlumnoId() const;
 
-  virtual void updateInscriptions(std::map<string, string> &materiaInfo) const
-  {}
+  virtual void updateInscriptions(std::map<string, string> &materiaInfo)const {}
 
  protected:
   string materia;

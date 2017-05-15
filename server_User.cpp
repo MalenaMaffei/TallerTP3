@@ -28,15 +28,29 @@ string User::listarInscripciones() {
 
 
 string User::inscribir(deque<string> &args) {
-    if (args.size() < 2){
-        throw std::invalid_argument("Comando inscripcion no recibió argumentos "
-                                        "suficientes");
+//    Inscripcion insc = createInscripcion(args);
+    try {
+        createInscripcion(args);
+//        sendTransaction(insc);
+//        database.processTransaction(insc, *this);
+        return "Inscripción exitosa.\n";
+    } catch(DBException& e){
+        return e.what();
     }
-    return "hola de user base";
 }
 
 string User::desinscribir(deque<string> &args) {
-    return "hola";
+//    Desinscripcion des = createDesinscripcion(args);
+    try {
+        createDesinscripcion(args);
+//        sendTransaction(des);
+//        database.processTransaction(des, *this);
+        return "Desinscripción exitosa.\n";
+    }catch(DBPermissionException& e){
+        return e.what();
+    } catch(DBException& e){
+        return "Desinscripción inválida.\n";
+    }
 }
 
 User::~User() {}
