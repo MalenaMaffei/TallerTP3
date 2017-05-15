@@ -4,6 +4,7 @@
 //#include <iostream>
 #include <string>
 #include <vector>
+#include <deque>
 // //#include "server_DB.h"
 //#include "server_DBException.h"
 #include "server_Inscripcion.h"
@@ -13,8 +14,8 @@ class DB;
 
 // using std::cout;
 // using std::endl;
-using std::string;
-using std::vector;
+//using std::string;
+//using std::vector;
 
 class User {
 public:
@@ -22,10 +23,10 @@ public:
     virtual ~User();
     string listarMaterias() const;
     virtual string listarInscripciones();
-    virtual string inscribir(vector<string> &args);
-    virtual string desinscribir(vector<string> &args);
+    virtual string inscribir(std::deque<string> &args);
+    virtual string desinscribir(std::deque<string> &args);
     virtual string print() const = 0;
-    virtual string executeCommand(vector<string> & commands);
+    virtual string executeCommand(std::deque<string> & commands);
 
 protected:
 //  string validateMateria(string materia, string curso) const;

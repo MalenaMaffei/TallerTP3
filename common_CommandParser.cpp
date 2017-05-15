@@ -1,7 +1,9 @@
 #include "common_CommandParser.h"
 #include <algorithm>
-#include <vector>
+//#include <vector>
 #include <string>
+#include <deque>
+#include <stdexcept>
 #define LISTARMATERIAS "listarMaterias"
 #define LM_CODE "lm"
 
@@ -17,7 +19,10 @@
 #define COMM_DELIMITER "-"
 #define STR_DELIMITER " "
 
-string CommandParser::delimitCommands(vector<string> arguments) const{
+using std::deque;
+using std::string;
+
+string CommandParser::delimitCommands(deque<string> arguments) const{
     string message;
     std::for_each(arguments.begin(), arguments.end(), [&](string a){
         message = message + a + "-";
@@ -26,10 +31,10 @@ string CommandParser::delimitCommands(vector<string> arguments) const{
     return message;
 }
 
-void splitString(string str, vector<string> &params, string delimiter){
+void splitString(string str, deque<string> &params, string delimiter){
     size_t pos = 0;
-    std::string token;
-    while ((pos = str.find(delimiter)) != std::string::npos) {
+    string token;
+    while ((pos = str.find(delimiter)) != string::npos) {
         token = str.substr(0, pos);
         params.push_back(token);
         str.erase(0, pos + delimiter.length());
@@ -38,30 +43,30 @@ void splitString(string str, vector<string> &params, string delimiter){
 }
 
 string CommandParser::buildCommand(string str) const {
-    vector<string> userInput;
+    deque<string> userInput;
     splitString(str, userInput, STR_DELIMITER);
-    string command_code = userInput[0];
+    string & command_code = userInput.front();
     if (command_code == LISTARMATERIAS){
-//      TODO  chequear argumentos correctos
-        userInput[0] = LM_CODE;
+        command_code = LM_CODE;
     } else if (command_code == LISTARINSCRIPCIONES){
-        userInput[0] = LI_CODE;
+        command_code = LI_CODE;
     } else if (command_code == INSCRIBIR){
-        userInput[0] = IN_CODE;
+        command_code = IN_CODE;
     } else if (command_code == DESINSCRIBIR){
-        userInput[0] = DES_CODE;
+        command_code = DES_CODE;
     } else {
-//        TODO LANZAR ERROR ACA
+        throw std::invalid_argument(command_code + " es un codigo invalido");
     }
 
     return delimitCommands(userInput);
 }
 
-void CommandParser::parseUserInfo(string userInfo, vector<string> &params)
+void CommandParser::parseUserInfo(string userInfo, deque<string> &params)
 const {
     splitString(userInfo,params, COMM_DELIMITER);
 }
+
 void CommandParser::parseCommand(string recv_command,
-                                 vector<string> &commands) const {
+                                 deque<string> &commands) const {
     splitString(recv_command, commands, COMM_DELIMITER);
 }

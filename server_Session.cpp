@@ -1,12 +1,12 @@
 #include "server_Session.h"
 //#include <cstring>
 #include <string>
-#include <vector>
+//#include <vector>
 #include <iostream>
 
 #include "server_UserFactory.h"
 #include "common_SocketException.h"
-
+#include <deque>
 //#include "common_CommandParser.h"
 #define BUFFSIZE 300
 #define READ_SHTDWN 1
@@ -15,11 +15,11 @@
 #define CLIENT_SHTDWN 0
 #define CODE_POS 0
 
+using std::deque;
 
-
-Session::Session(int newFD, ErrorMonitor &errorMonitor, DB &database) :
-    errorMonitor(errorMonitor), database(database){
-    socket.addFD(newFD);
+Session::Session(Socket newSocket, ErrorMonitor &errorMonitor, DB &database) :
+    socket(newSocket), errorMonitor(errorMonitor), database(database){
+//    socket.addFD(newFD);
 //    Socket new_socket;
 //    newSocket.Accept(new_socket);
 //    socket = new_socket;
@@ -36,12 +36,12 @@ void Session::receiveCommands(){
             recv_command = socket.ReceiveStrWLen(LENGTH_SIZE);
         } catch(SocketException& e){
             errorMonitor.outputError(user->print() + " desconectado.");
-            exit = true;
+            shutdown();
             continue;
         }
 
 //Aca viene la parte de devolver un vector de comandos.
-        vector<string> commands;
+        deque<string> commands;
         parser.parseCommand(recv_command, commands);
         errorMonitor.outputCommand(user->print(), commands[CODE_POS]);
         string output = user->executeCommand(commands);
@@ -59,17 +59,20 @@ void Session::run() {
     }
 
 
-    vector<string> params;
+    deque<string> params;
     parser.parseUserInfo(parameters, params);
 
     UserFactory factory;
     try {
         user = factory.createUser(params, database);
-    } catch(std::runtime_error& e) {
-        errorMonitor.outputError(e.what());
-        return;
+//    } catch(std::runtime_error& e) {
+//        errorMonitor.outputError(e.what());
+//        socket.Shutdown(SHUT_RDWR);
+//        return;
     } catch(std::invalid_argument& e){
         errorMonitor.outputError(e.what());
+        shutdown();
+//        socket.Shutdown(SHUT_RDWR);
         return;
     }
     errorMonitor.outputError(user->print() + " conectado.");
@@ -84,6 +87,9 @@ Session::~Session() {
 }
 
 void Session::shutdown() {
+    if (exit){
+        return;
+    }
     exit = true;
     socket.Shutdown(SHUT_RDWR);
 }

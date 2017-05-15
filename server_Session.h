@@ -10,7 +10,7 @@
 
 class Session : public Thread  {
 public:
-    explicit Session(int newFD,
+    explicit Session(Socket socket,
                      ErrorMonitor &errorMonitor,
                      DB &database);
     void run();

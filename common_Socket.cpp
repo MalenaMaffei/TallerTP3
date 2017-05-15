@@ -102,7 +102,7 @@ void Socket::BindAndListen(int backlog){
     if (s_lis <0){ throw SocketException("error en listen", fD); }
 }
 
-int Socket::Accept() {
+Socket Socket::Accept() {
 //    std::lock_guard<std::mutex> lock(m);
 //    Socket other;
     struct sockaddr_storage c_addr;
@@ -117,7 +117,10 @@ int Socket::Accept() {
     if (new_fd < 0){
         throw SocketException("Error en Accept", fD);
     }
-    return new_fd;
+    Socket newSocket;
+    newSocket.fD = new_fd;
+    return newSocket;
+//    return new_fd;
 }
 
 int Socket::Receive(unsigned char *buffer, size_t length){
@@ -163,13 +166,11 @@ string Socket::ReceiveStrWLen(int lenSize) {
 
     int net_length;
     std::memcpy(&net_length, buffer_leer, sizeof net_length);
-//TODO estuve tocando por aca
     int normal_length = ntohl(net_length);
     int bytes_read = 0;
     int left_to_read = normal_length;
     unsigned char *buffer_ptr = buffer_leer;
     while (left_to_read != 0){
-//        TODO mover puntero hasta llenar
         bytes_read = Receive(buffer_ptr,left_to_read);
         left_to_read -= bytes_read;
         buffer_ptr += bytes_read;

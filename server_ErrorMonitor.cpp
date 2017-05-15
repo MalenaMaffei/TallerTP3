@@ -7,9 +7,10 @@ using std::endl;
 #define LISTARINSC "li"
 #define INS "in"
 #define DESINS "de"
+
 void ErrorMonitor::outputError(string error) {
   //    CRITICAL SECTION
-//  std::lock_guard<std::mutex> lock(m);
+  std::lock_guard<std::mutex> lock(m);
   cerr << error << endl;
 }
 
@@ -26,6 +27,6 @@ void ErrorMonitor::outputCommand(string user, string command) {
     command_name = "desinscribir";
   }
   outputError(user + " ejecuta " + command_name + ".");
-//  cerr << user + " ejecuta " + command_name + "."<< endl;
 }
+
 ErrorMonitor::ErrorMonitor() {}

@@ -1,7 +1,8 @@
 #include "server_Docente.h"
 //#include "server_DBException.h"
 #include <string>
-#include <vector>
+//#include <vector>
+#include <deque>
 #include "server_DB.h"
 #define MY_TYPE "docente"
 string Docente::listarInscripciones()  {
@@ -10,15 +11,18 @@ string Docente::listarInscripciones()  {
     //    cout << "listando inscripciones del docente" << endl;
 }
 
-string Docente::inscribir(vector<string> &args)  {
+string Docente::inscribir(std::deque<string> &args)  {
     if (args.size() < 3){
         throw std::invalid_argument("Comando inscripcion no recibió argumentos "
                                         "suficientes");
     }
 
-    string alumnoId = args[1];
-    string materia = args[2];
-    string curso = args[3];
+    string alumnoId = args.front();
+    args.pop_front();
+    string materia = args.front();
+    args.pop_front();
+    string curso = args.front();
+    args.pop_front();
     Inscripcion insc(materia, curso, alumnoId);
     try {
         database.processTransaction(insc, *this);
@@ -28,15 +32,18 @@ string Docente::inscribir(vector<string> &args)  {
     }
 }
 
-string Docente::desinscribir(vector<string> &args) {
+string Docente::desinscribir(std::deque<string> &args) {
     if (args.size() < 3){
         throw std::invalid_argument("Comando inscripcion no recibió argumentos "
                                         "suficientes");
     }
 
-    string alumnoId = args[1];
-    string materia = args[2];
-    string curso = args[3];
+    string alumnoId = args.front();
+    args.pop_front();
+    string materia = args.front();
+    args.pop_front();
+    string curso = args.front();
+    args.pop_front();
     Desinscripcion des(materia, curso, alumnoId);
     try {
         database.processTransaction(des, *this);

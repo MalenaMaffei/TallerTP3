@@ -46,7 +46,7 @@ public:
 //PRE: self fue inicializado con Create.
 //Se llamo a BindAndListen con self.
 //TODO VER COMO DEVOLVER OTRO SOCKET
-  int Accept();
+  Socket Accept();
 
 
   void addFD(int fd);

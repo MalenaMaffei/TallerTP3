@@ -81,8 +81,10 @@ void Server::run(){
     std::vector<Session*> sessions;
     while (!exit){
         try {
-            int new_fd = acceptSocket.Accept();
-            Session *session = new Session(new_fd, errorMonitor, database);
+//            int new_fd = acceptSocket.Accept();
+//            Session *session = new Session(new_fd, errorMonitor, database);
+            Socket newSocket = acceptSocket.Accept();
+            Session *session = new Session(newSocket, errorMonitor, database);
             sessions.push_back(session);
             session->start();
         } catch(SocketException& e){ continue; }

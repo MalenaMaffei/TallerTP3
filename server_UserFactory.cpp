@@ -2,24 +2,28 @@
 #include "server_Admin.h"
 #include "server_Alumno.h"
 #include "server_Docente.h"
-#include <vector>
+//#include <vector>
 #include <string>
 #include <stdexcept>
+#include <deque>
 #define ALUMNO "alumno"
 #define DOCENTE "docente"
 #define ADMIN "admin"
 
-User *UserFactory::createUser(vector<string> &params, DB &database) const {
+User *UserFactory::createUser(std::deque<string> &params, DB &database) const {
     User *ptr;
-    string userType = params[0];
+    string userType = params.front();
+    params.pop_front();
+
 
 //    TODO chequear si hay leaks cuando el usuario esta mal
-//    cout << "de materiasDB" << materiasDB.listAll() << endl;
+
+
     if (userType == ALUMNO){
-        string id = params[1];
+        string id = params.front();;
         ptr = new Alumno(database, id);
     } else if (userType == DOCENTE){
-        string id = params[1];
+        string id = params.front();
         ptr = new Docente(database, id);
     } else if (userType == ADMIN){
         ptr = new Admin(database);

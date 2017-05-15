@@ -3,15 +3,15 @@
 
 #include "server_User.h"
 #include <string>
-#include <vector>
-
+//#include <vector>
+#include <deque>
 class Docente : public User  {
 public:
     Docente(DB &database, const string &id);
 
     virtual string listarInscripciones();
-    string inscribir(vector<string> &args);
-    virtual string desinscribir(vector<string> &args);
+    string inscribir(std::deque<string> &args);
+    virtual string desinscribir(std::deque<string> &args);
     virtual string print() const;
   const string &getId() const;
 

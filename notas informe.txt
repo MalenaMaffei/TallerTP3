@@ -1,1 +1,8 @@
+
 getline con redirected stdin en valgrind funciona pero sin valgrind se cuelgan los sockets!!
+
+
+USO DEQUE PORQUE ME PARECIO APROPIADO Y LO QUERIA PROBAR, convencer bien de esto.
+
+
+mega bug de la velocidad.

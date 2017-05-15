@@ -1,13 +1,17 @@
 #include "server_User.h"
 #include <string>
 #include <vector>
+#include <deque>
+
 // #include "server_DBException.h"
 #define LISTARMATERIAS "lm"
 #define LISTARINSC "li"
 #define INS "in"
 #define DESINS "de"
-#define CODE_POS 0
+//#define CODE_POS 0
 #include "server_DB.h"
+
+using std::deque;
 
 string User::listarMaterias() const {
     string format = "$codigo - $descripcion, Curso $curso, "
@@ -23,7 +27,7 @@ string User::listarInscripciones() {
 
 
 
-string User::inscribir(vector<string> &args) {
+string User::inscribir(deque<string> &args) {
     if (args.size() < 2){
         throw std::invalid_argument("Comando inscripcion no recibió argumentos "
                                         "suficientes");
@@ -31,7 +35,7 @@ string User::inscribir(vector<string> &args) {
     return "hola de user base";
 }
 
-string User::desinscribir(vector<string> &args) {
+string User::desinscribir(deque<string> &args) {
     return "hola";
 }
 
@@ -39,9 +43,10 @@ User::~User() {}
 
 User::User(DB &database) : database(database) {}
 
-string User::executeCommand(vector<string> & commands)  {
+string User::executeCommand(deque<string> & commands)  {
 //    TODO lanzar error con comando invalido
-    string command = commands[CODE_POS];
+    string command = commands.front();
+    commands.pop_front();
     string executed_command;
     if (command == LISTARMATERIAS){
         executed_command = listarMaterias();

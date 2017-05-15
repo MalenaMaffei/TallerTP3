@@ -3,15 +3,17 @@
 
 #include <string>
 #include <vector>
-using std::string;
-using std::vector;
+#include <deque>
+
 
 class CommandParser {
 public:
-    string buildCommand(string userInput) const;
-    void parseUserInfo(string userInfo, vector<string> &params) const;
-    void parseCommand(string recv_command, vector<string> &commands) const;
-    string delimitCommands(vector<string> arguments) const;
+    std::string buildCommand(std::string userInput) const;
+    void parseUserInfo(std::string userInfo, std::deque<std::string> &params)
+        const;
+    void parseCommand(std::string recv_command,
+                      std::deque<std::string> &commands) const;
+    std::string delimitCommands(std::deque<std::string> arguments) const;
 };
 
 
