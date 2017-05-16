@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include "server_Session.h"
 #include "server_DB.h"
 #include "common_SocketException.h"
@@ -43,23 +44,23 @@ void Server::run(){
             session->start();
         } catch(SocketException& e){ continue; }
     }
-////    TODO cabiar por un foreach
-    for (size_t i = 0; i < sessions.size(); ++i) {
-        sessions[i]->shutdown();
-        sessions[i]->join();
-        delete sessions[i];
-    }
+
+    std::for_each(sessions.begin(), sessions.end(), [](Session* session){
+      session->shutdown();
+      session->join();
+      delete session;
+    });
+
     return;
 }
 
 void Server::shutdown() {
     exit = true;
-//    acceptSocket.Destroy();
     acceptSocket.Shutdown(SHUT_RDWR);
 }
 
 Server::~Server() {
-    acceptSocket.Destroy();
+    acceptSocket.Close();
 }
 
 

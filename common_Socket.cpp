@@ -141,8 +141,9 @@ void Socket::Shutdown(int mode){
         throw SocketException("Error en shutdown", fD);
     }
 }
+
 ////TODO hacer destructor de esto!!!!!!!!!!!!!!!
-void Socket::Destroy(){
+void Socket::Close(){
     if (res){
         freeaddrinfo(res);
     }
@@ -201,11 +202,6 @@ void Socket::addFD(int fd) {
 Socket::~Socket() {
 //    if (res){
 //        freeaddrinfo(res);
-//    }
-//    close(fD);
-//    int status = close(fD);
-//    if (status<0){
-//        throw SocketException("Error en close", fD);
 //    }
 }
 

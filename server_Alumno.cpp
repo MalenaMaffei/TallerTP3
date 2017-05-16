@@ -55,6 +55,6 @@ void Alumno::createDesinscripcion(std::deque<string> &args) {
 
 bool Alumno::hasPermissions(std::string materia) {
 //    return database.validatePermissions(materia, *this);
-    return database.validatePermissions(materia);
+    return database.validatePermissions(materia, *this);
 }
 

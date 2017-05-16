@@ -14,6 +14,8 @@ class StringFiller {
   std::string fillLine(std::string format,
                        std::map<std::string, std::string> info,
                        std::string tokenId);
+  std::string replaceToken(std::string format, std::string replacement,
+                           std::string tokenId);
 
  private:
   std::string getMatch(std::regex pattern, std::string str);

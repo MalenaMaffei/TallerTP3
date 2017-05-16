@@ -70,7 +70,7 @@ public:
 //Destruye la instancia self liberando sus recursos.
 //Cierra el socket y libera a struct addrinfo res.
 // PRE: self fue inicializado mediante Create
-  void Destroy();
+  void Close();
 
 //Destruye un socket accept liberando sus recursos.
 //Cierra el socket.

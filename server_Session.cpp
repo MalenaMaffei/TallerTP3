@@ -69,9 +69,7 @@ Session::~Session() {
     if (user){
         delete(user);
     }
-    socket.Destroy();
-//    socket.Shutdown(READ_SHTDWN);
-//    socket.accept_destroy();
+    socket.Close();
 }
 
 void Session::shutdown() {

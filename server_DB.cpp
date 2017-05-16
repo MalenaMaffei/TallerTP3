@@ -65,22 +65,13 @@ void DB::validateTransaction(Transaction transaction){
     validateUser("alumno", transaction.getAlumnoId());
 }
 
-void DB::validateDocente(Transaction &transaction, string docenteId) {
-    if (! docenteTeachesMateria(transaction.getId(), docenteId)) {
+void DB::processTransaction(Transaction &transaction, User &user) {
+    validateTransaction(transaction);
+    if (!user.hasPermissions(transaction.getId())){
         throw DBPermissionException("No tiene permisos para operar sobre "
                                         ""+transaction.getMateria()+", curso "
             ""+transaction.getCurso()+".\n");
     }
-}
-
-void DB::processTransaction(Transaction &transaction, Docente &docente) {
-    validateTransaction(transaction);
-    validateDocente(transaction, docente.getId());
-    acceptTransaction(transaction);
-}
-
-void DB::processTransaction(Transaction &transaction, User &user) {
-    validateTransaction(transaction);
     acceptTransaction(transaction);
 }
 
@@ -114,11 +105,9 @@ bool DB::validatePermissions(string materia, Docente &user){
 bool DB::validatePermissions(string materia, Admin &user){
     return true;
 }
+
 bool DB::validatePermissions(string materia, Alumno &user) {
-    return false;
-}
-bool DB::validatePermissions(string & materia) {
-    return false;
+    return true;
 }
 
 string DB::listarMateriasCabecera(string format, User &user) {
@@ -130,11 +119,9 @@ string DB::listarMateriasCabecera(string format, User &user) {
             filled += filler.fillLine(format, materias[kv.first], "%");
             vector<string> alumnos;
             filler.splitStr(materias[kv.first]["inscriptos"], alumnos, " ");
-            for (size_t i = 0; i <alumnos.size(); ++i) {
-                map<string, string> ids;
-                ids["idalumno"] = alumnos[i];
-                filled += filler.fillLine(alumnoFormat, ids, "%");
-            }
+            std::for_each(alumnos.begin(), alumnos.end(), [&](string id){
+              filled +=filler.replaceToken(alumnoFormat, id, "%");
+            });
         }
     }
     return filler.fillNameById(filled, users);

@@ -28,7 +28,7 @@ void client(const char *ip, const char *port, deque<string> arguments){
         client_socket.SendStrWLen(login, LENGTH_SIZE);
     } catch(SocketException& e) {
         cout << e.what() << endl;
-//        client_socket.Destroy();
+//        client_socket.Close();
         return;
     }
 
@@ -49,7 +49,7 @@ void client(const char *ip, const char *port, deque<string> arguments){
     }
 
 //    client_socket.Shutdown(SHUT_RDWR);
-    client_socket.Destroy();
+    client_socket.Close();
     return;
 }
 

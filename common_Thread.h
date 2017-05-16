@@ -8,30 +8,21 @@ private:
     std::thread thread;
 
 public:
-    Thread() {}
+    Thread();
 
-    void start() {
-        thread = std::thread(&Thread::run, this);
-    }
+    void start();
 
-    void join() {
-        thread.join();
-    }
+    void join();
 
     virtual void run() = 0;
-    virtual ~Thread() {}
+    virtual ~Thread();
 
     Thread(const Thread&) = delete;
     Thread& operator=(const Thread&) = delete;
 
-    Thread(Thread&& other) {
-        this->thread = std::move(other.thread);
-    }
+    Thread(Thread&& other);
 
-    Thread& operator=(Thread&& other) {
-        this->thread = std::move(other.thread);
-        return *this;
-    }
+    Thread& operator=(Thread&& other);
 };
 
 #endif //TP2_THREAD_H

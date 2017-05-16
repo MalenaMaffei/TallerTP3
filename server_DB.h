@@ -18,29 +18,24 @@ class DB {
  public:
   DB(string usuariosFile, string materiasFile);
   string fillAllMaterias(string format);
-//  string fillNameById(string format);
 
   string listarMateriasCabecera(string format, Alumno &user);
   string listarMateriasCabecera(string format, User &user);
-  void processTransaction(Transaction &transaction, Docente &user);
   void processTransaction(Transaction &transaction, User &user);
   void validateUser(string userType, string id);
   bool validatePermissions(string materia, Admin &user);
   bool validatePermissions(string materia, Docente &user);
   bool validatePermissions(string materia, Alumno &user);
-  bool validatePermissions(string & materia);
 
  private:
   bool docenteTeachesMateria(string materiaid, string iddocente);
   bool alumnoAttendsMateria(string materiaid, string idalumno);
-  void validateDocente(Transaction &transaction, string docenteId);
   void acceptTransaction(Transaction &transaction);
   void fillMaterias(string materiasFile);
   void fillUsuarios(string line);
   void validateMateria(string materia, string curso);
   void validateTransaction(Transaction transaction);
 
-//  std::map<string,map<string, string>> users;
   std::map<string,string> users;
 
   map<string,map<string, string>> materias;

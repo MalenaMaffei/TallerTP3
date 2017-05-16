@@ -57,3 +57,16 @@ std::string StringFiller::fillLine(std::string format,
     }
     return line;
 }
+
+std::string StringFiller::replaceToken(std::string format,
+                                       std::string replacement,
+                                       std::string tokenId) {
+    string line = format;
+    regex rgx(".*"+tokenId+"(\\w+).*");
+    std::smatch match;
+    while (std::regex_search(line, match, rgx)) {
+        string token = match[1];
+        line=std::regex_replace(line,regex(tokenId+token), replacement);
+    }
+    return line;
+}
