@@ -1,13 +1,11 @@
 #include "server_Admin.h"
-#include <string>
-//#include <vector>
-#include <deque>
 #include "server_DB.h"
+#include <string>
+#include <deque>
 #define MY_TYPE "admin"
 string Admin::listarInscripciones() {
     string format = User::listarInscripciones();
     return database.listarMateriasCabecera(format, *this);
-//    cout << "listando inscripciones de todo el mundo" << endl;
 }
 
 Admin::Admin(DB &database) :
@@ -48,7 +46,6 @@ void Admin::createDesinscripcion(std::deque<string> &args) {
 }
 
 bool Admin::hasPermissions(std::string materia) {
-//    return database.validatePermissions(materia, *this);
     return database.validatePermissions(materia, *this);
 }
 

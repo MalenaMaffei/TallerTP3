@@ -32,12 +32,23 @@ void Session::receiveCommands(){
             continue;
         }
 
-//Aca viene la parte de devolver un vector de comandos.
+//Aca viene la parte de devolver una cola de comandos.
         deque<string> commands;
         parser.parseCommand(recv_command, commands);
         errorMonitor.outputCommand(user->print(), commands[CODE_POS]);
-        string output = user->executeCommand(commands);
-        socket.SendStrWLen(output, LENGTH_SIZE);
+        string output;
+        try {
+            output = user->executeCommand(commands);
+        } catch(std::invalid_argument &e){
+            output = e.what();
+        }
+        try {
+            socket.SendStrWLen(output, LENGTH_SIZE);
+        } catch(SocketException& e){
+            errorMonitor.outputError(user->print() + " desconectado.");
+            shutdown();
+            continue;
+        }
     }
 }
 

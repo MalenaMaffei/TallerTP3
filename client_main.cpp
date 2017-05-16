@@ -1,3 +1,8 @@
+//#include "client_Client.h"
+//#include "client_Client.cpp"
+#include <string>
+#include <deque>
+
 #include "common_Socket.h"
 #include <string>
 #include <iostream>
@@ -15,15 +20,15 @@ using std::cin;
 void client(string ip, string port, deque<string> arguments){
     CommandParser parser;
     Socket client_socket;
+
     try {
-        client_socket.CreateAndConnect(ip, port);
+        client_socket.setClientMode(ip, port);
     } catch(SocketException& e){
         cout << e.what() << endl;
         return;
     }
 
     string login = parser.delimitCommands(arguments);
-//    TODO create ints of 4 bytes only.. que se yo
     try {
         client_socket.SendStrWLen(login, LENGTH_SIZE);
     } catch(SocketException& e) {
@@ -48,14 +53,15 @@ void client(string ip, string port, deque<string> arguments){
         }
     }
 
-//    client_socket.Shutdown(SHUT_RDWR);
     client_socket.Close();
     return;
 }
 
 int main(int argc, char **argv){
-    deque<string> arguments(argv + 3, argv + argc);
+    std::deque<std::string> arguments(argv + 3, argv + argc);
+//    Client client(argv[1], argv[2], arguments);
+//    client.start();
     client(argv[1], argv[2], arguments);
-
     return 0;
 }
+

@@ -52,7 +52,6 @@ User::~User() {}
 User::User(DB &database) : database(database) {}
 
 string User::executeCommand(deque<string> & commands)  {
-//    TODO lanzar error con comando invalido
     string command = commands.front();
     commands.pop_front();
     string executed_command;
@@ -61,7 +60,6 @@ string User::executeCommand(deque<string> & commands)  {
     } else if (command == LISTARINSC){
         executed_command = listarInscripciones();
     } else if (command == INS){
-//        TODO SACAR PARTE DEL CODIGO
         executed_command = inscribir(commands);
     } else if (command == DESINS){
         executed_command = desinscribir(commands);

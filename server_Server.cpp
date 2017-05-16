@@ -7,7 +7,6 @@
 #include "server_Session.h"
 #include "server_DB.h"
 #include "common_SocketException.h"
-#define BACKLOG 10
 #define BUFFSIZE 300
 #define SERVER_MODE 0
 #define LENGTH_SIZE 4
@@ -22,10 +21,11 @@ Server::Server(const string &port,const string &usuariosFile,
 }
 
 void Server::run(){
-    acceptSocket.Create("", port, SERVER_MODE);
+//    acceptSocket.Create(0, port.c_str(), SERVER_MODE);
 
     try{
-        acceptSocket.BindAndListen(BACKLOG);
+//        acceptSocket.BindAndListen(BACKLOG);
+        acceptSocket.setServerMode(port);
     } catch(SocketException& e){
         cout << e.what() << endl;
         return;
