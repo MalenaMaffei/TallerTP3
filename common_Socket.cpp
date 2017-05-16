@@ -1,27 +1,22 @@
 #include "common_Socket.h"
 // #define _POSIX_C_SOURCE 200112L
 #include "common_SocketException.h"
-// #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <memory.h>
-// #include <stdio.h>
 #include "common_SocketException.h"
-// #include <stdexcept>
 #include <cstring>
 #include <string>
-// #include <errno.h>
 #include <fcntl.h>
 #define SERVER_MODE 0
 #define CLIENT_MODE 0
 
 #define BUFFSIZE 300
-int Socket::filladdrinfo(const char *ip, const char *port, int
+void Socket::filladdrinfo(const char *ip, const char *port, int
 mode){
     int status = 0;
 
     struct addrinfo hints;
-//    struct addrinfo *res;
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_INET;
@@ -33,15 +28,14 @@ mode){
     }
 
     status = getaddrinfo(ip, port, &hints, &res);
-    if (status < 0) { return (NOK); }
-    if (!res) { return NOK; }
-//    res = res;
-    return OK;
+    if (status < 0 || !res) {
+        throw SocketException("Error en getaddrinfo", fD);;
+    }
 }
 
-void Socket::Create(const char *ip, const char *port, int mode){
+void Socket::Create(string ip, string port, int mode){
     int skt = 0;
-    filladdrinfo(ip, port, mode);
+    filladdrinfo(ip.c_str(), port.c_str(), mode);
     skt = socket(res->ai_family, res->ai_socktype,
                  res->ai_protocol);
     if (skt == NOK) {
@@ -50,16 +44,15 @@ void Socket::Create(const char *ip, const char *port, int mode){
     fD = skt;
 }
 
-void Socket::CreateAndConnect(const char *ip, const char *port){
+void Socket::CreateAndConnect(string ip, string port){
     struct addrinfo* ptr;
     bool connected = false;
     int status = 0;
     int skt = 0;
 
-    filladdrinfo(ip, port, CLIENT_MODE);
+    filladdrinfo(ip.c_str(), port.c_str(), CLIENT_MODE);
 
-    for (ptr = res; ptr != NULL && connected == false;
-         ptr = ptr->ai_next) {
+    for (ptr = res; ptr != NULL && !connected; ptr = ptr->ai_next) {
         skt = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
 
         if (skt == NOK) {
@@ -69,7 +62,7 @@ void Socket::CreateAndConnect(const char *ip, const char *port){
             status = connect(fD,  ptr->ai_addr, ptr->ai_addrlen);
             if (status == NOK) {
                 close(skt);
-                throw SocketException("Error en connect", fD);
+                continue;
             }
             connected = (status != NOK);
         }
@@ -84,11 +77,11 @@ void Socket::Send(unsigned char *source, size_t length){
     unsigned char *buffer_ptr = source;
     for (bytes_left = length; bytes_left>0; bytes_left-=bytes_sent) {
         if (!isConnected()) {
-            throw SocketException("Tried sending, but socket was closed", fD);
+            throw SocketException("Error en send, socket estaba cerrado", fD);
         }
         bytes_sent=send(fD, buffer_ptr, bytes_left, MSG_NO_SIGNAL);
         if (bytes_sent<=0) {
-            throw SocketException("Tried sending", fD);
+            throw SocketException("Error en send", fD);
         } else {
             buffer_ptr+=bytes_sent;
         }
@@ -97,14 +90,12 @@ void Socket::Send(unsigned char *source, size_t length){
 
 void Socket::BindAndListen(int backlog){
     int s_bind = bind(fD, res->ai_addr, res->ai_addrlen);
-    if (s_bind < 0){ throw SocketException("error en bind", fD); }
+    if (s_bind < 0){ throw SocketException("Error en bind", fD); }
     int s_lis = listen(fD, backlog);
-    if (s_lis <0){ throw SocketException("error en listen", fD); }
+    if (s_lis <0){ throw SocketException("Error en listen", fD); }
 }
 
 Socket Socket::Accept() {
-//    std::lock_guard<std::mutex> lock(m);
-//    Socket other;
     struct sockaddr_storage c_addr;
     struct sockaddr *a;
     socklen_t *l;
@@ -113,7 +104,6 @@ Socket Socket::Accept() {
     a = (struct sockaddr *)&c_addr;
     l= &addr_s;
     int new_fd = accept(fD, a, l);
-//    other.fD = new_fd;
     if (new_fd < 0){
         throw SocketException("Error en Accept", fD);
     }
@@ -121,7 +111,6 @@ Socket Socket::Accept() {
     newSocket.fD = new_fd;
     newSocket.res = nullptr;
     return newSocket;
-//    return new_fd;
 }
 
 int Socket::Receive(unsigned char *buffer, size_t length){
@@ -142,7 +131,6 @@ void Socket::Shutdown(int mode){
     }
 }
 
-////TODO hacer destructor de esto!!!!!!!!!!!!!!!
 void Socket::Close(){
     if (res){
         freeaddrinfo(res);

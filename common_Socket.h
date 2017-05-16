@@ -15,15 +15,13 @@ class Socket {
 private:
     int fD;
     struct addrinfo *res;
-    int filladdrinfo(const char *ip,const char *port, int
+    void filladdrinfo(const char *ip, const char *port, int
     mode);
-//  std::mutex m;
 
 public:
-//TODO Hacer excepciones para todo esto
 //Inicializa un socket con su FD usando la estructura addrinfo
 // Lanza SocketError si hay error.
-  void Create(const char *ip, const char *port, int mode);
+  void Create(string ip, string port, int mode);
 
 //Conecta un socket usando la estructura pasada.
 // Lanza SocketError si hay error.
@@ -33,7 +31,7 @@ public:
 //Crea un socket con su FD usando la estructura addrinfo y luego lo conecta
 //Hace la conexión iterando sobre addr
 // Lanza SocketError si hay error.
-  void CreateAndConnect(const char *ip, const char *port);
+  void CreateAndConnect(string ip, string port);
 
 //Hace un bind y luego un listen con el socket pasado.
 // Lanza SocketError si hay error.

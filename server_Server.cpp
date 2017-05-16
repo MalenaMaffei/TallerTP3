@@ -9,7 +9,6 @@
 #include "common_SocketException.h"
 #define BACKLOG 10
 #define BUFFSIZE 300
-#define READ_SHTDWN 1
 #define SERVER_MODE 0
 #define LENGTH_SIZE 4
 
@@ -23,7 +22,7 @@ Server::Server(const string &port,const string &usuariosFile,
 }
 
 void Server::run(){
-    acceptSocket.Create(0, port.c_str(), SERVER_MODE);
+    acceptSocket.Create("", port, SERVER_MODE);
 
     try{
         acceptSocket.BindAndListen(BACKLOG);

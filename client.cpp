@@ -12,7 +12,7 @@ using std::cin;
 #define LENGTH_SIZE 4
 
 
-void client(const char *ip, const char *port, deque<string> arguments){
+void client(string ip, string port, deque<string> arguments){
     CommandParser parser;
     Socket client_socket;
     try {
@@ -28,7 +28,7 @@ void client(const char *ip, const char *port, deque<string> arguments){
         client_socket.SendStrWLen(login, LENGTH_SIZE);
     } catch(SocketException& e) {
         cout << e.what() << endl;
-//        client_socket.Close();
+        client_socket.Close();
         return;
     }
 
@@ -55,7 +55,7 @@ void client(const char *ip, const char *port, deque<string> arguments){
 
 int main(int argc, char **argv){
     deque<string> arguments(argv + 3, argv + argc);
-        client(argv[1], argv[2], arguments);
+    client(argv[1], argv[2], arguments);
 
     return 0;
 }
